@@ -768,20 +768,38 @@
         <div class="section-header">
             <span class="tag" data-sq="Laboratori" data-en="Laboratory">Laboratori</span>
             <h2 data-sq="Testi i Qumështit" data-en="Milk Testing Lab">Testi i Qumështit</h2>
-            <p data-sq="A mund ta kalosh testin e cilësisë si teknik i Vita-s? Ndihmo të sigurosh që qumështi është i pastër dhe i sigurt për konsum!"
-               data-en="Can you pass the quality test as a Vita technician? Help ensure the milk is pure and safe for consumption!">
-                A mund ta kalosh testin e cilësisë si teknik i Vita-s? Ndihmo të sigurosh që qumështi është i pastër dhe i sigurt për konsum!
+            <p data-sq="Kryeni eksperimente mbi mostrën e qumështit dhe vendosni nëse është i sigurt për shitje!"
+               data-en="Run experiments on the milk sample and decide if it is safe for sale!">
+                Kryeni eksperimente mbi mostrën e qumështit dhe vendosni nëse është i sigurt për shitje!
             </p>
         </div>
         <div class="game-wrapper">
-            <div class="game-lab-bg">
-                <img src="tamel-vita.png" alt="Qumësht Vita" class="game-milk-img" id="gameMilk">
+            <div class="game-lab" id="gameLab">
+                <div class="game-table-area">
+                    <div class="game-milk-container">
+                        <img src="tamel-vita.png" alt="Qumësht Vita" class="game-milk-img" id="gameMilk">
+                        <div class="game-milk-label" id="gameMilkLabel" data-sq="Mostra #V-2847" data-en="Sample #V-2847">Mostra #V-2847</div>
+                    </div>
+                    <div class="game-monitor" id="gameMonitor">
+                        <div class="game-monitor-header">
+                            <span class="game-monitor-title">VitaScan Pro</span>
+                            <span class="game-monitor-dot" id="monitorDot"></span>
+                        </div>
+                        <div class="game-monitor-content" id="monitorContent">
+                            <div class="result-line" data-sq="Sistemi gati. Zgjidhni një test..." data-en="System ready. Select a test...">Sistemi gati. Zgjidhni një test...</div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="game-content" id="gameContent">
-                <div class="game-step-indicator" id="gameSteps"></div>
-                <div class="game-question" id="gameQuestion"></div>
-                <div class="game-options" id="gameOptions"></div>
-                <div class="game-score" id="gameScore"></div>
+            <div class="game-controls" id="gameControls">
+                <button class="game-btn" onclick="runTest('temp')" data-sq="Temperatura" data-en="Temperature">Temperatura</button>
+                <button class="game-btn" onclick="runTest('alcohol')" data-sq="Testi Alkoolit" data-en="Alcohol Test">Testi Alkoolit</button>
+                <button class="game-btn" onclick="runTest('water')" data-sq="Testi Ujit" data-en="Water Test">Testi Ujit</button>
+                <button class="game-btn" onclick="runTest('antibiotic')" data-sq="Testi Antibiotikëve" data-en="Antibiotic Test">Testi Antibiotikëve</button>
+                <button class="game-btn" onclick="runTest('bacteria')" data-sq="Analiza Bakteriale" data-en="Bacteria Analysis">Analiza Bakteriale</button>
+                <button class="game-btn" onclick="runTest('aflatoxin')" data-sq="Aflatoksina" data-en="Aflatoxin">Aflatoksina</button>
+                <button class="game-btn decision approve" onclick="makeDecision('approve')" data-sq="Aprovo për Shitje" data-en="Approve for Sale">Aprovo për Shitje</button>
+                <button class="game-btn decision reject" onclick="makeDecision('reject')" data-sq="Refuzo Mostrën" data-en="Reject Sample">Refuzo Mostrën</button>
             </div>
         </div>
     </div>
@@ -875,173 +893,262 @@
 <script>
 
     // ===== MILK TESTING GAME =====
-    var gameData = {
-        steps: [
-            {
-                questionSq: 'Faza 1: Kontrolli i Temperaturës — Qumështi sapo ka ardhur nga ferma. Sa duhet të jetë temperatura maksimale për t\'u pranuar?',
-                questionEn: 'Stage 1: Temperature Check — The milk just arrived from the farm. What is the maximum acceptable temperature?',
-                optionsSq: ['Nën 4°C — i ftohtë dhe i sigurt', 'Rreth 10°C — i vakët por në rregull', '15-20°C — temperaturë ambienti normale', 'Nuk ka rëndësi temperatura'],
-                optionsEn: ['Under 4°C — cold and safe', 'About 10°C — lukewarm but fine', '15-20°C — normal room temperature', 'Temperature does not matter'],
-                correct: 0
-            },
-            {
-                questionSq: 'Faza 2: Testi i Alkoolit — Pse teknici përzien qumështin me etanol?',
-                questionEn: 'Stage 2: Alcohol Test — Why does the technician mix milk with ethanol?',
-                optionsSq: ['Për të kontrolluar aciditetin — nëse mpikset, është shumë acid', 'Për ta aromatizuar më mirë', 'Për të matur yndyrën', 'Për të sterilizuar qumështin'],
-                optionsEn: ['To check acidity — if it curdles, the milk is too acidic', 'To add better flavor', 'To measure fat content', 'To sterilize the milk'],
-                correct: 0
-            },
-            {
-                questionSq: 'Faza 3: Testi i Antibiotikëve — Një lopë është trajtuar me ilaçe. Çfarë duhet të bësh?',
-                questionEn: 'Stage 3: Antibiotic Test — A cow was treated with medicine. What should you do?',
-                optionsSq: ['Përdor shiritin e shpejtë të testit dhe refuzo nëse del pozitiv', 'Holloje qumështin me ujë që të kalojë', 'Injoroje — sasia është e vogël', 'Pasterizoje në temperaturë më të lartë'],
-                optionsEn: ['Use the rapid strip test and reject if positive', 'Dilute the milk with water to pass', 'Ignore it — the amount is small', 'Pasteurize at a higher temperature'],
-                correct: 0
-            },
-            {
-                questionSq: 'Faza 4: Analiza Mikrobiologjike — Pas pasterizimit, çfarë kërkon në mostër?',
-                questionEn: 'Stage 4: Microbiological Analysis — After pasteurization, what do you look for in the sample?',
-                optionsSq: ['Zero baktere të dëmshme — Salmonella, Listeria, E. coli duhet të mungojnë plotësisht', 'Disa baktere janë normale dhe të pranueshme', 'Vetëm shija ka rëndësi', 'Mjafton që ngjyra të jetë e bardhë'],
-                optionsEn: ['Zero harmful bacteria — Salmonella, Listeria, E. coli must be completely absent', 'Some bacteria are normal and acceptable', 'Only taste matters', 'As long as the color is white it is fine'],
-                correct: 0
-            },
-            {
-                questionSq: 'Faza 5: Testi i Aflatoksinës — Pse është i rëndësishëm ky test?',
-                questionEn: 'Stage 5: Aflatoxin Test — Why is this test important?',
-                optionsSq: ['Zbulon mykje toksike nga ushqimi i lopës që mund të shkaktojnë kancer', 'Mat sasinë e vitaminave në qumësht', 'Kontrollon nëse qumështi është i ëmbël', 'Përcakton ngjyrën e paketimit'],
-                optionsEn: ['Detects toxic molds from cow feed that can cause cancer', 'Measures vitamin levels in milk', 'Checks if the milk is sweet', 'Determines packaging color'],
-                correct: 0
-            }
-        ],
-        currentStep: 0,
-        score: 0,
-        lang: 'sq'
+    var gameState = {
+        testsRun: [],
+        // Hidden truths about this sample (randomized each game)
+        secrets: {},
+        lang: 'sq',
+        decided: false
     };
 
-    function renderGame() {
-        var content = document.getElementById('gameContent');
-        var stepsDiv = document.getElementById('gameSteps');
-        var questionDiv = document.getElementById('gameQuestion');
-        var optionsDiv = document.getElementById('gameOptions');
-        var scoreDiv = document.getElementById('gameScore');
-        var lang = gameData.lang;
-
-        // Render step dots
-        var dots = '';
-        for (var i = 0; i < gameData.steps.length; i++) {
-            var cls = 'game-step-dot';
-            if (i < gameData.currentStep) {
-                cls += ' done';
-            } else if (i === gameData.currentStep) {
-                cls += ' active';
-            }
-            dots += '<div class="' + cls + '"></div>';
+    function initGame() {
+        // Randomize what's actually wrong with this milk sample
+        // 2-3 issues will be present
+        var possibleIssues = ['water', 'antibiotic', 'bacteria', 'aflatoxin'];
+        var shuffled = possibleIssues.sort(function() { return Math.random() - 0.5; });
+        var numIssues = 2 + Math.floor(Math.random() * 2); // 2 or 3 issues
+        gameState.secrets = {};
+        for (var i = 0; i < numIssues; i++) {
+            gameState.secrets[shuffled[i]] = true;
         }
-        stepsDiv.innerHTML = dots;
+        // Temp and alcohol are always OK in our simulation
+        gameState.testsRun = [];
+        gameState.decided = false;
 
-        var step = gameData.steps[gameData.currentStep];
-        questionDiv.textContent = lang === 'sq' ? step.questionSq : step.questionEn;
+        // Reset UI
+        document.getElementById('gameMilk').className = 'game-milk-img';
+        var monitorContent = document.getElementById('monitorContent');
+        monitorContent.innerHTML = '<div class="result-line" data-sq="Sistemi gati. Zgjidhni një test..." data-en="System ready. Select a test...">' + 
+            (gameState.lang === 'sq' ? 'Sistemi gati. Zgjidhni një test...' : 'System ready. Select a test...') + '</div>';
 
-        var optionsHtml = '';
-        var optTexts = lang === 'sq' ? step.optionsSq : step.optionsEn;
-        for (var j = 0; j < optTexts.length; j++) {
-            optionsHtml += '<button class="game-option" onclick="answerGame(' + j + ', this)">' + optTexts[j] + '</button>';
+        // Enable all buttons
+        var buttons = document.querySelectorAll('#gameControls .game-btn');
+        for (var j = 0; j < buttons.length; j++) {
+            buttons[j].disabled = false;
         }
-        optionsDiv.innerHTML = optionsHtml;
 
-        scoreDiv.innerHTML = lang === 'sq'
-            ? 'Pikët: <span>' + gameData.score + '</span> / ' + gameData.steps.length
-            : 'Score: <span>' + gameData.score + '</span> / ' + gameData.steps.length;
+        // Remove any result overlay
+        var overlay = document.querySelector('.game-result-overlay');
+        if (overlay) overlay.remove();
+
+        console.log('Game initialized. Secrets:', Object.keys(gameState.secrets));
     }
 
-    function answerGame(choice, btn) {
-        var step = gameData.steps[gameData.currentStep];
-        var isCorrect = (choice === step.correct);
+    function runTest(testType) {
+        if (gameState.decided) return;
+        if (gameState.testsRun.indexOf(testType) >= 0) return; // Already tested
+
+        gameState.testsRun.push(testType);
+        var sq = gameState.lang === 'sq';
+        var milkImg = document.getElementById('gameMilk');
+        var monitorContent = document.getElementById('monitorContent');
+        var label = document.getElementById('gameMilkLabel');
+        var hasIssue = gameState.secrets[testType] === true;
+
+        var resultHtml = '';
+        var statusClass = '';
+
+        switch(testType) {
+            case 'temp':
+                resultHtml = sq
+                    ? '<div class="result-line"><span class="ok">✓ Temperatura: 2.8°C</span></div><div class="result-line">Brenda normës (nën 4°C). I freskët.</div>'
+                    : '<div class="result-line"><span class="ok">✓ Temperature: 2.8°C</span></div><div class="result-line">Within range (under 4°C). Fresh.</div>';
+                break;
+            case 'alcohol':
+                resultHtml = sq
+                    ? '<div class="result-line"><span class="ok">✓ Testi i Alkoolit: Negativ</span></div><div class="result-line">Nuk u mpiks — aciditeti normal. I qëndrueshëm ndaj nxehtësisë.</div>'
+                    : '<div class="result-line"><span class="ok">✓ Alcohol Test: Negative</span></div><div class="result-line">No curdling — normal acidity. Heat stable.</div>';
+                break;
+            case 'water':
+                if (hasIssue) {
+                    resultHtml = sq
+                        ? '<div class="result-line"><span class="highlight">⚠ Testi i Ujit: POZITIV</span></div><div class="result-line">Dendësia nën normën! Mostra është <span class="highlight">holluar me ujë</span>. Mashtrim i zbuluar.</div>'
+                        : '<div class="result-line"><span class="highlight">⚠ Water Test: POSITIVE</span></div><div class="result-line">Density below normal! Sample has been <span class="highlight">diluted with water</span>. Fraud detected.</div>';
+                    milkImg.className = 'game-milk-img warning';
+                } else {
+                    resultHtml = sq
+                        ? '<div class="result-line"><span class="ok">✓ Testi i Ujit: Negativ</span></div><div class="result-line">Dendësia normale. Pa hollim me ujë.</div>'
+                        : '<div class="result-line"><span class="ok">✓ Water Test: Negative</span></div><div class="result-line">Normal density. No water dilution.</div>';
+                }
+                break;
+            case 'antibiotic':
+                if (hasIssue) {
+                    resultHtml = sq
+                        ? '<div class="result-line"><span class="highlight">⚠ Testi Antibiotikëve: POZITIV</span></div><div class="result-line">U zbuluan <span class="highlight">mbetje tetracikline</span>! Lopa është trajtuar me ilaçe — qumështi NUK duhet shitur.</div>'
+                        : '<div class="result-line"><span class="highlight">⚠ Antibiotic Test: POSITIVE</span></div><div class="result-line"><span class="highlight">Tetracycline residues</span> detected! Cow was treated with medication — milk must NOT be sold.</div>';
+                    milkImg.className = 'game-milk-img danger';
+                } else {
+                    resultHtml = sq
+                        ? '<div class="result-line"><span class="ok">✓ Testi Antibiotikëve: Negativ</span></div><div class="result-line">Pa mbetje antibiotikësh. I sigurt.</div>'
+                        : '<div class="result-line"><span class="ok">✓ Antibiotic Test: Negative</span></div><div class="result-line">No antibiotic residues. Safe.</div>';
+                }
+                break;
+            case 'bacteria':
+                if (hasIssue) {
+                    resultHtml = sq
+                        ? '<div class="result-line"><span class="highlight">⚠ Analiza Bakteriale: KRITIKE</span></div><div class="result-line">U gjetën <span class="highlight">koloni E. coli dhe Salmonella</span>! Ndotje e rrezikshme — numri i baktereve 50x mbi limit.</div>'
+                        : '<div class="result-line"><span class="highlight">⚠ Bacteria Analysis: CRITICAL</span></div><div class="result-line"><span class="highlight">E. coli and Salmonella colonies</span> found! Dangerous contamination — bacteria count 50x over limit.</div>';
+                    milkImg.className = 'game-milk-img danger';
+                } else {
+                    resultHtml = sq
+                        ? '<div class="result-line"><span class="ok">✓ Analiza Bakteriale: E Pastër</span></div><div class="result-line">Numri i baktereve brenda normës. Pa patogjenë.</div>'
+                        : '<div class="result-line"><span class="ok">✓ Bacteria Analysis: Clean</span></div><div class="result-line">Bacteria count within limits. No pathogens.</div>';
+                }
+                break;
+            case 'aflatoxin':
+                if (hasIssue) {
+                    resultHtml = sq
+                        ? '<div class="result-line"><span class="highlight">⚠ Aflatoksina: POZITIVE</span></div><div class="result-line">U zbuluan <span class="highlight">mykje toksike (aflatoksina M1)</span> nga ushqimi i kontaminuar i lopës. Rrezik kanceri!</div>'
+                        : '<div class="result-line"><span class="highlight">⚠ Aflatoxin: POSITIVE</span></div><div class="result-line"><span class="highlight">Toxic molds (aflatoxin M1)</span> detected from contaminated cow feed. Cancer risk!</div>';
+                    milkImg.className = 'game-milk-img danger';
+                } else {
+                    resultHtml = sq
+                        ? '<div class="result-line"><span class="ok">✓ Aflatoksina: Negative</span></div><div class="result-line">Pa mykje toksike. I pastër.</div>'
+                        : '<div class="result-line"><span class="ok">✓ Aflatoxin: Negative</span></div><div class="result-line">No toxic molds. Clean.</div>';
+                }
+                break;
+        }
+
+        // Update monitor
+        var existingContent = monitorContent.innerHTML;
+        // Keep only the 2 most recent results plus the new one
+        var lines = existingContent.split('<div class="result-line">');
+        var recentLines = [];
+        for (var i = 1; i < lines.length; i++) {
+            recentLines.push('<div class="result-line">' + lines[i]);
+        }
+        // Show last 3 results
+        if (recentLines.length > 2) {
+            recentLines = recentLines.slice(-2);
+        }
+        monitorContent.innerHTML = recentLines.join('') + resultHtml;
+
+        // Disable button for this test
+        var buttons = document.querySelectorAll('#gameControls .game-btn');
+        for (var k = 0; k < buttons.length; k++) {
+            if (buttons[k].textContent.trim().indexOf(getTestLabel(testType)) >= 0 ||
+                (testType === 'temp' && buttons[k].textContent.trim().indexOf('Temperat') >= 0) ||
+                (testType === 'alcohol' && buttons[k].textContent.trim().indexOf('Alkool') >= 0) ||
+                (testType === 'water' && buttons[k].textContent.trim().indexOf('Ujit') >= 0) ||
+                (testType === 'antibiotic' && buttons[k].textContent.trim().indexOf('Antibiotik') >= 0) ||
+                (testType === 'bacteria' && buttons[k].textContent.trim().indexOf('Bakter') >= 0) ||
+                (testType === 'aflatoxin' && buttons[k].textContent.trim().indexOf('Aflatok') >= 0)) {
+                buttons[k].disabled = true;
+            }
+        }
+    }
+
+    function getTestLabel(type) {
+        var labels = {temp: '', alcohol: '', water: '', antibiotic: '', bacteria: '', aflatoxin: ''};
+        if (gameState.lang === 'sq') {
+            labels = {temp: 'Temperatura', alcohol: 'Alkoolit', water: 'Ujit', antibiotic: 'Antibiotik', bacteria: 'Bakteriale', aflatoxin: 'Aflatoksina'};
+        } else {
+            labels = {temp: 'Temperature', alcohol: 'Alcohol', water: 'Water', antibiotic: 'Antibiotic', bacteria: 'Bacteria', aflatoxin: 'Aflatoxin'};
+        }
+        return labels[type] || '';
+    }
+
+    function makeDecision(decision) {
+        if (gameState.decided) return;
+        gameState.decided = true;
+
+        var sq = gameState.lang === 'sq';
+        var hasAnyIssue = false;
+        for (var key in gameState.secrets) {
+            if (gameState.secrets[key]) { hasAnyIssue = true; break; }
+        }
+
+        // Check if player ran enough tests to discover issues
+        var discoveredIssue = false;
+        for (var k = 0; k < gameState.testsRun.length; k++) {
+            if (gameState.secrets[gameState.testsRun[k]]) {
+                discoveredIssue = true;
+                break;
+            }
+        }
+
+        var isCorrect = false;
+        if (hasAnyIssue) {
+            // There ARE issues - correct decision is REJECT
+            isCorrect = (decision === 'reject' && discoveredIssue);
+        } else {
+            // No issues - correct decision is APPROVE
+            isCorrect = (decision === 'approve');
+        }
+        // Also accept reject if issues exist but player didn't find them
+        if (hasAnyIssue && decision === 'reject') isCorrect = true;
+        if (!hasAnyIssue && decision === 'approve') isCorrect = true;
 
         // Disable all buttons
-        var buttons = document.querySelectorAll('.game-option');
-        for (var i = 0; i < buttons.length; i++) {
-            buttons[i].disabled = true;
-            buttons[i].style.pointerEvents = 'none';
+        var buttons = document.querySelectorAll('#gameControls .game-btn');
+        for (var j = 0; j < buttons.length; j++) {
+            buttons[j].disabled = true;
         }
 
-        // Highlight correct/wrong
+        // Show result overlay
+        var lab = document.getElementById('gameLab');
+        var monitorDot = document.getElementById('monitorDot');
+        monitorDot.style.background = isCorrect ? '#4caf50' : '#e74c3c';
+
+        var overlay = document.createElement('div');
+        overlay.className = 'game-result-overlay';
+
         if (isCorrect) {
-            btn.classList.add('correct');
-            gameData.score++;
+            overlay.innerHTML = '<div class="game-result-card success">' +
+                '<div style="font-size:3rem;">&#10004;</div>' +
+                '<h3>' + (sq ? 'Vendim i Saktë!' : 'Correct Decision!') + '</h3>' +
+                '<p>' + (sq
+                    ? (decision === 'approve'
+                        ? 'Mostra ishte e pastër dhe e sigurt. Qumështi do të shitet në dyqane — familjet shqiptare mund ta konsumojnë me besim!'
+                        : 'Mostra ishte e kontaminuar dhe u refuzua me të drejtë. Asnjë qumësht i rrezikshëm nuk del nga laboratori i Vita-s!')
+                    : (decision === 'approve'
+                        ? 'The sample was clean and safe. The milk will be sold in stores — Albanian families can consume it with confidence!'
+                        : 'The sample was contaminated and was rightfully rejected. No dangerous milk leaves the Vita laboratory!')) + '</p>' +
+                '<button class="game-restart" onclick="initGame()">' + (sq ? 'Testo Mostër Tjetër' : 'Test Another Sample') + '</button>' +
+                '</div>';
         } else {
-            btn.classList.add('wrong');
-            // Highlight the correct one too
-            buttons[step.correct].classList.add('correct');
+            overlay.innerHTML = '<div class="game-result-card failure">' +
+                '<div style="font-size:3rem;">&#10008;</div>' +
+                '<h3>' + (sq ? 'Vendim i Gabuar!' : 'Wrong Decision!') + '</h3>' +
+                '<p>' + (sq
+                    ? (decision === 'approve'
+                        ? 'Mostra KISHTE probleme që nuk u zbuluan! Qumështi i kontaminuar do të shitej — me baktere të dëmshme që rrezikojnë shëndetin e konsumatorëve!'
+                        : 'Mostra ishte e pastër por u refuzua! Qumësht i mirë u shkatërrua kot — humbje për kompaninë dhe fermerët!')
+                    : (decision === 'approve'
+                        ? 'The sample HAD undetected issues! Contaminated milk would be sold — with harmful bacteria endangering consumer health!'
+                        : 'The sample was clean but was rejected! Good milk was wasted — a loss for the company and farmers!')) + '</p>' +
+                '<button class="game-restart" onclick="initGame()">' + (sq ? 'Provo Përsëri' : 'Try Again') + '</button>' +
+                '</div>';
         }
 
-        // Update score display
-        var scoreDiv = document.getElementById('gameScore');
-        scoreDiv.innerHTML = gameData.lang === 'sq'
-            ? 'Pikët: <span>' + gameData.score + '</span> / ' + gameData.steps.length
-            : 'Score: <span>' + gameData.score + '</span> / ' + gameData.steps.length;
+        lab.appendChild(overlay);
+    }
 
-        // Next step after delay
-        gameData.currentStep++;
-        setTimeout(function() {
-            if (gameData.currentStep >= gameData.steps.length) {
-                showGameResult();
-            } else {
-                renderGame();
+    // Update game language when user switches
+    function updateGameLang(lang) {
+        gameState.lang = lang;
+        if (!gameState.decided) {
+            var monitorContent = document.getElementById('monitorContent');
+            if (gameState.testsRun.length === 0) {
+                monitorContent.innerHTML = '<div class="result-line">' + 
+                    (lang === 'sq' ? 'Sistemi gati. Zgjidhni një test...' : 'System ready. Select a test...') + '</div>';
             }
-        }, 1200);
-    }
-
-    function showGameResult() {
-        var content = document.getElementById('gameContent');
-        var milkImg = document.getElementById('gameMilk');
-        var lang = gameData.lang;
-        var passed = gameData.score >= 4;
-
-        // Update step dots
-        var stepsDiv = document.getElementById('gameSteps');
-        var dots = '';
-        for (var i = 0; i < gameData.steps.length; i++) {
-            var cls = 'game-step-dot done';
-            dots += '<div class="' + cls + '"></div>';
         }
-        stepsDiv.innerHTML = dots;
-
-        if (passed) {
-            milkImg.style.filter = 'drop-shadow(0 0 30px rgba(76,175,80,0.6))';
-            content.innerHTML =
-                '<div class="game-result success">' +
-                '<div class="game-result-icon">&#10004;</div>' +
-                '<h3>' + (lang === 'sq' ? 'Testi i Kaluar me Sukses!' : 'Test Passed Successfully!') + '</h3>' +
-                '<p>' + (lang === 'sq'
-                    ? 'Qumështi ka kaluar të gjitha kontrollet e cilësisë! Pa baktere të dëmshme, pa antibiotikë, pa mykje toksike. Ky qumësht është i sigurt dhe gati për t\'u shitur në dyqane. Familjet shqiptare mund ta konsumojnë me besim!'
-                    : 'The milk passed all quality controls! No harmful bacteria, no antibiotics, no toxic molds. This milk is safe and ready for store shelves. Albanian families can consume it with confidence!') + '</p>' +
-                '<button class="game-restart" onclick="restartGame()">' + (lang === 'sq' ? 'Provo Përsëri' : 'Try Again') + '</button>' +
-                '</div>';
-        } else {
-            milkImg.style.filter = 'drop-shadow(0 0 30px rgba(231,76,60,0.6))';
-            content.innerHTML =
-                '<div class="game-result failure">' +
-                '<div class="game-result-icon">&#10008;</div>' +
-                '<h3>' + (lang === 'sq' ? 'Testi Dështoi!' : 'Test Failed!') + '</h3>' +
-                '<p>' + (lang === 'sq'
-                    ? 'Qumështi NUK i kaloi kontrollet e cilësisë! Ka rrezik të përmbajë baktere të dëmshme si Salmonella ose E. coli, mbetje antibiotikësh, ose mykje toksike. Ky qumësht është I PAPËRSHTATSHËM për konsum dhe duhet të asgjësohet. Shëndeti i konsumatorëve është mbi gjithçka!'
-                    : 'The milk did NOT pass quality controls! It risks containing harmful bacteria like Salmonella or E. coli, antibiotic residues, or toxic molds. This milk is UNFIT for consumption and must be destroyed. Consumer health comes first!') + '</p>' +
-                '<button class="game-restart" onclick="restartGame()">' + (lang === 'sq' ? 'Provo Përsëri' : 'Try Again') + '</button>' +
-                '</div>';
+        // Update button texts via data attributes
+        document.querySelectorAll('#gameControls .game-btn').forEach(function(btn) {
+            if (btn.dataset.sq) {
+                btn.textContent = lang === 'sq' ? btn.dataset.sq : (btn.dataset.en || btn.dataset.sq);
+            }
+        });
+        // Update label
+        var label = document.getElementById('gameMilkLabel');
+        if (label && label.dataset.sq) {
+            label.textContent = lang === 'sq' ? label.dataset.sq : (label.dataset.en || label.dataset.sq);
         }
     }
 
-    function restartGame() {
-        gameData.currentStep = 0;
-        gameData.score = 0;
-        var milkImg = document.getElementById('gameMilk');
-        milkImg.style.filter = 'drop-shadow(0 0 20px rgba(255,255,255,0.3))';
-        renderGame();
-    }
-
-    // Init game
-    renderGame();
+    // Init
+    initGame();
 
     function switchLang(lang) {
         document.querySelectorAll('.lang-switcher button').forEach(b => {
