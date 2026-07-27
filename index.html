@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vita — Qumësht i Freskët nga Kosova</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg-primary: #eef4fb;
+            --bg-secondary: #dce8f5;
+            --bg-card: #ffffff;
+            --accent: #5b9bd5;
+            --accent-dark: #3d7ec0;
+            --accent-light: #8ab8e8;
+            --text-primary: #1a2b3c;
+            --text-secondary: #4a5c6c;
+            --text-muted: #6b7d8e;
+            --border: #c8d8ea;
+            --shadow: 0 2px 12px rgba(91, 155, 213, 0.10);
+            --shadow-lg: 0 8px 32px rgba(91, 155, 213, 0.12);
+            --radius: 16px;
+            --radius-sm: 10px;
+        }
+
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 2rem;
+        }
+        .nav-inner {
+            max-width: 1200px; margin: 0 auto;
+            display: flex; align-items: center; justify-content: space-between;
+            height: 64px;
+        }
+        .nav-logo {
+            display: flex; align-items: center; gap: 10px;
+            font-size: 1.6rem; font-weight: 800; color: var(--accent-dark);
+            text-decoration: none;
+        }
+        .nav-logo .logo-icon {
+            width: 40px; height: 40px;
+            border-radius: 10px;
+            object-fit: contain;
+        }
+        .nav-links {
+            display: flex; align-items: center; gap: 2rem; list-style: none;
+        }
+        .nav-links a {
+            text-decoration: none; color: var(--text-secondary);
+            font-weight: 500; font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover { color: var(--accent); }
+        .nav-cta {
+            background: var(--accent); color: white !important;
+            padding: 8px 20px; border-radius: 50px;
+            font-weight: 600 !important;
+            transition: background 0.2s, transform 0.15s;
+        }
+        .nav-cta:hover {
+            background: var(--accent-dark); transform: translateY(-1px);
+        }
+
+        /* HERO */
+        .hero {
+            padding: 140px 2rem 100px;
+            text-align: center;
+            background: linear-gradient(180deg, #ffffff 0%, var(--bg-secondary) 60%, var(--bg-primary) 100%);
+            position: relative; overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute; top: -50%; left: -20%;
+            width: 140%; height: 200%;
+            background: radial-gradient(ellipse at 30% 40%, rgba(91,155,213,0.08) 0%, transparent 60%),
+                        radial-gradient(ellipse at 70% 60%, rgba(91,155,213,0.06) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        .hero-badge {
+            display: inline-block;
+            background: rgba(91,155,213,0.12); color: var(--accent-dark);
+            padding: 6px 18px; border-radius: 50px;
+            font-weight: 600; font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        .hero h1 {
+            font-size: 3.8rem; font-weight: 800; color: var(--text-primary);
+            line-height: 1.15; margin-bottom: 1rem;
+            position: relative;
+        }
+        .hero h1 span { color: var(--accent); }
+        .hero p {
+            font-size: 1.2rem; color: var(--text-secondary);
+            max-width: 600px; margin: 0 auto 2.5rem;
+            position: relative;
+        }
+        .hero-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; position: relative; }
+        .btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 14px 32px; border-radius: 50px;
+            font-weight: 600; font-size: 1rem;
+            text-decoration: none; cursor: pointer; border: none;
+            transition: all 0.2s;
+        }
+        .btn-primary {
+            background: var(--accent); color: white;
+            box-shadow: 0 4px 16px rgba(91,155,213,0.3);
+        }
+        .btn-primary:hover {
+            background: var(--accent-dark); transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(91,155,213,0.4);
+        }
+        .btn-outline {
+            background: white; color: var(--accent);
+            border: 2px solid var(--accent);
+        }
+        .btn-outline:hover { background: var(--bg-secondary); transform: translateY(-2px); }
+
+        /* HERO STATS */
+        .hero-stats {
+            display: flex; justify-content: center; gap: 4rem;
+            margin-top: 4rem; position: relative;
+        }
+        .hero-stat { text-align: center; }
+        .hero-stat .num {
+            font-size: 2.4rem; font-weight: 800; color: var(--accent-dark);
+        }
+        .hero-stat .label {
+            font-size: 0.85rem; color: var(--text-muted); font-weight: 500;
+        }
+
+        /* WAVE DIVIDER */
+        .wave-divider {
+            width: 100%; height: 60px; overflow: hidden; line-height: 0;
+            background: var(--bg-primary);
+        }
+        .wave-divider svg {
+            position: relative; display: block; width: calc(100% + 1.3px);
+            height: 60px;
+        }
+        .wave-divider .wave-path { fill: #ffffff; }
+
+        /* SECTIONS */
+        section { padding: 5rem 2rem; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .section-header { text-align: center; margin-bottom: 3.5rem; }
+        .section-header .tag {
+            display: inline-block;
+            background: rgba(91,155,213,0.12); color: var(--accent-dark);
+            padding: 6px 16px; border-radius: 50px;
+            font-weight: 600; font-size: 0.85rem;
+            margin-bottom: 0.75rem;
+        }
+        .section-header h2 {
+            font-size: 2.5rem; font-weight: 700; color: var(--text-primary);
+        }
+        .section-header p {
+            color: var(--text-secondary); font-size: 1.05rem;
+            max-width: 550px; margin: 0.5rem auto 0;
+        }
+
+        /* ABOUT */
+        #about { background: var(--bg-primary); }
+        .about-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;
+        }
+        .about-text h3 {
+            font-size: 1.8rem; font-weight: 700; margin-bottom: 1rem;
+        }
+        .about-text p {
+            color: var(--text-secondary); margin-bottom: 1rem; font-size: 1.02rem;
+        }
+        .about-features { list-style: none; margin-top: 1.5rem; }
+        .about-features li {
+            display: flex; align-items: center; gap: 10px;
+            padding: 8px 0; color: var(--text-secondary);
+            font-weight: 500;
+        }
+        .about-features li::before {
+            content: '\2713'; color: var(--accent); font-weight: 800;
+            font-size: 1.1rem;
+        }
+        .about-image {
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-card));
+            border-radius: var(--radius);
+            height: 380px;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: var(--shadow-lg);
+            position: relative; overflow: hidden;
+        }
+        .about-img {
+            width: 100%; height: 100%;
+            object-fit: contain;
+            padding: 2rem;
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+
+        /* PRODUCTS */
+        #products { background: var(--bg-card); }
+        .products-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        .product-card {
+            background: var(--bg-primary);
+            border-radius: var(--radius);
+            padding: 2rem 1.5rem;
+            text-align: center;
+            border: 1px solid var(--border);
+            transition: all 0.3s;
+        }
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+        .product-icon {
+            width: 64px; height: 64px;
+            background: linear-gradient(135deg, var(--accent-light), var(--accent));
+            border-radius: 16px;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 1.2rem;
+            overflow: hidden;
+        }
+        .product-img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+        }
+        .product-card h4 {
+            font-size: 1.15rem; font-weight: 700; margin-bottom: 0.5rem;
+        }
+        .product-card p {
+            color: var(--text-secondary); font-size: 0.9rem;
+        }
+        .product-card .fat-badge {
+            display: inline-block; margin-top: 0.75rem;
+            background: rgba(91,155,213,0.1); color: var(--accent-dark);
+            padding: 4px 12px; border-radius: 50px;
+            font-size: 0.8rem; font-weight: 600;
+        }
+
+        /* VALUES */
+        #values { background: var(--bg-secondary); }
+        .values-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        .value-card {
+            background: white; border-radius: var(--radius);
+            padding: 2rem; text-align: center;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+        }
+        .value-card:hover { transform: translateY(-3px); }
+        .value-icon { margin-bottom: 1rem; }
+        .value-icon-circle {
+            width: 56px; height: 56px;
+            background: linear-gradient(135deg, var(--accent-light), var(--accent));
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto;
+            color: white; font-weight: 800; font-size: 1.4rem;
+        }
+        .value-card h4 { font-weight: 700; margin-bottom: 0.5rem; font-size: 1.1rem; }
+        .value-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+        /* CTA BANNER */
+        .cta-banner {
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+            border-radius: var(--radius); padding: 3.5rem 2rem; text-align: center;
+            color: white; margin: 0 auto;
+            box-shadow: 0 8px 40px rgba(91,155,213,0.3);
+        }
+        .cta-banner h3 { font-size: 2rem; font-weight: 700; margin-bottom: 0.75rem; }
+        .cta-banner p { opacity: 0.9; margin-bottom: 1.5rem; font-size: 1.05rem; }
+        .cta-banner .btn { background: white; color: var(--accent-dark); }
+
+        /* FOOTER */
+        footer {
+            background: var(--text-primary); color: rgba(255,255,255,0.7);
+            padding: 3rem 2rem 2rem;
+        }
+        .footer-grid {
+            max-width: 1200px; margin: 0 auto;
+            display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 2rem;
+        }
+        .footer-brand h4 {
+            color: white; font-size: 1.3rem; font-weight: 700; margin-bottom: 0.5rem;
+        }
+        .footer-brand p { font-size: 0.9rem; }
+        .footer-col h5 {
+            color: white; font-weight: 600; margin-bottom: 0.75rem; font-size: 0.95rem;
+        }
+        .footer-col a {
+            display: block; color: rgba(255,255,255,0.6); text-decoration: none;
+            padding: 4px 0; font-size: 0.88rem; transition: color 0.2s;
+        }
+        .footer-col a:hover { color: var(--accent-light); }
+        .footer-bottom {
+            max-width: 1200px; margin: 2.5rem auto 0; padding-top: 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.12);
+            text-align: center; font-size: 0.82rem;
+        }
+
+        /* LANGUAGE SWITCHER */
+        .lang-switcher {
+            display: flex; gap: 8px; margin-left: 1rem;
+        }
+        .lang-switcher button {
+            background: none; border: 1px solid var(--border);
+            border-radius: 6px; padding: 4px 8px;
+            font-size: 0.78rem; font-weight: 600;
+            cursor: pointer; color: var(--text-muted);
+            transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+        .lang-switcher button.active {
+            background: var(--accent); color: white; border-color: var(--accent);
+        }
+        .lang-switcher button:hover:not(.active) {
+            border-color: var(--accent); color: var(--accent);
+        }
+
+
+        /* GAME SECTION */
+        #game {
+            background: #0d1117;
+            color: white;
+            padding: 5rem 2rem;
+        }
+        #game .section-header .tag {
+            background: rgba(255,255,255,0.1);
+            color: #8ab8e8;
+        }
+        #game .section-header h2 { color: white; }
+        #game .section-header p { color: rgba(255,255,255,0.7); }
+
+        .game-wrapper {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.03);
+            border-radius: var(--radius);
+            border: 1px solid rgba(255,255,255,0.08);
+            overflow: hidden;
+        }
+        .game-lab {
+            background: url('lab.jpg') center/cover no-repeat;
+            position: relative;
+            min-height: 420px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            padding: 0;
+        }
+        .game-lab::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(0deg, rgba(13,17,23,0.85) 0%, rgba(13,17,23,0.3) 50%, rgba(13,17,23,0.5) 100%);
+            pointer-events: none;
+        }
+        .game-table-area {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: flex-end;
+            gap: 2rem;
+            padding: 2rem;
+            width: 100%;
+            justify-content: center;
+        }
+        .game-milk-container {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .game-milk-img {
+            width: 140px;
+            height: 140px;
+            object-fit: contain;
+            filter: drop-shadow(0 0 15px rgba(255,255,255,0.2));
+            transition: filter 0.5s;
+        }
+        .game-milk-img.warning {
+            filter: drop-shadow(0 0 20px rgba(255,165,0,0.5));
+        }
+        .game-milk-img.danger {
+            filter: drop-shadow(0 0 25px rgba(255,60,60,0.6));
+        }
+        .game-milk-label {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.5);
+            margin-top: 6px;
+            text-align: center;
+        }
+
+        .game-monitor {
+            position: relative;
+            z-index: 1;
+            width: 320px;
+            min-height: 200px;
+            background: #0a0f14;
+            border: 3px solid #1a2a3a;
+            border-radius: 12px;
+            padding: 1.2rem;
+            font-family: 'Courier New', monospace;
+            box-shadow: 0 0 20px rgba(0,150,255,0.1), inset 0 0 30px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+        }
+        .game-monitor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.6rem;
+            border-bottom: 1px solid rgba(0,150,255,0.3);
+        }
+        .game-monitor-title {
+            font-size: 0.7rem;
+            color: #5b9bd5;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .game-monitor-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #4caf50;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        .game-monitor-content {
+            flex: 1;
+            font-size: 0.8rem;
+            color: #6b9bc0;
+            line-height: 1.6;
+        }
+        .game-monitor-content .result-line {
+            margin-bottom: 4px;
+        }
+        .game-monitor-content .highlight {
+            color: #ff6b6b;
+            font-weight: bold;
+        }
+        .game-monitor-content .ok {
+            color: #4caf50;
+        }
+
+        .game-controls {
+            position: relative;
+            z-index: 1;
+            background: rgba(13,17,23,0.95);
+            padding: 1.5rem 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+        .game-btn {
+            padding: 10px 18px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.06);
+            color: rgba(255,255,255,0.85);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+        .game-btn:hover:not(:disabled) {
+            background: rgba(91,155,213,0.25);
+            border-color: var(--accent);
+            transform: translateY(-1px);
+        }
+        .game-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        .game-btn.decision {
+            padding: 12px 28px;
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+        .game-btn.approve {
+            border-color: #4caf50;
+            color: #4caf50;
+        }
+        .game-btn.approve:hover:not(:disabled) {
+            background: rgba(76,175,80,0.2);
+        }
+        .game-btn.reject {
+            border-color: #e74c3c;
+            color: #e74c3c;
+        }
+        .game-btn.reject:hover:not(:disabled) {
+            background: rgba(231,76,60,0.2);
+        }
+
+        .game-result-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .game-result-card {
+            text-align: center;
+            padding: 2.5rem 2rem;
+            border-radius: var(--radius);
+            max-width: 500px;
+            background: rgba(13,17,23,0.95);
+            border: 2px solid;
+        }
+        .game-result-card.success {
+            border-color: #4caf50;
+            box-shadow: 0 0 40px rgba(76,175,80,0.2);
+        }
+        .game-result-card.failure {
+            border-color: #e74c3c;
+            box-shadow: 0 0 40px rgba(231,76,60,0.2);
+        }
+        .game-result-card h3 {
+            font-size: 1.8rem;
+            margin: 0.75rem 0;
+        }
+        .game-result-card.success h3 { color: #4caf50; }
+        .game-result-card.failure h3 { color: #e74c3c; }
+        .game-result-card p {
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        .game-restart {
+            padding: 10px 26px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+        .game-restart:hover {
+            background: var(--accent-dark);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .game-lab { min-height: 280px; }
+            .game-table-area {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+            .game-milk-img { width: 100px; height: 100px; }
+            .game-monitor { width: 100%; min-height: 150px; }
+            .game-controls { padding: 1rem; }
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hero h1 { font-size: 2.4rem; }
+            .hero p { font-size: 1rem; }
+            .hero-stats { gap: 1.5rem; }
+            .hero-stat .num { font-size: 1.6rem; }
+            .about-grid { grid-template-columns: 1fr; }
+            .about-image { height: 250px; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+            section { padding: 3rem 1.5rem; }
+            .section-header h2 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+    <div class="nav-inner">
+        <a href="#" class="nav-logo">
+            <img src="logo-vita.png" alt="Vita" class="logo-icon">
+            Vita
+        </a>
+        <ul class="nav-links">
+            <li><a href="#about" data-sq="Rreth Nesh" data-en="About">Rreth Nesh</a></li>
+            <li><a href="#products" data-sq="Produktet" data-en="Products">Produktet</a></li>
+            <li><a href="#game" data-sq="Testi i Qumështit" data-en="Milk Test">Testi i Qumështit</a></li>
+            <li><a href="#values" data-sq="Vlerat" data-en="Values">Vlerat</a></li>
+            <li><a href="#contact" class="nav-cta" data-sq="Kontakto" data-en="Contact">Kontakto</a></li>
+        </ul>
+        <div class="lang-switcher">
+            <button class="active" onclick="switchLang('sq')">SQ</button>
+            <button onclick="switchLang('en')">EN</button>
+        </div>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+    <div class="hero-badge" data-sq="Qumështore Kosovare" data-en="Kosovar Dairy">Qumështore Kosovare</div>
+    <h1 data-sq='Shija e Vërtetë e <span>Kosovës</span>' data-en='The True Taste of <span>Kosovo</span>'>
+        Shija e Vërtetë e <span>Kosovës</span>
+    </h1>
+    <p data-sq="Qumësht i freskët nga fermat tona lokale — i pastër, i shëndetshëm dhe plot shije. Vita sjell traditën shqiptare në çdo gotë."
+       data-en="Fresh milk from our local farms — pure, healthy, and full of flavor. Vita brings Albanian tradition to every glass.">
+        Qumësht i freskët nga fermat tona lokale — i pastër, i shëndetshëm dhe plot shije. Vita sjell traditën shqiptare në çdo gotë.
+    </p>
+    <div class="hero-buttons">
+        <a href="#products" class="btn btn-primary" data-sq="Shiko Produktet" data-en="View Products">Shiko Produktet</a>
+        <a href="#about" class="btn btn-outline" data-sq="Mëso Më Shumë" data-en="Learn More">Mëso Më Shumë</a>
+    </div>
+    <div class="hero-stats">
+        <div class="hero-stat">
+            <div class="num">25+</div>
+            <div class="label" data-sq="Vite Traditë" data-en="Years of Tradition">Vite Traditë</div>
+        </div>
+        <div class="hero-stat">
+            <div class="num">200+</div>
+            <div class="label" data-sq="Ferma Bashkëpunuese" data-en="Partner Farms">Ferma Bashkëpunuese</div>
+        </div>
+        <div class="hero-stat">
+            <div class="num">50,000+</div>
+            <div class="label" data-sq="Familje të Kënaqura" data-en="Happy Families">Familje të Kënaqura</div>
+        </div>
+    </div>
+</section>
+
+<!-- WAVE DIVIDER -->
+<div class="wave-divider">
+    <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+        <path class="wave-path" d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"></path>
+    </svg>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+    <div class="container">
+        <div class="section-header">
+            <span class="tag" data-sq="Rreth Nesh" data-en="About Us">Rreth Nesh</span>
+            <h2 data-sq="Historia Jonë" data-en="Our Story">Historia Jonë</h2>
+            <p data-sq="Nga ferma në tryezën tuaj — cilësi që ndihet në çdo pikë."
+               data-en="From farm to your table — quality you can taste in every drop.">
+                Nga ferma në tryezën tuaj — cilësi që ndihet në çdo pikë.
+            </p>
+        </div>
+        <div class="about-grid">
+            <div class="about-text">
+                <h3 data-sq="Një Traditë e Pasur Shqiptare" data-en="A Rich Albanian Tradition">Një Traditë e Pasur Shqiptare</h3>
+                <p data-sq="Vita lindi në zemër të Kosovës, me një mision të thjeshtë: të sjellim qumështin më të freskët dhe më të pastër në tryezat e familjeve shqiptare. Për më shumë se 25 vjet, ne kemi punuar me fermerët lokalë për të siguruar standardet më të larta të cilësisë."
+                   data-en="Vita was born in the heart of Kosovo with a simple mission: to bring the freshest, purest milk to Albanian family tables. For over 25 years, we have worked with local farmers to ensure the highest quality standards.">
+                   Vita lindi në zemër të Kosovës, me një mision të thjeshtë: të sjellim qumështin më të freskët dhe më të pastër në tryezat e familjeve shqiptare. Për më shumë se 25 vjet, ne kemi punuar me fermerët lokalë për të siguruar standardet më të larta të cilësisë.
+                </p>
+                <p data-sq="Çdo gotë qumësht Vita mbart pasionin dhe përkushtimin e komunitetit tonë bujqësor. Ne besojmë se ushqimi i mirë fillon me përbërës të pastër — dhe nuk ka asgjë më të pastër se qumështi i freskët nga livadhet e gjelbra të Kosovës."
+                   data-en="Every glass of Vita milk carries the passion and dedication of our farming community. We believe that good food starts with pure ingredients — and there is nothing purer than fresh milk from Kosovo's green pastures.">
+                   Çdo gotë qumësht Vita mbart pasionin dhe përkushtimin e komunitetit tonë bujqësor. Ne besojmë se ushqimi i mirë fillon me përbërës të pastër — dhe nuk ka asgjë më të pastër se qumështi i freskët nga livadhet e gjelbra të Kosovës.
+                </p>
+                <ul class="about-features">
+                    <li data-sq="Qumësht 100% natyral pa konservues" data-en="100% natural milk, no preservatives">Qumësht 100% natyral pa konservues</li>
+                    <li data-sq="Ferma të certifikuara në Kosovë" data-en="Certified farms across Kosovo">Ferma të certifikuara në Kosovë</li>
+                    <li data-sq="Proces i kontrolluar nga ferma në paketim" data-en="Controlled process from farm to packaging">Proces i kontrolluar nga ferma në paketim</li>
+                    <li data-sq="Përkushtim ndaj komunitetit lokal" data-en="Commitment to the local community">Përkushtim ndaj komunitetit lokal</li>
+                </ul>
+            </div>
+            <div class="about-image">
+                <img src="qumeshti-vita.png" alt="Qumësht Vita" class="about-img">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- PRODUCTS -->
+<section id="products">
+    <div class="container">
+        <div class="section-header">
+            <span class="tag" data-sq="Produktet" data-en="Products">Produktet</span>
+            <h2 data-sq="Produktet Tona" data-en="Our Products">Produktet Tona</h2>
+            <p data-sq="Gama e plotë e produkteve të qumështit për çdo nevojë."
+               data-en="Full range of dairy products for every need.">
+                Gama e plotë e produkteve të qumështit për çdo nevojë.
+            </p>
+        </div>
+        <div class="products-grid">
+            <div class="product-card">
+                <div class="product-icon">
+                    <img src="qumeshti-vita.png" alt="Qumësht Vita" class="product-img">
+                </div>
+                <h4 data-sq="Qumësht i Freskët" data-en="Fresh Milk">Qumësht i Freskët</h4>
+                <p data-sq="I pasterizuar, i pasur me kalcium dhe vitamina esenciale."
+                   data-en="Pasteurized, rich in calcium and essential vitamins.">
+                    I pasterizuar, i pasur me kalcium dhe vitamina esenciale.
+                </p>
+                <span class="fat-badge">3.2% Yndyrë</span>
+            </div>
+            <div class="product-card">
+                <div class="product-icon">
+                    <img src="jogurt-vita.png" alt="Jogurt Vita" class="product-img">
+                </div>
+                <h4 data-sq="Kos / Jogurt" data-en="Yogurt">Kos / Jogurt</h4>
+                <p data-sq="Kos natyral me kultura të gjalla, i trashë dhe kremoz."
+                   data-en="Natural yogurt with live cultures, thick and creamy.">
+                    Kos natyral me kultura të gjalla, i trashë dhe kremoz.
+                </p>
+                <span class="fat-badge">2.8% Yndyrë</span>
+            </div>
+            <div class="product-card">
+                <div class="product-icon">
+                    <img src="djath-vita.png" alt="Djathë Vita" class="product-img">
+                </div>
+                <h4 data-sq="Djathë i Bardhë" data-en="White Cheese">Djathë i Bardhë</h4>
+                <p data-sq="Djathë tradicional shqiptar, i kripur dhe i shijshëm."
+                   data-en="Traditional Albanian white cheese, salty and flavorful.">
+                    Djathë tradicional shqiptar, i kripur dhe i shijshëm.
+                </p>
+                <span class="fat-badge">18% Yndyrë</span>
+            </div>
+            <div class="product-card">
+                <div class="product-icon">
+                    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8">
+                        <rect x="3" y="4" width="18" height="16" rx="5"/>
+                        <rect x="7" y="7" width="10" height="10" rx="3" fill="rgba(61,126,192,0.5)"/>
+                    </svg>
+                </div>
+                <h4 data-sq="Gjalpë Natyrale" data-en="Natural Butter">Gjalpë Natyrale</h4>
+                <p data-sq="Gjalpë e freskët nga kremi i qumështit të lopës."
+                   data-en="Fresh butter from cow's milk cream.">
+                    Gjalpë e freskët nga kremi i qumështit të lopës.
+                </p>
+                <span class="fat-badge">82% Yndyrë</span>
+            </div>
+        </div>
+    </div>
+
+<!-- GAME -->
+<section id="game">
+    <div class="container">
+        <div class="section-header">
+            <span class="tag" data-sq="Laboratori" data-en="Laboratory">Laboratori</span>
+            <h2 data-sq="Testi i Qumështit" data-en="Milk Testing Lab">Testi i Qumështit</h2>
+            <p data-sq="A mund ta kalosh testin e cilësisë si teknik i Vita-s? Ndihmo të sigurosh që qumështi është i pastër dhe i sigurt për konsum!"
+               data-en="Can you pass the quality test as a Vita technician? Help ensure the milk is pure and safe for consumption!">
+                A mund ta kalosh testin e cilësisë si teknik i Vita-s? Ndihmo të sigurosh që qumështi është i pastër dhe i sigurt për konsum!
+            </p>
+        </div>
+        <div class="game-wrapper">
+            <div class="game-lab-bg">
+                <img src="tamel-vita.png" alt="Qumësht Vita" class="game-milk-img" id="gameMilk">
+            </div>
+            <div class="game-content" id="gameContent">
+                <div class="game-step-indicator" id="gameSteps"></div>
+                <div class="game-question" id="gameQuestion"></div>
+                <div class="game-options" id="gameOptions"></div>
+                <div class="game-score" id="gameScore"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- VALUES -->
+<section id="values">
+    <div class="container">
+        <div class="section-header">
+            <span class="tag" data-sq="Vlerat" data-en="Values">Vlerat</span>
+            <h2 data-sq="Çfarë Na Bën të Veçantë" data-en="What Makes Us Special">Çfarë Na Bën të Veçantë</h2>
+        </div>
+        <div class="values-grid">
+            <div class="value-card">
+                <div class="value-icon"><div class="value-icon-circle">N</div></div>
+                <h4 data-sq="Natyral dhe i Pastër" data-en="Natural & Pure">Natyral dhe i Pastër</h4>
+                <p data-sq="Pa aditivë, pa konservues — ashtu siç e do natyra."
+                   data-en="No additives, no preservatives — just as nature intended.">
+                    Pa aditivë, pa konservues — ashtu siç e do natyra.
+                </p>
+            </div>
+            <div class="value-card">
+                <div class="value-icon"><div class="value-icon-circle">L</div></div>
+                <h4 data-sq="Lokal dhe Komunitar" data-en="Local & Community">Lokal dhe Komunitar</h4>
+                <p data-sq="Mbështesim fermerët vendorë dhe ekonominë e Kosovës."
+                   data-en="We support local farmers and Kosovo's economy.">
+                    Mbështesim fermerët vendorë dhe ekonominë e Kosovës.
+                </p>
+            </div>
+            <div class="value-card">
+                <div class="value-icon"><div class="value-icon-circle">C</div></div>
+                <h4 data-sq="Cilësi Premium" data-en="Premium Quality">Cilësi Premium</h4>
+                <p data-sq="Kontrolle rigoroze nga ferma deri te paketimi final."
+                   data-en="Rigorous controls from farm to final packaging.">
+                    Kontrolle rigoroze nga ferma deri te paketimi final.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section id="contact">
+    <div class="container">
+        <div class="cta-banner">
+            <h3 data-sq="Gati të Shijoni Vita-n?" data-en="Ready to Taste Vita?">Gati të Shijoni Vita-n?</h3>
+            <p data-sq="Na kontaktoni për porosi, partneritete ose pyetje rreth produkteve tona."
+               data-en="Contact us for orders, partnerships, or questions about our products.">
+                Na kontaktoni për porosi, partneritete ose pyetje rreth produkteve tona.
+            </p>
+            <a href="mailto:info@vita-ks.com" class="btn" data-sq="Na Shkruani" data-en="Email Us">Na Shkruani</a>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <div class="footer-grid">
+        <div class="footer-brand">
+            <h4>Vita</h4>
+            <p data-sq="Qumështore kosovare me traditë mbi 25 vjeçare. Cilësi dhe shije që bashkon familjet shqiptare."
+               data-en="Kosovar dairy with over 25 years of tradition. Quality and taste that brings Albanian families together.">
+                Qumështore kosovare me traditë mbi 25 vjeçare. Cilësi dhe shije që bashkon familjet shqiptare.
+            </p>
+        </div>
+        <div class="footer-col">
+            <h5 data-sq="Produkte" data-en="Products">Produkte</h5>
+            <a href="#products" data-sq="Qumësht" data-en="Milk">Qumësht</a>
+            <a href="#products" data-sq="Kos" data-en="Yogurt">Kos</a>
+            <a href="#products" data-sq="Djathë" data-en="Cheese">Djathë</a>
+            <a href="#products" data-sq="Gjalpë" data-en="Butter">Gjalpë</a>
+        </div>
+        <div class="footer-col">
+            <h5 data-sq="Kompania" data-en="Company">Kompania</h5>
+            <a href="#about" data-sq="Rreth Nesh" data-en="About">Rreth Nesh</a>
+            <a href="#values" data-sq="Vlerat" data-en="Values">Vlerat</a>
+            <a href="#" data-sq="Karriera" data-en="Careers">Karriera</a>
+        </div>
+        <div class="footer-col">
+            <h5 data-sq="Kontakti" data-en="Contact">Kontakti</h5>
+            <a href="mailto:info@vita-ks.com">info@vita-ks.com</a>
+            <a href="tel:+383****3456">+383 44 123 456</a>
+            <a href="#" data-sq="Prishtinë, Kosovë" data-en="Prishtina, Kosovo">Prishtinë, Kosovë</a>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2026 Vita. Të gjitha të drejtat e rezervuara.</p>
+    </div>
+</footer>
+
+<script>
+
+    // ===== MILK TESTING GAME =====
+    var gameData = {
+        steps: [
+            {
+                questionSq: 'Faza 1: Kontrolli i Temperaturës — Qumështi sapo ka ardhur nga ferma. Sa duhet të jetë temperatura maksimale për t\'u pranuar?',
+                questionEn: 'Stage 1: Temperature Check — The milk just arrived from the farm. What is the maximum acceptable temperature?',
+                optionsSq: ['Nën 4°C — i ftohtë dhe i sigurt', 'Rreth 10°C — i vakët por në rregull', '15-20°C — temperaturë ambienti normale', 'Nuk ka rëndësi temperatura'],
+                optionsEn: ['Under 4°C — cold and safe', 'About 10°C — lukewarm but fine', '15-20°C — normal room temperature', 'Temperature does not matter'],
+                correct: 0
+            },
+            {
+                questionSq: 'Faza 2: Testi i Alkoolit — Pse teknici përzien qumështin me etanol?',
+                questionEn: 'Stage 2: Alcohol Test — Why does the technician mix milk with ethanol?',
+                optionsSq: ['Për të kontrolluar aciditetin — nëse mpikset, është shumë acid', 'Për ta aromatizuar më mirë', 'Për të matur yndyrën', 'Për të sterilizuar qumështin'],
+                optionsEn: ['To check acidity — if it curdles, the milk is too acidic', 'To add better flavor', 'To measure fat content', 'To sterilize the milk'],
+                correct: 0
+            },
+            {
+                questionSq: 'Faza 3: Testi i Antibiotikëve — Një lopë është trajtuar me ilaçe. Çfarë duhet të bësh?',
+                questionEn: 'Stage 3: Antibiotic Test — A cow was treated with medicine. What should you do?',
+                optionsSq: ['Përdor shiritin e shpejtë të testit dhe refuzo nëse del pozitiv', 'Holloje qumështin me ujë që të kalojë', 'Injoroje — sasia është e vogël', 'Pasterizoje në temperaturë më të lartë'],
+                optionsEn: ['Use the rapid strip test and reject if positive', 'Dilute the milk with water to pass', 'Ignore it — the amount is small', 'Pasteurize at a higher temperature'],
+                correct: 0
+            },
+            {
+                questionSq: 'Faza 4: Analiza Mikrobiologjike — Pas pasterizimit, çfarë kërkon në mostër?',
+                questionEn: 'Stage 4: Microbiological Analysis — After pasteurization, what do you look for in the sample?',
+                optionsSq: ['Zero baktere të dëmshme — Salmonella, Listeria, E. coli duhet të mungojnë plotësisht', 'Disa baktere janë normale dhe të pranueshme', 'Vetëm shija ka rëndësi', 'Mjafton që ngjyra të jetë e bardhë'],
+                optionsEn: ['Zero harmful bacteria — Salmonella, Listeria, E. coli must be completely absent', 'Some bacteria are normal and acceptable', 'Only taste matters', 'As long as the color is white it is fine'],
+                correct: 0
+            },
+            {
+                questionSq: 'Faza 5: Testi i Aflatoksinës — Pse është i rëndësishëm ky test?',
+                questionEn: 'Stage 5: Aflatoxin Test — Why is this test important?',
+                optionsSq: ['Zbulon mykje toksike nga ushqimi i lopës që mund të shkaktojnë kancer', 'Mat sasinë e vitaminave në qumësht', 'Kontrollon nëse qumështi është i ëmbël', 'Përcakton ngjyrën e paketimit'],
+                optionsEn: ['Detects toxic molds from cow feed that can cause cancer', 'Measures vitamin levels in milk', 'Checks if the milk is sweet', 'Determines packaging color'],
+                correct: 0
+            }
+        ],
+        currentStep: 0,
+        score: 0,
+        lang: 'sq'
+    };
+
+    function renderGame() {
+        var content = document.getElementById('gameContent');
+        var stepsDiv = document.getElementById('gameSteps');
+        var questionDiv = document.getElementById('gameQuestion');
+        var optionsDiv = document.getElementById('gameOptions');
+        var scoreDiv = document.getElementById('gameScore');
+        var lang = gameData.lang;
+
+        // Render step dots
+        var dots = '';
+        for (var i = 0; i < gameData.steps.length; i++) {
+            var cls = 'game-step-dot';
+            if (i < gameData.currentStep) {
+                cls += ' done';
+            } else if (i === gameData.currentStep) {
+                cls += ' active';
+            }
+            dots += '<div class="' + cls + '"></div>';
+        }
+        stepsDiv.innerHTML = dots;
+
+        var step = gameData.steps[gameData.currentStep];
+        questionDiv.textContent = lang === 'sq' ? step.questionSq : step.questionEn;
+
+        var optionsHtml = '';
+        var optTexts = lang === 'sq' ? step.optionsSq : step.optionsEn;
+        for (var j = 0; j < optTexts.length; j++) {
+            optionsHtml += '<button class="game-option" onclick="answerGame(' + j + ', this)">' + optTexts[j] + '</button>';
+        }
+        optionsDiv.innerHTML = optionsHtml;
+
+        scoreDiv.innerHTML = lang === 'sq'
+            ? 'Pikët: <span>' + gameData.score + '</span> / ' + gameData.steps.length
+            : 'Score: <span>' + gameData.score + '</span> / ' + gameData.steps.length;
+    }
+
+    function answerGame(choice, btn) {
+        var step = gameData.steps[gameData.currentStep];
+        var isCorrect = (choice === step.correct);
+
+        // Disable all buttons
+        var buttons = document.querySelectorAll('.game-option');
+        for (var i = 0; i < buttons.length; i++) {
+            buttons[i].disabled = true;
+            buttons[i].style.pointerEvents = 'none';
+        }
+
+        // Highlight correct/wrong
+        if (isCorrect) {
+            btn.classList.add('correct');
+            gameData.score++;
+        } else {
+            btn.classList.add('wrong');
+            // Highlight the correct one too
+            buttons[step.correct].classList.add('correct');
+        }
+
+        // Update score display
+        var scoreDiv = document.getElementById('gameScore');
+        scoreDiv.innerHTML = gameData.lang === 'sq'
+            ? 'Pikët: <span>' + gameData.score + '</span> / ' + gameData.steps.length
+            : 'Score: <span>' + gameData.score + '</span> / ' + gameData.steps.length;
+
+        // Next step after delay
+        gameData.currentStep++;
+        setTimeout(function() {
+            if (gameData.currentStep >= gameData.steps.length) {
+                showGameResult();
+            } else {
+                renderGame();
+            }
+        }, 1200);
+    }
+
+    function showGameResult() {
+        var content = document.getElementById('gameContent');
+        var milkImg = document.getElementById('gameMilk');
+        var lang = gameData.lang;
+        var passed = gameData.score >= 4;
+
+        // Update step dots
+        var stepsDiv = document.getElementById('gameSteps');
+        var dots = '';
+        for (var i = 0; i < gameData.steps.length; i++) {
+            var cls = 'game-step-dot done';
+            dots += '<div class="' + cls + '"></div>';
+        }
+        stepsDiv.innerHTML = dots;
+
+        if (passed) {
+            milkImg.style.filter = 'drop-shadow(0 0 30px rgba(76,175,80,0.6))';
+            content.innerHTML =
+                '<div class="game-result success">' +
+                '<div class="game-result-icon">&#10004;</div>' +
+                '<h3>' + (lang === 'sq' ? 'Testi i Kaluar me Sukses!' : 'Test Passed Successfully!') + '</h3>' +
+                '<p>' + (lang === 'sq'
+                    ? 'Qumështi ka kaluar të gjitha kontrollet e cilësisë! Pa baktere të dëmshme, pa antibiotikë, pa mykje toksike. Ky qumësht është i sigurt dhe gati për t\'u shitur në dyqane. Familjet shqiptare mund ta konsumojnë me besim!'
+                    : 'The milk passed all quality controls! No harmful bacteria, no antibiotics, no toxic molds. This milk is safe and ready for store shelves. Albanian families can consume it with confidence!') + '</p>' +
+                '<button class="game-restart" onclick="restartGame()">' + (lang === 'sq' ? 'Provo Përsëri' : 'Try Again') + '</button>' +
+                '</div>';
+        } else {
+            milkImg.style.filter = 'drop-shadow(0 0 30px rgba(231,76,60,0.6))';
+            content.innerHTML =
+                '<div class="game-result failure">' +
+                '<div class="game-result-icon">&#10008;</div>' +
+                '<h3>' + (lang === 'sq' ? 'Testi Dështoi!' : 'Test Failed!') + '</h3>' +
+                '<p>' + (lang === 'sq'
+                    ? 'Qumështi NUK i kaloi kontrollet e cilësisë! Ka rrezik të përmbajë baktere të dëmshme si Salmonella ose E. coli, mbetje antibiotikësh, ose mykje toksike. Ky qumësht është I PAPËRSHTATSHËM për konsum dhe duhet të asgjësohet. Shëndeti i konsumatorëve është mbi gjithçka!'
+                    : 'The milk did NOT pass quality controls! It risks containing harmful bacteria like Salmonella or E. coli, antibiotic residues, or toxic molds. This milk is UNFIT for consumption and must be destroyed. Consumer health comes first!') + '</p>' +
+                '<button class="game-restart" onclick="restartGame()">' + (lang === 'sq' ? 'Provo Përsëri' : 'Try Again') + '</button>' +
+                '</div>';
+        }
+    }
+
+    function restartGame() {
+        gameData.currentStep = 0;
+        gameData.score = 0;
+        var milkImg = document.getElementById('gameMilk');
+        milkImg.style.filter = 'drop-shadow(0 0 20px rgba(255,255,255,0.3))';
+        renderGame();
+    }
+
+    // Init game
+    renderGame();
+
+    function switchLang(lang) {
+        document.querySelectorAll('.lang-switcher button').forEach(b => {
+            b.classList.toggle('active', b.textContent.trim() === lang.toUpperCase());
+        });
+
+        document.querySelectorAll('[data-sq]').forEach(el => {
+            if (lang === 'sq') {
+                if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                    el.placeholder = el.dataset.sq;
+                } else {
+                    el.innerHTML = el.dataset.sq;
+                }
+            } else {
+                if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                    el.placeholder = el.dataset.en || el.dataset.sq;
+                } else {
+                    el.innerHTML = el.dataset.en || el.dataset.sq;
+                }
+            }
+        });
+
+        var heroH1 = document.querySelector('.hero h1');
+        if (heroH1) {
+            heroH1.innerHTML = lang === 'sq'
+                ? 'Shija e Vërtetë e <span>Kosovës</span>'
+                : 'The True Taste of <span>Kosovo</span>';
+        }
+    }
+</script>
+
+</body>
+</html>
