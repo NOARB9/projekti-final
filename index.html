@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vita — Qumësht i Freskët nga Kosova</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -194,8 +195,50 @@
             font-weight: 500;
         }
         .about-features li::before {
-            content: '\2713'; color: var(--accent); font-weight: 800;
+            content: '\\2713'; color: var(--accent); font-weight: 800;
             font-size: 1.1rem;
+        }
+        .about-socials {
+            display: flex;
+            gap: 12px;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        .about-social-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            border: 2px solid var(--border);
+            color: var(--text-secondary);
+            background: white;
+        }
+        .about-social-btn:hover {
+            transform: translateY(-2px);
+        }
+        .about-social-btn.fb:hover {
+            border-color: #1877f2;
+            color: #1877f2;
+            background: rgba(24,119,242,0.06);
+        }
+        .about-social-btn.ig:hover {
+            border-color: #e4405f;
+            color: #e4405f;
+            background: rgba(228,64,95,0.06);
+        }
+        .about-social-btn.wp:hover {
+            border-color: #333;
+            color: #333;
+            background: rgba(51,51,51,0.06);
+        }
+        .about-social-btn .social-icon {
+            width: 20px;
+            height: 20px;
         }
         .about-image {
             background: linear-gradient(135deg, var(--bg-secondary), var(--bg-card));
@@ -257,6 +300,63 @@
             background: rgba(91,155,213,0.1); color: var(--accent-dark);
             padding: 4px 12px; border-radius: 50px;
             font-size: 0.8rem; font-weight: 600;
+        }
+        .product-card.clickable {
+            cursor: pointer;
+        }
+        .product-card.clickable:hover {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(91,155,213,0.15);
+        }
+        .product-card.featured {
+            border: 2px solid var(--accent);
+            background: linear-gradient(135deg, rgba(91,155,213,0.08), var(--bg-primary));
+            position: relative;
+        }
+        .product-card .featured-badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent);
+            color: white;
+            padding: 4px 16px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+        .sub-products-row {
+            display: none;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            padding: 1rem 0;
+            animation: fadeSlideIn 0.3s ease;
+        }
+        .sub-products-row.open {
+            display: grid;
+        }
+        @keyframes fadeSlideIn {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .sub-product-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 1.2rem;
+            text-align: center;
+            transition: all 0.2s;
+        }
+        .sub-product-card:hover {
+            box-shadow: var(--shadow);
+            border-color: var(--accent-light);
+        }
+        .sub-product-card h5 {
+            font-size: 0.95rem; font-weight: 700; margin-bottom: 4px;
+        }
+        .sub-product-card p {
+            font-size: 0.8rem; color: var(--text-secondary);
         }
 
         /* VALUES */
@@ -358,7 +458,7 @@
         #game .section-header p { color: rgba(255,255,255,0.7); }
 
         .game-wrapper {
-            max-width: 900px;
+            width: 100%;
             margin: 0 auto;
             background: rgba(255,255,255,0.03);
             border-radius: var(--radius);
@@ -368,7 +468,7 @@
         .game-lab {
             background: url('lab.jpg') center/cover no-repeat;
             position: relative;
-            min-height: 420px;
+            min-height: 550px;
             display: flex;
             align-items: flex-end;
             justify-content: space-between;
@@ -398,8 +498,8 @@
             align-items: center;
         }
         .game-milk-img {
-            width: 140px;
-            height: 140px;
+            width: 260px;
+            height: 260px;
             object-fit: contain;
             filter: drop-shadow(0 0 15px rgba(255,255,255,0.2));
             transition: filter 0.5s;
@@ -452,6 +552,58 @@
             background: #4caf50;
             animation: pulse 1.5s infinite;
         }
+        .game-api-toggle {
+            background: none;
+            border: 1px solid rgba(255,255,255,0.15);
+            color: rgba(255,255,255,0.5);
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.65rem;
+            font-family: 'Inter', sans-serif;
+            margin-left: 8px;
+            transition: all 0.2s;
+        }
+        .game-api-toggle:hover { border-color: var(--accent); color: var(--accent); }
+        .game-api-toggle.active { border-color: var(--accent); color: #4caf50; }
+        .game-api-panel {
+            display: none;
+            padding: 10px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 6px;
+            margin-top: 8px;
+        }
+        .game-api-panel input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 4px;
+            background: rgba(0,0,0,0.4);
+            color: white;
+            font-size: 0.75rem;
+            font-family: monospace;
+        }
+        .game-api-panel input:focus { outline: none; border-color: var(--accent); }
+        .game-api-panel .api-btns {
+            display: flex;
+            gap: 6px;
+            margin-top: 6px;
+        }
+        .game-api-panel .api-btn {
+            padding: 5px 12px;
+            border-radius: 4px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: var(--accent);
+            color: white;
+            cursor: pointer;
+            font-size: 0.7rem;
+            font-family: 'Inter', sans-serif;
+        }
+        .game-api-panel .api-btn.remove {
+            background: transparent;
+            border-color: rgba(231,76,60,0.4);
+            color: #e74c3c;
+        }
         @keyframes pulse {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.3; }
@@ -466,11 +618,34 @@
             margin-bottom: 4px;
         }
         .game-monitor-content .highlight {
-            color: #ff6b6b;
+            color: #6b9bc0;
             font-weight: bold;
         }
         .game-monitor-content .ok {
-            color: #4caf50;
+            color: #6b9bc0;
+            font-weight: bold;
+        }
+        .game-history-dots {
+            display: flex;
+            gap: 6px;
+            margin-top: 10px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(0,150,255,0.15);
+            flex-wrap: wrap;
+        }
+        .game-history-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .game-history-dot:hover {
+            background: rgba(91,155,213,0.6);
+        }
+        .game-history-dot.active {
+            background: #5b9bd5;
         }
 
         .game-controls {
@@ -577,6 +752,50 @@
             transform: translateY(-2px);
         }
 
+        /* HEAT MAP — LEAFLET */
+        #heatmap {
+            background: linear-gradient(180deg, #0d1117 0%, #111922 100%);
+            color: white;
+            padding: 5rem 2rem;
+        }
+        #heatmap .section-header .tag {
+            background: rgba(255,255,255,0.1);
+            color: #8ab8e8;
+        }
+        #heatmap .section-header h2 { color: white; }
+        #heatmap .section-header p { color: rgba(255,255,255,0.6); }
+        #heatmapMap {
+            width: 100%;
+            height: 520px;
+            border-radius: 16px;
+            border: 2px solid rgba(91,155,213,0.2);
+            background: #0d1117;
+        }
+        .leaflet-container {
+            background: #0d1117 !important;
+        }
+        .leaflet-tile-pane {
+            filter: grayscale(40%) brightness(0.5) contrast(1.3);
+        }
+        .heatmap-legend {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .heatmap-legend span {
+            font-size: 0.78rem;
+            color: rgba(255,255,255,0.6);
+        }
+        .heatmap-legend .gradient-bar {
+            width: 180px;
+            height: 12px;
+            border-radius: 6px;
+            background: linear-gradient(90deg, #1a3a5c, #2d6aa0, #5b9bd5, #e8a838, #e8742a);
+        }
+
         @media (max-width: 768px) {
             .game-lab { min-height: 280px; }
             .game-table-area {
@@ -584,7 +803,7 @@
                 align-items: center;
                 gap: 1rem;
             }
-            .game-milk-img { width: 100px; height: 100px; }
+            .game-milk-img { width: 140px; height: 140px; }
             .game-monitor { width: 100%; min-height: 150px; }
             .game-controls { padding: 1rem; }
         }
@@ -692,6 +911,20 @@
                     <li data-sq="Proces i kontrolluar nga ferma në paketim" data-en="Controlled process from farm to packaging">Proces i kontrolluar nga ferma në paketim</li>
                     <li data-sq="Përkushtim ndaj komunitetit lokal" data-en="Commitment to the local community">Përkushtim ndaj komunitetit lokal</li>
                 </ul>
+                <div class="about-socials">
+                    <a href="https://facebook.com/VitaKosova" target="_blank" class="about-social-btn fb">
+                        <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                        Facebook
+                    </a>
+                    <a href="https://instagram.com/vita_kosova" target="_blank" class="about-social-btn ig">
+                        <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                        Instagram
+                    </a>
+                    <a href="https://en.wikipedia.org/wiki/Vita_(dairy)" target="_blank" class="about-social-btn wp">
+                        <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm1.16 4.5h-1.72v1.09h1.72V4.5zm-1.72 2.18h1.72v8.82h-1.72V6.68z"/><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><text x="8" y="17" font-size="10" font-weight="700" fill="currentColor">W</text></svg>
+                        Wikipedia
+                    </a>
+                </div>
             </div>
             <div class="about-image">
                 <img src="qumeshti-vita.png" alt="Qumësht Vita" class="about-img">
@@ -723,16 +956,28 @@
                 </p>
                 <span class="fat-badge">3.2% Yndyrë</span>
             </div>
+            <div class="product-card featured">
+                <span class="featured-badge" data-sq="⭐ Më e Shitura" data-en="⭐ Best Seller">⭐ Më e Shitura</span>
+                <div class="product-icon">
+                    <img src="jogurt-vita.png" alt="Kos Vita" class="product-img">
+                </div>
+                <h4 data-sq="Kos" data-en="Kos (Yogurt)">Kos</h4>
+                <p data-sq="Kos tradicional shqiptar, i trashë dhe kremoz me kultura të gjalla."
+                   data-en="Traditional Albanian kos, thick and creamy with live cultures.">
+                    Kos tradicional shqiptar, i trashë dhe kremoz me kultura të gjalla.
+                </p>
+                <span class="fat-badge">3.5% Yndyrë</span>
+            </div>
             <div class="product-card">
                 <div class="product-icon">
                     <img src="jogurt-vita.png" alt="Jogurt Vita" class="product-img">
                 </div>
-                <h4 data-sq="Kos / Jogurt" data-en="Yogurt">Kos / Jogurt</h4>
-                <p data-sq="Kos natyral me kultura të gjalla, i trashë dhe kremoz."
-                   data-en="Natural yogurt with live cultures, thick and creamy.">
-                    Kos natyral me kultura të gjalla, i trashë dhe kremoz.
+                <h4 data-sq="Jogurt" data-en="Yogurt">Jogurt</h4>
+                <p data-sq="Jogurt i lehtë dhe freskues, për çdo ditë."
+                   data-en="Light and refreshing yogurt, perfect for everyday.">
+                    Jogurt i lehtë dhe freskues, për çdo ditë.
                 </p>
-                <span class="fat-badge">2.8% Yndyrë</span>
+                <span class="fat-badge">2.0% Yndyrë</span>
             </div>
             <div class="product-card">
                 <div class="product-icon">
@@ -759,6 +1004,76 @@
                 </p>
                 <span class="fat-badge">82% Yndyrë</span>
             </div>
+            <div class="product-card clickable" onclick="toggleSubProducts('creams')">
+                <div class="product-icon">
+                    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8">
+                        <circle cx="12" cy="11" r="6" fill="rgba(91,155,213,0.3)"/>
+                        <path d="M12 5v2M12 15v2M7 11h2M15 11h2"/>
+                    </svg>
+                </div>
+                <h4 data-sq="Krem Gatimi" data-en="Cooking Cream">Krem Gatimi</h4>
+                <p data-sq="Krem i lëngshëm për gatim, nuk ndahet në temperatura të larta."
+                   data-en="Liquid cream for cooking, won't separate at high temperatures.">
+                    Krem i lëngshëm për gatim, nuk ndahet në temperatura të larta.
+                </p>
+                <span class="fat-badge">15% Yndyrë</span>
+            </div>
+            <div class="product-card clickable" onclick="toggleSubProducts('whipping')">
+                <div class="product-icon">
+                    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8">
+                        <circle cx="12" cy="12" r="8"/>
+                        <circle cx="12" cy="9" r="3" fill="rgba(91,155,213,0.4)"/>
+                        <path d="M12 4v2M12 18v2M4 12h2M18 12h2"/>
+                    </svg>
+                </div>
+                <h4 data-sq="Krem Pana" data-en="Whipping Cream">Krem Pana</h4>
+                <p data-sq="Krem i trashë për ëmbëlsira, rrihet lehtë dhe mban formën."
+                   data-en="Thick cream for desserts, whips easily and holds shape.">
+                    Krem i trashë për ëmbëlsira, rrihet lehtë dhe mban formën.
+                </p>
+                <span class="fat-badge">35% Yndyrë</span>
+            </div>
+        </div>
+        <!-- Sub-products: Creams -->
+        <div class="sub-products-row" id="subCreams">
+            <div class="sub-product-card">
+                <h5 data-sq="Krem Kosi" data-en="Sour Cream">Krem Kosi</h5>
+                <p data-sq="I pasur dhe freskues, për sallata dhe gatime tradicionale."
+                   data-en="Rich and tangy, perfect for salads and traditional dishes.">I pasur dhe freskues, për sallata dhe gatime tradicionale.</p>
+                <span class="fat-badge">20% Yndyrë</span>
+            </div>
+            <div class="sub-product-card">
+                <h5 data-sq="Krem Karameli" data-en="Caramel Cream">Krem Karameli</h5>
+                <p data-sq="Krem i ëmbël me karamel, për ëmbëlsira dhe kafe."
+                   data-en="Sweet caramel cream, for desserts and coffee.">Krem i ëmbël me karamel, për ëmbëlsira dhe kafe.</p>
+                <span class="fat-badge">10% Yndyrë</span>
+            </div>
+            <div class="sub-product-card">
+                <h5 data-sq="Krem Vanilje" data-en="Vanilla Cream">Krem Vanilje</h5>
+                <p data-sq="Krem aromatik me vanilje natyrale, ideal për torta."
+                   data-en="Aromatic cream with natural vanilla, ideal for cakes.">Krem aromatik me vanilje natyrale, ideal për torta.</p>
+                <span class="fat-badge">12% Yndyrë</span>
+            </div>
+        </div>
+        <div class="sub-products-row" id="subWhipping">
+            <div class="sub-product-card">
+                <h5 data-sq="Pana e Ëmbël" data-en="Sweet Whipped Cream">Pana e Ëmbël</h5>
+                <p data-sq="Pana e gatshme me sheqer, direkt për ëmbëlsira."
+                   data-en="Ready-made sweet whipped cream, straight to desserts.">Pana e gatshme me sheqer, direkt për ëmbëlsira.</p>
+                <span class="fat-badge">30% Yndyrë</span>
+            </div>
+            <div class="sub-product-card">
+                <h5 data-sq="Pana Natyrale" data-en="Natural Whipped Cream">Pana Natyrale</h5>
+                <p data-sq="Pana pa sheqer, për kuzhinën tuaj kreative."
+                   data-en="Unsweetened whipped cream for your creative kitchen.">Pana pa sheqer, për kuzhinën tuaj kreative.</p>
+                <span class="fat-badge">35% Yndyrë</span>
+            </div>
+            <div class="sub-product-card">
+                <h5 data-sq="Krem Mascarpone" data-en="Mascarpone Cream">Krem Mascarpone</h5>
+                <p data-sq="Krem i butë italian, për tiramisu dhe ëmbëlsira premium."
+                   data-en="Soft Italian cream, for tiramisu and premium desserts.">Krem i butë italian, për tiramisu dhe ëmbëlsira premium.</p>
+                <span class="fat-badge">40% Yndyrë</span>
+            </div>
         </div>
     </div>
 
@@ -783,7 +1098,17 @@
                     <div class="game-monitor" id="gameMonitor">
                         <div class="game-monitor-header">
                             <span class="game-monitor-title">VitaScan Pro</span>
-                            <span class="game-monitor-dot" id="monitorDot"></span>
+                            <div style="display:flex;align-items:center;gap:8px;">
+                                <button class="game-api-toggle" id="apiToggle" onclick="toggleApiPanel()" data-sq="AI" data-en="AI">AI</button>
+                                <span class="game-monitor-dot" id="monitorDot"></span>
+                            </div>
+                        </div>
+                        <div class="game-api-panel" id="apiPanel">
+                            <input type="password" id="apiKeyInput" placeholder="DeepSeek API Key (sk-" onkeyup="if(event.key==='Enter')saveApiKey()">
+                            <div class="api-btns">
+                                <button class="api-btn" onclick="saveApiKey()" data-sq="Ruaj" data-en="Save">Ruaj</button>
+                                <button class="api-btn remove" onclick="removeApiKey()" data-sq="Hiq" data-en="Remove">Hiq</button>
+                            </div>
                         </div>
                         <div class="game-monitor-content" id="monitorContent">
                             <div class="result-line" data-sq="Sistemi gati. Zgjidhni një test..." data-en="System ready. Select a test...">Sistemi gati. Zgjidhni një test...</div>
@@ -793,14 +1118,35 @@
             </div>
             <div class="game-controls" id="gameControls">
                 <button class="game-btn" onclick="runTest('temp')" data-sq="Temperatura" data-en="Temperature">Temperatura</button>
-                <button class="game-btn" onclick="runTest('alcohol')" data-sq="Testi Alkoolit" data-en="Alcohol Test">Testi Alkoolit</button>
-                <button class="game-btn" onclick="runTest('water')" data-sq="Testi Ujit" data-en="Water Test">Testi Ujit</button>
-                <button class="game-btn" onclick="runTest('antibiotic')" data-sq="Testi Antibiotikëve" data-en="Antibiotic Test">Testi Antibiotikëve</button>
-                <button class="game-btn" onclick="runTest('bacteria')" data-sq="Analiza Bakteriale" data-en="Bacteria Analysis">Analiza Bakteriale</button>
-                <button class="game-btn" onclick="runTest('aflatoxin')" data-sq="Aflatoksina" data-en="Aflatoxin">Aflatoksina</button>
+                <button class="game-btn" onclick="runTest('ph')" data-sq="Aciditeti (pH)" data-en="pH Test">Aciditeti (pH)</button>
+                <button class="game-btn" onclick="runTest('density')" data-sq="Dendësia" data-en="Density">Dendësia</button>
+                <button class="game-btn" onclick="runTest('antibiotic')" data-sq="Antibiotikët" data-en="Antibiotics">Antibiotikët</button>
+                <button class="game-btn" onclick="runTest('bacteria')" data-sq="Bakteret" data-en="Bacteria">Bakteret</button>
+                <button class="game-btn" onclick="runTest('protein')" data-sq="Proteinat" data-en="Protein">Proteinat</button>
                 <button class="game-btn decision approve" onclick="makeDecision('approve')" data-sq="Aprovo për Shitje" data-en="Approve for Sale">Aprovo për Shitje</button>
                 <button class="game-btn decision reject" onclick="makeDecision('reject')" data-sq="Refuzo Mostrën" data-en="Reject Sample">Refuzo Mostrën</button>
             </div>
+        </div>
+    </div>
+</section>
+
+<!-- HEAT MAP — MILK COLLECTION -->
+<section id="heatmap">
+    <div class="container">
+        <div class="section-header">
+            <span class="tag" data-sq="Origjina e Qumështit" data-en="Milk Origins">Origjina e Qumështit</span>
+            <h2 data-sq="Nga Vijmë" data-en="Where We Come From">Nga Vijmë</h2>
+            <p data-sq="70% e qumështit tonë vjen nga ferma familjare në këto rajone të Kosovës."
+               data-en="70% of our milk comes from family farms in these Kosovo regions.">
+                70% e qumështit tonë vjen nga ferma familjare në këto rajone të Kosovës.
+            </p>
+        </div>
+        <div id="heatmapMap"></div>
+        <div class="heatmap-legend">
+            <span data-sq="Pak" data-en="Low">Pak</span>
+            <div class="gradient-bar"></div>
+            <span data-sq="Shumë" data-en="High">Shumë</span>
+            <span style="margin-left:16px;" data-sq="— Ngjyra = vëllimi i grumbullimit" data-en="— Color = collection volume">— Ngjyra = vëllimi i grumbullimit</span>
         </div>
     </div>
 </section>
@@ -892,165 +1238,244 @@
 
 <script>
 
-    // ===== MILK TESTING GAME =====
+    // ===== MILK TESTING GAME — RANDOMIZED EACH REFRESH =====
     var gameState = {
         testsRun: [],
-        // Hidden truths about this sample (randomized each game)
+        testResults: [],
+        currentTestIndex: -1,
+        activeTests: [],    // 6 randomly chosen tests for this round
         secrets: {},
         lang: 'sq',
         decided: false
     };
 
-    function initGame() {
-        // Randomize what's actually wrong with this milk sample
-        // 2-3 issues will be present
-        var possibleIssues = ['water', 'antibiotic', 'bacteria', 'aflatoxin'];
-        var shuffled = possibleIssues.sort(function() { return Math.random() - 0.5; });
-        var numIssues = 2 + Math.floor(Math.random() * 2); // 2 or 3 issues
-        gameState.secrets = {};
-        for (var i = 0; i < numIssues; i++) {
-            gameState.secrets[shuffled[i]] = true;
-        }
-        // Temp and alcohol are always OK in our simulation
-        gameState.testsRun = [];
-        gameState.decided = false;
+    // Milk images to randomly choose from
+    var milkImages = ['tamel-vita.png', 'qumeshti-vita.png', 'jogurt-vita.png', 'djath-vita.png'];
 
-        // Reset UI
+    // Master test pool — 16 possible tests
+    var testPool = [
+        // id, nameSQ, nameEN, alwaysOK, descGoodSQ, descGoodEN, valueGood, descBadSQ, descBadEN, valueBad
+        {id:'temp', sq:'Temperatura', en:'Temperature', ok:true,  gv:'2.8°C', gs:'Brenda normës (nën 4°C)', ge:'Within range (under 4°C)', bv:'', bs:'', be:''},
+        {id:'ph', sq:'Aciditeti (pH)', en:'pH Level', ok:true,  gv:'6.7', gs:'Brenda normës (6.5-6.8)', ge:'Within range (6.5-6.8)', bv:'', bs:'', be:''},
+        {id:'density', sq:'Dendësia', en:'Density', ok:false,  gv:'1.032 g/ml', gs:'Dendësia normale. Pa hollim.', ge:'Normal density. No dilution.', bv:'1.022 g/ml', bs:'Nën minimumin! Mostra e holluar me ujë.', be:'Below minimum! Diluted with water.'},
+        {id:'protein', sq:'Proteinat', en:'Protein', ok:false,  gv:'3.4%', gs:'Përmbajtje e lartë. Cilësi e shkëlqyer.', ge:'High content. Excellent quality.', bv:'2.4%', bs:'Nën normën (min 3.0%). Lopë të kequshqyera!', be:'Below normal (min 3.0%). Malnourished cows!'},
+        {id:'antibiotic', sq:'Antibiotikët', en:'Antibiotics', ok:false,  gv:'Negativ', gs:'Pa mbetje antibiotikësh.', ge:'No antibiotic residues.', bv:'POZITIV', bs:'Mbetje tetracikline! Lopë e trajtuar me ilaçe.', be:'Tetracycline residues! Treated cow.'},
+        {id:'bacteria', sq:'Bakteret', en:'Bacteria', ok:false,  gv:'E Pastër', gs:'Numri brenda normës. Pa patogjenë.', ge:'Count within limits. No pathogens.', bv:'KRITIKE', bs:'E. coli + Salmonella! 50x mbi limit.', be:'E. coli + Salmonella! 50x over limit.'},
+        {id:'fat', sq:'Yndyra', en:'Fat Content', ok:false,  gv:'3.2%', gs:'Në normë për qumësht të plotë.', ge:'Normal for whole milk.', bv:'1.1%', bs:'Shumë e ulët! Qumësht i skremuar i maskuar.', be:'Too low! Skim milk disguised as whole.'},
+        {id:'lactose', sq:'Laktoza', en:'Lactose', ok:false,  gv:'4.8%', gs:'Niveli normal i laktozës.', ge:'Normal lactose level.', bv:'7.2%', bs:'E ngritur! Sheqer i shtuar artificialisht.', be:'Elevated! Artificially added sugar.'},
+        {id:'calcium', sq:'Kalciumi', en:'Calcium', ok:false,  gv:'120 mg/100ml', gs:'Niveli i mirë i kalciumit.', ge:'Good calcium level.', bv:'65 mg/100ml', bs:'Nën normën! I varfër me minerale.', be:'Below normal! Mineral deficient.'},
+        {id:'pesticide', sq:'Pesticidet', en:'Pesticides', ok:false,  gv:'Negativ', gs:'Pa mbetje pesticidesh.', ge:'No pesticide residues.', bv:'POZITIV', bs:'Mbetje organofosfatesh! Ushqim i kontaminuar.', be:'Organophosphate residues! Contaminated feed.'},
+        {id:'hormone', sq:'Hormonet', en:'Hormones', ok:false,  gv:'Normale', gs:'Nivele natyrale hormonesh.', ge:'Natural hormone levels.', bv:'ELEVUAR', bs:'Hormone sintetike rBST! Rritje artificiale.', be:'Synthetic rBST! Artificial growth boost.'},
+        {id:'somatic', sq:'Qelizat Somatike', en:'Somatic Cells', ok:false,  gv:'180,000/mL', gs:'Brenda normës. Gjëndra të shëndetshme.', ge:'Within range. Healthy udder.', bv:'850,000/mL', bs:'Mbi limitin! Infeksion i gjëndrës (mastit).', be:'Over limit! Udder infection (mastitis).'},
+        {id:'vitamin', sq:'Vitamina D', en:'Vitamin D', ok:false,  gv:'45 IU/100ml', gs:'Niveli i duhur i vitaminës D.', ge:'Proper vitamin D level.', bv:'8 IU/100ml', bs:'Shumë e ulët! Mungesë vitaminash.', be:'Very low! Vitamin deficiency.'},
+        {id:'freezing', sq:'Pika e Ngrirjes', en:'Freezing Point', ok:false,  gv:'-0.540°C', gs:'Normale. Pa ujë të shtuar.', ge:'Normal. No added water.', bv:'-0.480°C', bs:'Anormale! Hollim me ujë i dyshuar.', be:'Abnormal! Suspected water dilution.'},
+        {id:'salt', sq:'Kripa', en:'Salts', ok:false,  gv:'0.18%', gs:'Niveli normal i kripërave.', ge:'Normal salt level.', bv:'0.45%', bs:'E lartë! Shtesë artificiale kripe.', be:'High! Artificial salt addition.'},
+        {id:'color', sq:'Ngjyra', en:'Color', ok:false,  gv:'E bardhë natyrale', gs:'Ngjyra e pranueshme.', ge:'Acceptable color.', bv:'E verdhë', bs:'Ngjyrë anormale! Kontaminim ose oksidim.', be:'Abnormal color! Contamination or oxidation.'},
+        {id:'smell', sq:'Era', en:'Smell', ok:false,  gv:'Normale', gs:'Era tipike e qumështit të freskët.', ge:'Typical fresh milk smell.', bv:'E thartë', bs:'Erë e thartë! Fermentim i filluar.', be:'Sour smell! Fermentation started.'}
+    ];
+
+    function initGame() {
+        var apiKey = localStorage.getItem('vita_deepseek_key');
+        if (apiKey) {
+            document.getElementById('monitorContent').innerHTML = '<div class="result-line">' +
+                (gameState.lang === 'sq' ? 'Duke gjeneruar teste me AI...' : 'Generating AI tests...') + '</div>';
+            fetchFromDeepSeek(apiKey);
+        } else {
+            initLocalGame();
+        }
+    }
+
+    function fetchFromDeepSeek(apiKey) {
+        var sq = gameState.lang === 'sq';
+        var promptText = sq
+            ? 'Gjenero 6 teste laboratorike për qumështin në shqip. Kthe VETËM JSON (pa tekst tjetër): {"tests":[{"id":"...","sq":"Emri","en":"English","ok":true/false,"gv":"Vlera mire","gs":"Pershkrim mire","ge":"Good desc","bv":"Vlera keqe","bs":"Pershkrim keq","be":"Bad desc"},...],"issues":["id1","id2"]}. Testi i parë gjithmonë Temperatura (ok:true). 3 në 10 raste issues bosh (qumësht i pastër). Përdor teste reale laboratorike (pH, dendësia, proteinat, bakteret, yndyra, laktoza, kalciumi, pesticidet, hormonet, qeliza somatike, vitamina, pika ngrirjes, kripa, ngjyra, era, antibiotikët).'
+            : 'Generate 6 dairy lab tests in English. Return ONLY JSON (no other text): {"tests":[{"id":"...","sq":"Name","en":"English","ok":true/false,"gv":"Good value","gs":"Good desc SQ","ge":"Good desc EN","bv":"Bad value","bs":"Bad desc SQ","be":"Bad desc EN"},...],"issues":["id1","id2"]}. First test always Temperature (ok:true). 3 in 10 chance issues empty (clean milk). Use real lab tests (pH, density, protein, bacteria, fat, lactose, calcium, pesticides, hormones, somatic cells, vitamin D, freezing point, salt, color, smell, antibiotics).';
+
+        fetch('https://api.deepseek.com/v1/chat/completions', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + apiKey },
+            body: JSON.stringify({
+                model: 'deepseek-chat',
+                messages: [{ role: 'user', content: promptText }],
+                temperature: 0.9,
+                max_tokens: 1500
+            })
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            var content = data.choices[0].message.content;
+            // Strip markdown code fences if any
+            content = content.replace(/```json\s*/g, '').replace(/```\s*/g, '').trim();
+            var parsed = JSON.parse(content);
+            loadAPIGameData(parsed);
+        })
+        .catch(function(err) {
+            console.log('API failed, using local:', err);
+            initLocalGame();
+        });
+    }
+
+    function loadAPIGameData(data) {
+        gameState.activeTests = data.tests;
+        gameState.secrets = {};
+        if (data.issues && data.issues.length > 0) {
+            for (var i = 0; i < data.issues.length; i++) {
+                gameState.secrets[data.issues[i]] = true;
+            }
+        }
+        finishGameInit();
+    }
+
+    function initLocalGame() {
+        // Pick random milk image
+        var randomImg = milkImages[Math.floor(Math.random() * milkImages.length)];
+        document.getElementById('gameMilk').src = randomImg;
+
+        var randomPool = testPool.filter(function(t) { return t.ok !== true; });
+        for (var i = randomPool.length - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1));
+            var tmp = randomPool[i]; randomPool[i] = randomPool[j]; randomPool[j] = tmp;
+        }
+        var chosen = [testPool[0]].concat(randomPool.slice(0, 5));
+        gameState.activeTests = chosen;
+
+        var roll = Math.floor(Math.random() * 10);
+        var numIssues = (roll < 3) ? 0 : (2 + Math.floor(Math.random() * 2));
+        var issuePool = chosen.filter(function(t) { return t.ok !== true; });
+        for (var k = issuePool.length - 1; k > 0; k--) {
+            var jj = Math.floor(Math.random() * (k + 1));
+            var tt = issuePool[k]; issuePool[k] = issuePool[jj]; issuePool[jj] = tt;
+        }
+        gameState.secrets = {};
+        for (var n = 0; n < Math.min(numIssues, issuePool.length); n++) {
+            gameState.secrets[issuePool[n].id] = true;
+        }
+        finishGameInit();
+        console.log('Local init — active:', chosen.map(function(t){return t.id;}), 'issues:', Object.keys(gameState.secrets));
+    }
+
+    function finishGameInit() {
+        // Pick random milk image
+        var randomImg = milkImages[Math.floor(Math.random() * milkImages.length)];
+        document.getElementById('gameMilk').src = randomImg;
+
+        gameState.testsRun = [];
+        gameState.testResults = [];
+        gameState.currentTestIndex = -1;
+        gameState.decided = false;
+        gameState.lastDecision = null;
+        gameState.lastIsCorrect = null;
+
+        var chosen = gameState.activeTests;
+        var btnContainer = document.getElementById('gameControls');
+        var btnHtml = '';
+        for (var b = 0; b < chosen.length; b++) {
+            btnHtml += '<button class="game-btn" onclick="runTest(\'' + chosen[b].id + '\')" data-sq="' + chosen[b].sq + '" data-en="' + chosen[b].en + '">' +
+                (gameState.lang === 'sq' ? chosen[b].sq : chosen[b].en) + '</button>';
+        }
+        btnHtml += '<button class="game-btn decision approve" onclick="makeDecision(\'approve\')" data-sq="Aprovo për Shitje" data-en="Approve for Sale">' +
+            (gameState.lang === 'sq' ? 'Aprovo për Shitje' : 'Approve for Sale') + '</button>';
+        btnHtml += '<button class="game-btn decision reject" onclick="makeDecision(\'reject\')" data-sq="Refuzo Mostrën" data-en="Reject Sample">' +
+            (gameState.lang === 'sq' ? 'Refuzo Mostrën' : 'Reject Sample') + '</button>';
+        btnContainer.innerHTML = btnHtml;
+
         document.getElementById('gameMilk').className = 'game-milk-img';
         var monitorContent = document.getElementById('monitorContent');
-        monitorContent.innerHTML = '<div class="result-line" data-sq="Sistemi gati. Zgjidhni një test..." data-en="System ready. Select a test...">' + 
+        monitorContent.innerHTML = '<div class="result-line">' +
             (gameState.lang === 'sq' ? 'Sistemi gati. Zgjidhni një test...' : 'System ready. Select a test...') + '</div>';
 
-        // Enable all buttons
-        var buttons = document.querySelectorAll('#gameControls .game-btn');
-        for (var j = 0; j < buttons.length; j++) {
-            buttons[j].disabled = false;
-        }
-
-        // Remove any result overlay
         var overlay = document.querySelector('.game-result-overlay');
         if (overlay) overlay.remove();
 
-        console.log('Game initialized. Secrets:', Object.keys(gameState.secrets));
+        var sampleNum = Math.floor(Math.random() * 9000) + 1000;
+        var label = document.getElementById('gameMilkLabel');
+        if (label) {
+            label.setAttribute('data-sq', 'Mostra #V-' + sampleNum);
+            label.setAttribute('data-en', 'Sample #V-' + sampleNum);
+            label.textContent = (gameState.lang === 'sq' ? 'Mostra #V-' : 'Sample #V-') + sampleNum;
+        }
+
+        var hasKey = !!localStorage.getItem('vita_deepseek_key');
+        console.log('Game init — AI:', hasKey, 'active:', chosen.map(function(t){return t.id;}), 'issues:', Object.keys(gameState.secrets));
+    }
+
+    function findTest(id) {
+        for (var i = 0; i < gameState.activeTests.length; i++) {
+            if (gameState.activeTests[i].id === id) return gameState.activeTests[i];
+        }
+        return null;
     }
 
     function runTest(testType) {
         if (gameState.decided) return;
-        if (gameState.testsRun.indexOf(testType) >= 0) return; // Already tested
+        if (gameState.testsRun.indexOf(testType) >= 0) return;
 
         gameState.testsRun.push(testType);
         var sq = gameState.lang === 'sq';
         var milkImg = document.getElementById('gameMilk');
         var monitorContent = document.getElementById('monitorContent');
-        var label = document.getElementById('gameMilkLabel');
         var hasIssue = gameState.secrets[testType] === true;
+        var test = findTest(testType);
+        if (!test) return;
 
         var resultHtml = '';
-        var statusClass = '';
-
-        switch(testType) {
-            case 'temp':
-                resultHtml = sq
-                    ? '<div class="result-line"><span class="ok">✓ Temperatura: 2.8°C</span></div><div class="result-line">Brenda normës (nën 4°C). I freskët.</div>'
-                    : '<div class="result-line"><span class="ok">✓ Temperature: 2.8°C</span></div><div class="result-line">Within range (under 4°C). Fresh.</div>';
-                break;
-            case 'alcohol':
-                resultHtml = sq
-                    ? '<div class="result-line"><span class="ok">✓ Testi i Alkoolit: Negativ</span></div><div class="result-line">Nuk u mpiks — aciditeti normal. I qëndrueshëm ndaj nxehtësisë.</div>'
-                    : '<div class="result-line"><span class="ok">✓ Alcohol Test: Negative</span></div><div class="result-line">No curdling — normal acidity. Heat stable.</div>';
-                break;
-            case 'water':
-                if (hasIssue) {
-                    resultHtml = sq
-                        ? '<div class="result-line"><span class="highlight">⚠ Testi i Ujit: POZITIV</span></div><div class="result-line">Dendësia nën normën! Mostra është <span class="highlight">holluar me ujë</span>. Mashtrim i zbuluar.</div>'
-                        : '<div class="result-line"><span class="highlight">⚠ Water Test: POSITIVE</span></div><div class="result-line">Density below normal! Sample has been <span class="highlight">diluted with water</span>. Fraud detected.</div>';
-                    milkImg.className = 'game-milk-img warning';
-                } else {
-                    resultHtml = sq
-                        ? '<div class="result-line"><span class="ok">✓ Testi i Ujit: Negativ</span></div><div class="result-line">Dendësia normale. Pa hollim me ujë.</div>'
-                        : '<div class="result-line"><span class="ok">✓ Water Test: Negative</span></div><div class="result-line">Normal density. No water dilution.</div>';
-                }
-                break;
-            case 'antibiotic':
-                if (hasIssue) {
-                    resultHtml = sq
-                        ? '<div class="result-line"><span class="highlight">⚠ Testi Antibiotikëve: POZITIV</span></div><div class="result-line">U zbuluan <span class="highlight">mbetje tetracikline</span>! Lopa është trajtuar me ilaçe — qumështi NUK duhet shitur.</div>'
-                        : '<div class="result-line"><span class="highlight">⚠ Antibiotic Test: POSITIVE</span></div><div class="result-line"><span class="highlight">Tetracycline residues</span> detected! Cow was treated with medication — milk must NOT be sold.</div>';
-                    milkImg.className = 'game-milk-img danger';
-                } else {
-                    resultHtml = sq
-                        ? '<div class="result-line"><span class="ok">✓ Testi Antibiotikëve: Negativ</span></div><div class="result-line">Pa mbetje antibiotikësh. I sigurt.</div>'
-                        : '<div class="result-line"><span class="ok">✓ Antibiotic Test: Negative</span></div><div class="result-line">No antibiotic residues. Safe.</div>';
-                }
-                break;
-            case 'bacteria':
-                if (hasIssue) {
-                    resultHtml = sq
-                        ? '<div class="result-line"><span class="highlight">⚠ Analiza Bakteriale: KRITIKE</span></div><div class="result-line">U gjetën <span class="highlight">koloni E. coli dhe Salmonella</span>! Ndotje e rrezikshme — numri i baktereve 50x mbi limit.</div>'
-                        : '<div class="result-line"><span class="highlight">⚠ Bacteria Analysis: CRITICAL</span></div><div class="result-line"><span class="highlight">E. coli and Salmonella colonies</span> found! Dangerous contamination — bacteria count 50x over limit.</div>';
-                    milkImg.className = 'game-milk-img danger';
-                } else {
-                    resultHtml = sq
-                        ? '<div class="result-line"><span class="ok">✓ Analiza Bakteriale: E Pastër</span></div><div class="result-line">Numri i baktereve brenda normës. Pa patogjenë.</div>'
-                        : '<div class="result-line"><span class="ok">✓ Bacteria Analysis: Clean</span></div><div class="result-line">Bacteria count within limits. No pathogens.</div>';
-                }
-                break;
-            case 'aflatoxin':
-                if (hasIssue) {
-                    resultHtml = sq
-                        ? '<div class="result-line"><span class="highlight">⚠ Aflatoksina: POZITIVE</span></div><div class="result-line">U zbuluan <span class="highlight">mykje toksike (aflatoksina M1)</span> nga ushqimi i kontaminuar i lopës. Rrezik kanceri!</div>'
-                        : '<div class="result-line"><span class="highlight">⚠ Aflatoxin: POSITIVE</span></div><div class="result-line"><span class="highlight">Toxic molds (aflatoxin M1)</span> detected from contaminated cow feed. Cancer risk!</div>';
-                    milkImg.className = 'game-milk-img danger';
-                } else {
-                    resultHtml = sq
-                        ? '<div class="result-line"><span class="ok">✓ Aflatoksina: Negative</span></div><div class="result-line">Pa mykje toksike. I pastër.</div>'
-                        : '<div class="result-line"><span class="ok">✓ Aflatoxin: Negative</span></div><div class="result-line">No toxic molds. Clean.</div>';
-                }
-                break;
+        if (test.ok) {
+            // Always OK
+            resultHtml = sq
+                ? '<div class="result-line"><span class="ok">' + test.sq + ': ' + test.gv + '</span></div><div class="result-line">' + test.gs + '</div>'
+                : '<div class="result-line"><span class="ok">' + test.en + ': ' + test.gv + '</span></div><div class="result-line">' + test.ge + '</div>';
+        } else if (hasIssue) {
+            resultHtml = sq
+                ? '<div class="result-line"><span class="highlight">' + test.sq + ': ' + test.bv + '</span></div><div class="result-line">' + test.bs + '</div>'
+                : '<div class="result-line"><span class="highlight">' + test.en + ': ' + test.bv + '</span></div><div class="result-line">' + test.be + '</div>';
+            milkImg.className = (testType === 'density' || testType === 'freezing') ? 'game-milk-img warning' : 'game-milk-img danger';
+        } else {
+            resultHtml = sq
+                ? '<div class="result-line"><span class="ok">' + test.sq + ': ' + test.gv + '</span></div><div class="result-line">' + test.gs + '</div>'
+                : '<div class="result-line"><span class="ok">' + test.en + ': ' + test.gv + '</span></div><div class="result-line">' + test.ge + '</div>';
         }
 
-        // Update monitor
-        var existingContent = monitorContent.innerHTML;
-        // Keep only the 2 most recent results plus the new one
-        var lines = existingContent.split('<div class="result-line">');
-        var recentLines = [];
-        for (var i = 1; i < lines.length; i++) {
-            recentLines.push('<div class="result-line">' + lines[i]);
-        }
-        // Show last 3 results
-        if (recentLines.length > 2) {
-            recentLines = recentLines.slice(-2);
-        }
-        monitorContent.innerHTML = recentLines.join('') + resultHtml;
+        // Store result and update monitor
+        gameState.testResults.push(resultHtml);
+        gameState.currentTestIndex = gameState.testResults.length - 1;
+        showResultWithHistory(monitorContent);
 
         // Disable button for this test
         var buttons = document.querySelectorAll('#gameControls .game-btn');
+        var labelMatch = sq ? test.sq : test.en;
         for (var k = 0; k < buttons.length; k++) {
-            if (buttons[k].textContent.trim().indexOf(getTestLabel(testType)) >= 0 ||
-                (testType === 'temp' && buttons[k].textContent.trim().indexOf('Temperat') >= 0) ||
-                (testType === 'alcohol' && buttons[k].textContent.trim().indexOf('Alkool') >= 0) ||
-                (testType === 'water' && buttons[k].textContent.trim().indexOf('Ujit') >= 0) ||
-                (testType === 'antibiotic' && buttons[k].textContent.trim().indexOf('Antibiotik') >= 0) ||
-                (testType === 'bacteria' && buttons[k].textContent.trim().indexOf('Bakter') >= 0) ||
-                (testType === 'aflatoxin' && buttons[k].textContent.trim().indexOf('Aflatok') >= 0)) {
+            if (buttons[k].textContent.trim() === labelMatch ||
+                buttons[k].getAttribute('data-sq') === test.sq) {
                 buttons[k].disabled = true;
             }
         }
     }
 
-    function getTestLabel(type) {
-        var labels = {temp: '', alcohol: '', water: '', antibiotic: '', bacteria: '', aflatoxin: ''};
-        if (gameState.lang === 'sq') {
-            labels = {temp: 'Temperatura', alcohol: 'Alkoolit', water: 'Ujit', antibiotic: 'Antibiotik', bacteria: 'Bakteriale', aflatoxin: 'Aflatoksina'};
-        } else {
-            labels = {temp: 'Temperature', alcohol: 'Alcohol', water: 'Water', antibiotic: 'Antibiotic', bacteria: 'Bacteria', aflatoxin: 'Aflatoxin'};
+    function showResultWithHistory(monitorContent) {
+        var idx = gameState.currentTestIndex;
+        var html = gameState.testResults[idx];
+        var dotsHtml = '';
+        if (gameState.testResults.length > 1) {
+            dotsHtml = '<div class="game-history-dots">';
+            for (var i = 0; i < gameState.testResults.length; i++) {
+                var activeClass = (i === idx) ? ' active' : '';
+                dotsHtml += '<div class="game-history-dot' + activeClass + '" onclick="showHistoryResult(' + i + ')"></div>';
+            }
+            dotsHtml += '</div>';
         }
-        return labels[type] || '';
+        monitorContent.innerHTML = html + dotsHtml;
+    }
+
+    function showHistoryResult(index) {
+        gameState.currentTestIndex = index;
+        var monitorContent = document.getElementById('monitorContent');
+        showResultWithHistory(monitorContent);
     }
 
     function makeDecision(decision) {
         if (gameState.decided) return;
         gameState.decided = true;
+        gameState.lastDecision = decision;
 
         var sq = gameState.lang === 'sq';
         var hasAnyIssue = false;
@@ -1058,24 +1483,7 @@
             if (gameState.secrets[key]) { hasAnyIssue = true; break; }
         }
 
-        // Check if player ran enough tests to discover issues
-        var discoveredIssue = false;
-        for (var k = 0; k < gameState.testsRun.length; k++) {
-            if (gameState.secrets[gameState.testsRun[k]]) {
-                discoveredIssue = true;
-                break;
-            }
-        }
-
         var isCorrect = false;
-        if (hasAnyIssue) {
-            // There ARE issues - correct decision is REJECT
-            isCorrect = (decision === 'reject' && discoveredIssue);
-        } else {
-            // No issues - correct decision is APPROVE
-            isCorrect = (decision === 'approve');
-        }
-        // Also accept reject if issues exist but player didn't find them
         if (hasAnyIssue && decision === 'reject') isCorrect = true;
         if (!hasAnyIssue && decision === 'approve') isCorrect = true;
 
@@ -1085,100 +1493,234 @@
             buttons[j].disabled = true;
         }
 
-        // Show result overlay
+        gameState.lastIsCorrect = isCorrect;
         var lab = document.getElementById('gameLab');
         var monitorDot = document.getElementById('monitorDot');
         monitorDot.style.background = isCorrect ? '#4caf50' : '#e74c3c';
 
         var overlay = document.createElement('div');
         overlay.className = 'game-result-overlay';
-
-        if (isCorrect) {
-            overlay.innerHTML = '<div class="game-result-card success">' +
-                '<div style="font-size:3rem;">&#10004;</div>' +
-                '<h3>' + (sq ? 'Vendim i Saktë!' : 'Correct Decision!') + '</h3>' +
-                '<p>' + (sq
-                    ? (decision === 'approve'
-                        ? 'Mostra ishte e pastër dhe e sigurt. Qumështi do të shitet në dyqane — familjet shqiptare mund ta konsumojnë me besim!'
-                        : 'Mostra ishte e kontaminuar dhe u refuzua me të drejtë. Asnjë qumësht i rrezikshëm nuk del nga laboratori i Vita-s!')
-                    : (decision === 'approve'
-                        ? 'The sample was clean and safe. The milk will be sold in stores — Albanian families can consume it with confidence!'
-                        : 'The sample was contaminated and was rightfully rejected. No dangerous milk leaves the Vita laboratory!')) + '</p>' +
-                '<button class="game-restart" onclick="initGame()">' + (sq ? 'Testo Mostër Tjetër' : 'Test Another Sample') + '</button>' +
-                '</div>';
-        } else {
-            overlay.innerHTML = '<div class="game-result-card failure">' +
-                '<div style="font-size:3rem;">&#10008;</div>' +
-                '<h3>' + (sq ? 'Vendim i Gabuar!' : 'Wrong Decision!') + '</h3>' +
-                '<p>' + (sq
-                    ? (decision === 'approve'
-                        ? 'Mostra KISHTE probleme që nuk u zbuluan! Qumështi i kontaminuar do të shitej — me baktere të dëmshme që rrezikojnë shëndetin e konsumatorëve!'
-                        : 'Mostra ishte e pastër por u refuzua! Qumësht i mirë u shkatërrua kot — humbje për kompaninë dhe fermerët!')
-                    : (decision === 'approve'
-                        ? 'The sample HAD undetected issues! Contaminated milk would be sold — with harmful bacteria endangering consumer health!'
-                        : 'The sample was clean but was rejected! Good milk was wasted — a loss for the company and farmers!')) + '</p>' +
-                '<button class="game-restart" onclick="initGame()">' + (sq ? 'Provo Përsëri' : 'Try Again') + '</button>' +
-                '</div>';
-        }
-
+        overlay.innerHTML = isCorrect ? successOverlayHtml(sq) : failureOverlayHtml(sq);
         lab.appendChild(overlay);
     }
 
-    // Update game language when user switches
     function updateGameLang(lang) {
         gameState.lang = lang;
-        if (!gameState.decided) {
-            var monitorContent = document.getElementById('monitorContent');
-            if (gameState.testsRun.length === 0) {
-                monitorContent.innerHTML = '<div class="result-line">' + 
-                    (lang === 'sq' ? 'Sistemi gati. Zgjidhni një test...' : 'System ready. Select a test...') + '</div>';
-            }
+        // Rebuild buttons
+        var btnContainer = document.getElementById('gameControls');
+        var chosen = gameState.activeTests;
+        var btnHtml = '';
+        for (var b = 0; b < chosen.length; b++) {
+            var disabledAttr = (gameState.testsRun.indexOf(chosen[b].id) >= 0) ? ' disabled' : '';
+            btnHtml += '<button class="game-btn" onclick="runTest(\'' + chosen[b].id + '\')" data-sq="' + chosen[b].sq + '" data-en="' + chosen[b].en + '"' + disabledAttr + '>' +
+                (lang === 'sq' ? chosen[b].sq : chosen[b].en) + '</button>';
         }
-        // Update button texts via data attributes
-        document.querySelectorAll('#gameControls .game-btn').forEach(function(btn) {
-            if (btn.dataset.sq) {
-                btn.textContent = lang === 'sq' ? btn.dataset.sq : (btn.dataset.en || btn.dataset.sq);
-            }
-        });
-        // Update label
+        var decDisabled = gameState.decided ? ' disabled' : '';
+        btnHtml += '<button class="game-btn decision approve" onclick="makeDecision(\'approve\')" data-sq="Aprovo për Shitje" data-en="Approve for Sale"' + decDisabled + '>' +
+            (lang === 'sq' ? 'Aprovo për Shitje' : 'Approve for Sale') + '</button>';
+        btnHtml += '<button class="game-btn decision reject" onclick="makeDecision(\'reject\')" data-sq="Refuzo Mostrën" data-en="Reject Sample"' + decDisabled + '>' +
+            (lang === 'sq' ? 'Refuzo Mostrën' : 'Reject Sample') + '</button>';
+        btnContainer.innerHTML = btnHtml;
+
+        if (!gameState.decided && gameState.testsRun.length === 0) {
+            document.getElementById('monitorContent').innerHTML = '<div class="result-line">' +
+                (lang === 'sq' ? 'Sistemi gati. Zgjidhni një test...' : 'System ready. Select a test...') + '</div>';
+        }
+
         var label = document.getElementById('gameMilkLabel');
-        if (label && label.dataset.sq) {
-            label.textContent = lang === 'sq' ? label.dataset.sq : (label.dataset.en || label.dataset.sq);
+        if (label && label.getAttribute('data-sq')) {
+            label.textContent = lang === 'sq' ? label.getAttribute('data-sq') : (label.getAttribute('data-en') || label.getAttribute('data-sq'));
         }
     }
 
     // Init
     initGame();
+    updateApiUI();
 
-    function switchLang(lang) {
-        document.querySelectorAll('.lang-switcher button').forEach(b => {
-            b.classList.toggle('active', b.textContent.trim() === lang.toUpperCase());
-        });
+    function toggleApiPanel() {
+        var panel = document.getElementById('apiPanel');
+        panel.style.display = (panel.style.display === 'block') ? 'none' : 'block';
+    }
 
-        document.querySelectorAll('[data-sq]').forEach(el => {
-            if (lang === 'sq') {
-                if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
-                    el.placeholder = el.dataset.sq;
-                } else {
-                    el.innerHTML = el.dataset.sq;
-                }
-            } else {
-                if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
-                    el.placeholder = el.dataset.en || el.dataset.sq;
-                } else {
-                    el.innerHTML = el.dataset.en || el.dataset.sq;
-                }
-            }
-        });
+    function saveApiKey() {
+        var key = document.getElementById('apiKeyInput').value.trim();
+        if (!key) return;
+        localStorage.setItem('vita_deepseek_key', key);
+        document.getElementById('apiPanel').style.display = 'none';
+        updateApiUI();
+        initGame();
+    }
 
-        var heroH1 = document.querySelector('.hero h1');
-        if (heroH1) {
-            heroH1.innerHTML = lang === 'sq'
-                ? 'Shija e Vërtetë e <span>Kosovës</span>'
-                : 'The True Taste of <span>Kosovo</span>';
+    function removeApiKey() {
+        localStorage.removeItem('vita_deepseek_key');
+        document.getElementById('apiKeyInput').value = '';
+        updateApiUI();
+        initGame();
+    }
+
+    function updateApiUI() {
+        var hasKey = !!localStorage.getItem('vita_deepseek_key');
+        var toggle = document.getElementById('apiToggle');
+        if (toggle) {
+            toggle.classList.toggle('active', hasKey);
         }
     }
+
+    // Force scroll to top
+    if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    if (window.location.hash) { history.replaceState(null, null, window.location.pathname); }
+    window.addEventListener('beforeunload', function() { window.scrollTo(0, 0); });
+    window.addEventListener('load', function() { window.scrollTo(0, 0); document.documentElement.scrollTop = 0; });
+
+    function toggleSubProducts(type) {
+        var creams = document.getElementById('subCreams');
+        var whipping = document.getElementById('subWhipping');
+        if (type === 'creams') {
+            if (creams.classList.contains('open')) { creams.classList.remove('open'); }
+            else { creams.classList.add('open'); whipping.classList.remove('open'); }
+        } else {
+            if (whipping.classList.contains('open')) { whipping.classList.remove('open'); }
+            else { whipping.classList.add('open'); creams.classList.remove('open'); }
+        }
+    }
+
+    function initHeatMap() {
+        var map = L.map('heatmapMap', {
+            center: [42.6, 20.9],
+            zoom: 9,
+            zoomControl: true,
+            attributionControl: false
+        });
+
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+            maxZoom: 19
+        }).addTo(map);
+
+        // Kosovo border highlight
+        L.circle([42.6, 20.9], {
+            radius: 90000,
+            color: '#5b9bd5',
+            weight: 2,
+            fillColor: 'rgba(91,155,213,0.06)',
+            fillOpacity: 0.5,
+            dashArray: '6 8'
+        }).addTo(map);
+
+        var regions = [
+            {name: 'Prishtina / Prishtinë', lat: 42.66, lng: 21.16, pct: 18, farms: 36, color: '#e84a1d', r: 22},
+            {name: 'Peja / Pejë', lat: 42.66, lng: 20.29, pct: 15, farms: 30, color: '#e8742a', r: 19},
+            {name: 'Prizren / Prizren', lat: 42.21, lng: 20.74, pct: 14, farms: 28, color: '#e8a838', r: 18},
+            {name: 'Ferizaj / Ferizaj', lat: 42.37, lng: 21.15, pct: 12, farms: 24, color: '#e8a838', r: 16},
+            {name: 'Gjakova / Gjakovë', lat: 42.38, lng: 20.43, pct: 11, farms: 22, color: '#e8b838', r: 15},
+            {name: 'Gjilan / Gjilan', lat: 42.46, lng: 21.47, pct: 10, farms: 20, color: '#e8c838', r: 14},
+            {name: 'Mitrovica / Mitrovicë', lat: 42.88, lng: 20.87, pct: 9, farms: 18, color: '#5b9bd5', r: 12},
+            {name: 'Podujeva / Podujevë', lat: 42.91, lng: 21.19, pct: 6, farms: 12, color: '#3d7eb0', r: 10},
+            {name: 'Vushtrria / Vushtrri', lat: 42.82, lng: 20.97, pct: 5, farms: 10, color: '#2d6aa0', r: 9}
+        ];
+
+        regions.forEach(function(r) {
+            var circle = L.circleMarker([r.lat, r.lng], {
+                radius: r.r,
+                color: r.color,
+                weight: 2,
+                fillColor: r.color,
+                fillOpacity: 0.6
+            }).addTo(map);
+
+            circle.bindTooltip('<strong>' + r.name.split(' / ')[0] + '</strong><br>' + r.pct + '% — ~' + r.farms + ' ferma', {
+                direction: 'top',
+                offset: [0, -r.r - 5],
+                className: 'heatmap-leaflet-tooltip'
+            });
+
+            L.circleMarker([r.lat, r.lng], {
+                radius: r.r * 0.6,
+                color: r.color,
+                weight: 0,
+                fillColor: 'white',
+                fillOpacity: 0.2
+            }).addTo(map);
+        });
+
+        // Invalidate size when section becomes visible
+        var observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) { map.invalidateSize(); }
+            });
+        });
+        observer.observe(document.getElementById('heatmapMap'));
+    }
+
+    // Init map after Leaflet loads
+    if (typeof L !== 'undefined') {
+        initHeatMap();
+    } else {
+        window.addEventListener('load', function() {
+            if (typeof L !== 'undefined') initHeatMap();
+        });
+    }
+
+    function switchLang(lang) {
+        document.querySelectorAll('.lang-switcher button').forEach(function(b) {
+            b.classList.toggle('active', b.textContent.trim() === lang.toUpperCase());
+        });
+        document.querySelectorAll('[data-sq]').forEach(function(el) {
+            if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                el.placeholder = lang === 'sq' ? el.getAttribute('data-sq') : (el.getAttribute('data-en') || el.getAttribute('data-sq'));
+            } else {
+                el.innerHTML = lang === 'sq' ? el.getAttribute('data-sq') : (el.getAttribute('data-en') || el.getAttribute('data-sq'));
+            }
+        });
+        var heroH1 = document.querySelector('.hero h1');
+        if (heroH1) {
+            heroH1.innerHTML = lang === 'sq' ? 'Shija e Vërtetë e <span>Kosovës</span>' : 'The True Taste of <span>Kosovo</span>';
+        }
+        updateGameLang(lang);
+        refreshGameOverlay(lang);
+    }
+
+    function refreshGameOverlay(lang) {
+        var overlay = document.querySelector('.game-result-overlay');
+        if (!overlay || gameState.lastIsCorrect === null) return;
+        var sq = lang === 'sq';
+        overlay.innerHTML = (gameState.lastIsCorrect ? successOverlayHtml(sq) : failureOverlayHtml(sq));
+    }
+
+    function successOverlayHtml(sq) {
+        return '<div class="game-result-card success">' +
+            '<div style="font-size:3rem;">&#10004;</div>' +
+            '<h3>' + (sq ? 'Vendim i Saktë!' : 'Correct Decision!') + '</h3>' +
+            '<p>' + (sq
+                ? (gameState.lastDecision === 'approve'
+                    ? 'Mostra ishte e pastër dhe e sigurt. Qumështi do të shitet në dyqane — familjet shqiptare mund ta konsumojnë me besim!'
+                    : 'Mostra ishte e kontaminuar dhe u refuzua me të drejtë. Asnjë qumësht i rrezikshëm nuk del nga laboratori i Vita-s!')
+                : (gameState.lastDecision === 'approve'
+                    ? 'The sample was clean and safe. The milk will be sold in stores — Albanian families can consume it with confidence!'
+                    : 'The sample was contaminated and was rightfully rejected. No dangerous milk leaves the Vita laboratory!')) + '</p>' +
+            '<button class="game-restart" onclick="initGame()">' + (sq ? 'Testo Mostër Tjetër' : 'Test Another Sample') + '</button>' +
+            '</div>';
+    }
+
+    function failureOverlayHtml(sq) {
+        return '<div class="game-result-card failure">' +
+            '<div style="font-size:3rem;">&#10008;</div>' +
+            '<h3>' + (sq ? 'Vendim i Gabuar!' : 'Wrong Decision!') + '</h3>' +
+            '<p>' + (sq
+                ? (gameState.lastDecision === 'approve'
+                    ? 'Mostra KISHTE probleme që nuk u zbuluan! Qumështi i kontaminuar do të shitej — me baktere të dëmshme që rrezikojnë shëndetin e konsumatorëve!<br><br><strong>Bëhu gati të paditesh!</strong>'
+                    : 'Mostra ishte e pastër por u refuzua! Qumësht i mirë u shkatërrua kot — humbje për kompaninë dhe fermerët!')
+                : (gameState.lastDecision === 'approve'
+                    ? 'The sample HAD undetected issues! Contaminated milk would be sold — with harmful bacteria endangering consumer health!<br><br><strong>Get ready to get sued!</strong>'
+                    : 'The sample was clean but was rejected! Good milk was wasted — a loss for the company and farmers!')) + '</p>' +
+            '<button class="game-restart" onclick=\"initGame()\">' + (sq ? 'Provo Përsëri' : 'Try Again') + '</button>' +
+            '</div>';
+    }
 </script>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 </body>
 </html>
