@@ -284,10 +284,11 @@
             display: flex; align-items: center; justify-content: center;
             margin: 0 auto 1.2rem;
             overflow: hidden;
+            padding: 8px;
         }
         .product-img {
             width: 100%; height: 100%;
-            object-fit: cover;
+            object-fit: contain;
         }
         .product-card h4 {
             font-size: 1.15rem; font-weight: 700; margin-bottom: 0.5rem;
@@ -357,6 +358,68 @@
         }
         .sub-product-card p {
             font-size: 0.8rem; color: var(--text-secondary);
+        }
+
+        /* PRODUCT DETAIL PAGE */
+        .product-detail-overlay {
+            display: none;
+            position: fixed; inset: 0; z-index: 5000;
+            background: var(--bg-primary);
+            overflow-y: auto;
+        }
+        .product-detail-overlay.open { display: block; }
+        .product-detail-inner {
+            max-width: 800px; margin: 0 auto; padding: 1.5rem 2rem 4rem;
+        }
+        .product-detail-back {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: none; border: 2px solid var(--border);
+            color: var(--text-secondary); padding: 10px 22px;
+            border-radius: 50px; font-size: 0.9rem; font-weight: 600;
+            cursor: pointer; margin-bottom: 2rem;
+            transition: all 0.2s; font-family: 'Inter', sans-serif;
+        }
+        .product-detail-back:hover {
+            border-color: var(--accent); color: var(--accent);
+            transform: translateX(-3px);
+        }
+        .product-detail-hero {
+            display: flex; align-items: center; gap: 2.5rem;
+            margin-bottom: 2.5rem; flex-wrap: wrap;
+        }
+        .product-detail-img {
+            width: 200px; height: 200px; object-fit: contain;
+            border-radius: var(--radius);
+            background: white; padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .product-detail-info h2 {
+            font-size: 2.4rem; font-weight: 800; margin-bottom: 0.5rem;
+        }
+        .product-detail-info .fat-badge {
+            font-size: 0.9rem; padding: 6px 16px;
+        }
+        .product-detail-desc {
+            color: var(--text-secondary); font-size: 1.1rem;
+            line-height: 1.7; margin-bottom: 2rem;
+        }
+        .product-detail-section {
+            background: white; border-radius: var(--radius);
+            padding: 1.8rem; margin-bottom: 1.2rem;
+            border: 1px solid var(--border);
+        }
+        .product-detail-section h3 {
+            font-size: 1.2rem; font-weight: 700; margin-bottom: 0.8rem;
+        }
+        .product-detail-section p, .product-detail-section li {
+            color: var(--text-secondary); font-size: 0.95rem; line-height: 1.7;
+        }
+        .product-detail-section ul {
+            list-style: none; padding: 0;
+        }
+        .product-detail-section ul li::before {
+            content: '✓'; color: var(--accent); font-weight: 800;
+            margin-right: 8px;
         }
 
         /* VALUES */
@@ -945,7 +1008,7 @@
             </p>
         </div>
         <div class="products-grid">
-            <div class="product-card">
+            <div class="product-card clickable" onclick="showProduct('milk')">
                 <div class="product-icon">
                     <img src="qumeshti-vita.png" alt="Qumësht Vita" class="product-img">
                 </div>
@@ -956,7 +1019,7 @@
                 </p>
                 <span class="fat-badge">3.2% Yndyrë</span>
             </div>
-            <div class="product-card featured">
+            <div class="product-card featured clickable" onclick="showProduct('kos')">
                 <span class="featured-badge" data-sq="⭐ Më e Shitura" data-en="⭐ Best Seller">⭐ Më e Shitura</span>
                 <div class="product-icon">
                     <img src="jogurt-vita.png" alt="Kos Vita" class="product-img">
@@ -968,7 +1031,7 @@
                 </p>
                 <span class="fat-badge">3.5% Yndyrë</span>
             </div>
-            <div class="product-card">
+            <div class="product-card clickable" onclick="showProduct('jogurt')">
                 <div class="product-icon">
                     <img src="jogurt-vita.png" alt="Jogurt Vita" class="product-img">
                 </div>
@@ -979,7 +1042,7 @@
                 </p>
                 <span class="fat-badge">2.0% Yndyrë</span>
             </div>
-            <div class="product-card">
+            <div class="product-card clickable" onclick="showProduct('cheese')">
                 <div class="product-icon">
                     <img src="djath-vita.png" alt="Djathë Vita" class="product-img">
                 </div>
@@ -990,26 +1053,20 @@
                 </p>
                 <span class="fat-badge">18% Yndyrë</span>
             </div>
-            <div class="product-card">
+            <div class="product-card clickable" onclick="showProduct('ayran')">
                 <div class="product-icon">
-                    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8">
-                        <rect x="3" y="4" width="18" height="16" rx="5"/>
-                        <rect x="7" y="7" width="10" height="10" rx="3" fill="rgba(61,126,192,0.5)"/>
-                    </svg>
+                    <img src="ayran-vita.png" alt="Ayran" class="product-img">
                 </div>
-                <h4 data-sq="Gjalpë Natyrale" data-en="Natural Butter">Gjalpë Natyrale</h4>
-                <p data-sq="Gjalpë e freskët nga kremi i qumështit të lopës."
-                   data-en="Fresh butter from cow's milk cream.">
-                    Gjalpë e freskët nga kremi i qumështit të lopës.
+                <h4 data-sq="Ayran" data-en="Ayran">Ayran</h4>
+                <p data-sq="Pije tradicionale kosovare me kos, ujë dhe kripë."
+                   data-en="Traditional Kosovar drink with yogurt, water and salt.">
+                    Pije tradicionale kosovare me kos, ujë dhe kripë.
                 </p>
-                <span class="fat-badge">82% Yndyrë</span>
+                <span class="fat-badge">1.5% Yndyrë</span>
             </div>
             <div class="product-card clickable" onclick="toggleSubProducts('creams')">
                 <div class="product-icon">
-                    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8">
-                        <circle cx="12" cy="11" r="6" fill="rgba(91,155,213,0.3)"/>
-                        <path d="M12 5v2M12 15v2M7 11h2M15 11h2"/>
-                    </svg>
+                    <img src="cooking-cream-vita.png" alt="Krem Gatimi" class="product-img">
                 </div>
                 <h4 data-sq="Krem Gatimi" data-en="Cooking Cream">Krem Gatimi</h4>
                 <p data-sq="Krem i lëngshëm për gatim, nuk ndahet në temperatura të larta."
@@ -1017,14 +1074,30 @@
                     Krem i lëngshëm për gatim, nuk ndahet në temperatura të larta.
                 </p>
                 <span class="fat-badge">15% Yndyrë</span>
+                <div class="sub-products-row" id="subCreams">
+                    <div class="sub-product-card">
+                        <h5 data-sq="Krem Kosi" data-en="Sour Cream">Krem Kosi</h5>
+                        <p data-sq="I pasur dhe freskues, për sallata dhe gatime tradicionale."
+                           data-en="Rich and tangy, perfect for salads and traditional dishes.">I pasur dhe freskues, për sallata dhe gatime tradicionale.</p>
+                        <span class="fat-badge">20% Yndyrë</span>
+                    </div>
+                    <div class="sub-product-card">
+                        <h5 data-sq="Krem Karameli" data-en="Caramel Cream">Krem Karameli</h5>
+                        <p data-sq="Krem i ëmbël me karamel, për ëmbëlsira dhe kafe."
+                           data-en="Sweet caramel cream, for desserts and coffee.">Krem i ëmbël me karamel, për ëmbëlsira dhe kafe.</p>
+                        <span class="fat-badge">10% Yndyrë</span>
+                    </div>
+                    <div class="sub-product-card">
+                        <h5 data-sq="Krem Vanilje" data-en="Vanilla Cream">Krem Vanilje</h5>
+                        <p data-sq="Krem aromatik me vanilje natyrale, ideal për torta."
+                           data-en="Aromatic cream with natural vanilla, ideal for cakes.">Krem aromatik me vanilje natyrale, ideal për torta.</p>
+                        <span class="fat-badge">12% Yndyrë</span>
+                    </div>
+                </div>
             </div>
             <div class="product-card clickable" onclick="toggleSubProducts('whipping')">
                 <div class="product-icon">
-                    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8">
-                        <circle cx="12" cy="12" r="8"/>
-                        <circle cx="12" cy="9" r="3" fill="rgba(91,155,213,0.4)"/>
-                        <path d="M12 4v2M12 18v2M4 12h2M18 12h2"/>
-                    </svg>
+                    <img src="whipping-cream-vita.png" alt="Krem Pana" class="product-img">
                 </div>
                 <h4 data-sq="Krem Pana" data-en="Whipping Cream">Krem Pana</h4>
                 <p data-sq="Krem i trashë për ëmbëlsira, rrihet lehtë dhe mban formën."
@@ -1032,50 +1105,34 @@
                     Krem i trashë për ëmbëlsira, rrihet lehtë dhe mban formën.
                 </p>
                 <span class="fat-badge">35% Yndyrë</span>
-            </div>
-        </div>
-        <!-- Sub-products: Creams -->
-        <div class="sub-products-row" id="subCreams">
-            <div class="sub-product-card">
-                <h5 data-sq="Krem Kosi" data-en="Sour Cream">Krem Kosi</h5>
-                <p data-sq="I pasur dhe freskues, për sallata dhe gatime tradicionale."
-                   data-en="Rich and tangy, perfect for salads and traditional dishes.">I pasur dhe freskues, për sallata dhe gatime tradicionale.</p>
-                <span class="fat-badge">20% Yndyrë</span>
-            </div>
-            <div class="sub-product-card">
-                <h5 data-sq="Krem Karameli" data-en="Caramel Cream">Krem Karameli</h5>
-                <p data-sq="Krem i ëmbël me karamel, për ëmbëlsira dhe kafe."
-                   data-en="Sweet caramel cream, for desserts and coffee.">Krem i ëmbël me karamel, për ëmbëlsira dhe kafe.</p>
-                <span class="fat-badge">10% Yndyrë</span>
-            </div>
-            <div class="sub-product-card">
-                <h5 data-sq="Krem Vanilje" data-en="Vanilla Cream">Krem Vanilje</h5>
-                <p data-sq="Krem aromatik me vanilje natyrale, ideal për torta."
-                   data-en="Aromatic cream with natural vanilla, ideal for cakes.">Krem aromatik me vanilje natyrale, ideal për torta.</p>
-                <span class="fat-badge">12% Yndyrë</span>
-            </div>
-        </div>
-        <div class="sub-products-row" id="subWhipping">
-            <div class="sub-product-card">
-                <h5 data-sq="Pana e Ëmbël" data-en="Sweet Whipped Cream">Pana e Ëmbël</h5>
-                <p data-sq="Pana e gatshme me sheqer, direkt për ëmbëlsira."
-                   data-en="Ready-made sweet whipped cream, straight to desserts.">Pana e gatshme me sheqer, direkt për ëmbëlsira.</p>
-                <span class="fat-badge">30% Yndyrë</span>
-            </div>
-            <div class="sub-product-card">
-                <h5 data-sq="Pana Natyrale" data-en="Natural Whipped Cream">Pana Natyrale</h5>
-                <p data-sq="Pana pa sheqer, për kuzhinën tuaj kreative."
-                   data-en="Unsweetened whipped cream for your creative kitchen.">Pana pa sheqer, për kuzhinën tuaj kreative.</p>
-                <span class="fat-badge">35% Yndyrë</span>
-            </div>
-            <div class="sub-product-card">
-                <h5 data-sq="Krem Mascarpone" data-en="Mascarpone Cream">Krem Mascarpone</h5>
-                <p data-sq="Krem i butë italian, për tiramisu dhe ëmbëlsira premium."
-                   data-en="Soft Italian cream, for tiramisu and premium desserts.">Krem i butë italian, për tiramisu dhe ëmbëlsira premium.</p>
-                <span class="fat-badge">40% Yndyrë</span>
+                <div class="sub-products-row" id="subWhipping">
+                    <div class="sub-product-card">
+                        <h5 data-sq="Pana e Ëmbël" data-en="Sweet Whipped Cream">Pana e Ëmbël</h5>
+                        <p data-sq="Pana e gatshme me sheqer, direkt për ëmbëlsira."
+                           data-en="Ready-made sweet whipped cream, straight to desserts.">Pana e gatshme me sheqer, direkt për ëmbëlsira.</p>
+                        <span class="fat-badge">30% Yndyrë</span>
+                    </div>
+                    <div class="sub-product-card">
+                        <h5 data-sq="Pana Natyrale" data-en="Natural Whipped Cream">Pana Natyrale</h5>
+                        <p data-sq="Pana pa sheqer, për kuzhinën tuaj kreative."
+                           data-en="Unsweetened whipped cream for your creative kitchen.">Pana pa sheqer, për kuzhinën tuaj kreative.</p>
+                        <span class="fat-badge">35% Yndyrë</span>
+                    </div>
+                    <div class="sub-product-card">
+                        <h5 data-sq="Krem Mascarpone" data-en="Mascarpone Cream">Krem Mascarpone</h5>
+                        <p data-sq="Krem i butë italian, për tiramisu dhe ëmbëlsira premium."
+                           data-en="Soft Italian cream, for tiramisu and premium desserts.">Krem i butë italian, për tiramisu dhe ëmbëlsira premium.</p>
+                        <span class="fat-badge">40% Yndyrë</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+
+<!-- PRODUCT DETAIL OVERLAY -->
+<div class="product-detail-overlay" id="productDetail">
+    <div class="product-detail-inner" id="productDetailInner"></div>
+</div>
 
 <!-- GAME -->
 <section id="game">
@@ -1718,6 +1775,71 @@
             '<button class="game-restart" onclick=\"initGame()\">' + (sq ? 'Provo Përsëri' : 'Try Again') + '</button>' +
             '</div>';
     }
+}
+
+<script>
+var productData = {
+milk: {
+    img: 'qumeshti-vita.png',
+    sq: { name: 'Qumësht i Freskët', desc: 'Qumësht i pasterizuar i plotë, i pasur me kalcium dhe vitamina esenciale për shëndetin e kockave. Prodhuar nga lopët e fermave tona lokale në Kosovë.', fat: '3.2% Yndyrë', nut: 'Kalcium, Vitaminë D, Proteina, Vitaminë B12', use: 'Për t\'u pirë i ftohtë, me drithëra, në kafe ose çaj, dhe në gatime të ndryshme.' },
+    en: { name: 'Fresh Milk', desc: 'Full-fat pasteurized milk, rich in calcium and essential vitamins for bone health. Produced from cows on our local farms in Kosovo.', fat: '3.2% Fat', nut: 'Calcium, Vitamin D, Protein, Vitamin B12', use: 'Drink cold, with cereals, in coffee or tea, and in various recipes.' }
+},
+kos: {
+    img: 'jogurt-vita.png',
+    sq: { name: 'Kos (Jogurt Tradicional)', desc: 'Kos tradicional shqiptar me kultura të gjalla probiotike. I trashë, kremoz dhe me shije autentike — ashtu siç e bënin gjyshet tona.', fat: '3.5% Yndyrë', nut: 'Probiotikë, Kalcium, Proteina, Vitaminë B2', use: 'Si meze, me byrek, në sallata, ose thjesht vetëm me pak kripë.' },
+    en: { name: 'Kos (Traditional Yogurt)', desc: 'Traditional Albanian kos with live probiotic cultures. Thick, creamy and authentic — just like our grandmothers made it.', fat: '3.5% Fat', nut: 'Probiotics, Calcium, Protein, Vitamin B2', use: 'As a side dish, with pie, in salads, or simply on its own with a pinch of salt.' }
+},
+jogurt: {
+    img: 'jogurt-vita.png',
+    sq: { name: 'Jogurt', desc: 'Jogurt i lehtë dhe freskues, ideal për konsum të përditshëm. Më i lëngshëm se kosi, me shije të butë dhe teksturë të këndshme.', fat: '2.0% Yndyrë', nut: 'Kalcium, Proteina, Vitaminë B12, Kalium', use: 'Për t\'u pirë direkt nga shishja, në smoothie, ose me fruta të freskëta.' },
+    en: { name: 'Yogurt', desc: 'Light and refreshing yogurt, ideal for daily consumption. Thinner than kos, with a mild flavor and pleasant texture.', fat: '2.0% Fat', nut: 'Calcium, Protein, Vitamin B12, Potassium', use: 'Drink straight from the bottle, in smoothies, or with fresh fruit.' }
+},
+cheese: {
+    img: 'djath-vita.png',
+    sq: { name: 'Djathë i Bardhë', desc: 'Djathë tradicional shqiptar i bardhë, i kripur dhe plot shije. I përsosur për tavë, sallata, dhe si meze. I prodhuar me qumësht të freskët lope.', fat: '18% Yndyrë', nut: 'Kalcium, Proteina, Fosfor, Zink', use: 'Në tavë me speca, në sallatë fshati, me ullinj, ose në byrek.' },
+    en: { name: 'White Cheese', desc: 'Traditional Albanian white cheese, salty and full of flavor. Perfect for baking, salads, and as a side dish. Made with fresh cow\'s milk.', fat: '18% Fat', nut: 'Calcium, Protein, Phosphorus, Zinc', use: 'Baked with peppers, in village salad, with olives, or in traditional pie.' }
+},
+ayran: {
+    img: 'ayran-vita.png',
+    sq: { name: 'Ayran', desc: 'Pije tradicionale freskuese e bërë me kos, ujë dhe një majë kripë. E përkryer për ditët e nxehta të verës dhe si shoqëruese e çdo vakti.', fat: '1.5% Yndyrë', nut: 'Kalcium, Proteina, Elektrolite, Probiotikë', use: 'I ftohtë gjatë verës, me qebapa, pas stërvitjes, ose me çdo vakt tradicional.' },
+    en: { name: 'Ayran', desc: 'Traditional refreshing drink made with yogurt, water and a pinch of salt. Perfect for hot summer days and as a companion to any meal.', fat: '1.5% Fat', nut: 'Calcium, Protein, Electrolytes, Probiotics', use: 'Cold during summer, with kebabs, after exercise, or with any traditional meal.' }
+}
+};
+
+function showProduct(type) {
+var data = productData[type];
+if (!data) return;
+var lang = gameState ? gameState.lang : 'sq';
+var d = data[lang];
+var overlay = document.getElementById('productDetail');
+var inner = document.getElementById('productDetailInner');
+inner.innerHTML =
+    '<button class="product-detail-back" onclick="hideProduct()">← ' + (lang === 'sq' ? 'Kthehu te Produktet' : 'Back to Products') + '</button>' +
+    '<div class="product-detail-hero">' +
+        '<img src="' + data.img + '" alt="' + d.name + '" class="product-detail-img">' +
+        '<div class="product-detail-info">' +
+            '<h2>' + d.name + '</h2>' +
+            '<span class="fat-badge">' + d.fat + '</span>' +
+        '</div>' +
+    '</div>' +
+    '<p class="product-detail-desc">' + d.desc + '</p>' +
+    '<div class="product-detail-section">' +
+        '<h3>' + (lang === 'sq' ? 'Vlerat Ushqyese' : 'Nutritional Values') + '</h3>' +
+        '<p>' + d.nut + '</p>' +
+    '</div>' +
+    '<div class="product-detail-section">' +
+        '<h3>' + (lang === 'sq' ? 'Si të Përdoret' : 'How to Use') + '</h3>' +
+        '<p>' + d.use + '</p>' +
+    '</div>';
+overlay.classList.add('open');
+document.body.style.overflow = 'hidden';
+overlay.scrollTop = 0;
+}
+
+function hideProduct() {
+document.getElementById('productDetail').classList.remove('open');
+document.body.style.overflow = '';
+}
 </script>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
