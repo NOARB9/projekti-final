@@ -26,13 +26,16 @@
             --radius-sm: 10px;
         }
 
-        html { scroll-behavior: smooth; }
+        html { scroll-behavior: smooth; height: 100%; }
         body {
             font-family: 'Inter', sans-serif;
             background: var(--bg-primary);
             color: var(--text-primary);
             line-height: 1.6;
             overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
         /* NAVBAR */
@@ -59,14 +62,17 @@
             border-radius: 10px;
             object-fit: contain;
         }
-        .nav-links {
-            display: flex; align-items: center; gap: 2rem; list-style: none;
-        }
+        .nav-links { display: flex; list-style: none; gap: 2rem; align-items: center; }
         .nav-links a {
             text-decoration: none; color: var(--text-secondary);
-            font-weight: 500; font-size: 0.95rem;
-            transition: color 0.2s;
+            font-weight: 500; font-size: 0.92rem; transition: color 0.2s;
+            cursor: pointer;
         }
+        .nav-links a:hover, .nav-links a.active { color: var(--accent); }
+
+        /* PAGE ROUTER */
+        .page-section { display: none; }
+        .page-section.active { display: block; }
         .nav-links a:hover { color: var(--accent); }
         .nav-cta {
             background: var(--accent); color: white !important;
@@ -74,6 +80,37 @@
             font-weight: 600 !important;
             transition: background 0.2s, transform 0.15s;
         }
+        .nav-cta:hover { background: var(--accent-dark); transform: scale(1.03); }
+
+        /* NAV ACTIONS */
+        .nav-actions { display: flex; align-items: center; gap: 14px; margin-left: 1rem; }
+        .nav-coins { font-size: 0.85rem; font-weight: 600; color: #f4b400; }
+        .nav-login-btn { background: var(--accent); color: white; border: none; padding: 6px 16px; border-radius: 50px; cursor: pointer; font-weight: 600; font-size: 0.85rem; }
+        .nav-user-btn { font-size: 0.85rem; font-weight: 600; color: var(--accent-dark); cursor: pointer; }
+        .nav-cart { position: relative; cursor: pointer; font-size: 1.3rem; }
+        .cart-count { position: absolute; top: -8px; right: -10px; background: #e74c3c; color: white; font-size: 0.65rem; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+
+        /* MODALS */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 2000; display: flex; align-items: center; justify-content: center; }
+        .modal-box { background: white; border-radius: 16px; padding: 2rem; width: 90%; max-width: 420px; max-height: 80vh; overflow-y: auto; }
+
+        /* RUSH BANNER */
+        .rush-banner { background: linear-gradient(135deg, #e74c3c, #c0392b); color: white; text-align: center; padding: 10px 2rem; font-size: 0.9rem; display: flex; justify-content: center; align-items: center; gap: 20px; position: sticky; top: 64px; z-index: 999; }
+        .rush-timer { font-family: 'Courier New', monospace; font-weight: 700; font-size: 1.1rem; background: rgba(0,0,0,0.3); padding: 4px 12px; border-radius: 6px; }
+
+        /* PRODUCT PRICES */
+        .product-price { margin-top: 8px; font-size: 0.95rem; }
+        .current-price { font-weight: 700; color: var(--accent-dark); }
+        .old-price { text-decoration: line-through; color: var(--text-muted); font-size: 0.85rem; }
+        .sale-price { font-weight: 700; color: #e74c3c; font-size: 1.1rem; }
+        .discount-tag { background: #e74c3c; color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: 700; }
+        .rush-badge { position: absolute; top: 8px; right: 8px; background: #e74c3c; color: white; padding: 3px 8px; border-radius: 10px; font-size: 0.7rem; font-weight: 700; }
+        .add-cart-btn { margin-top: 8px; width: 100%; padding: 8px; background: var(--accent); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.85rem; transition: background 0.2s; }
+        .add-cart-btn:hover { background: var(--accent-dark); }
+
+        /* COINS EARNED ANIMATION */
+        .coins-earned { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 1.8rem; font-weight: 800; color: #f4b400; text-shadow: 0 0 12px rgba(244,180,0,0.6); animation: coinFloat 2s ease-out forwards; pointer-events: none; z-index: 10; }
+        @keyframes coinFloat { 0% { opacity: 1; transform: translate(-50%, -50%) scale(1); } 100% { opacity: 0; transform: translate(-50%, -120%) scale(1.5); } }
         .nav-cta:hover {
             background: var(--accent-dark); transform: translateY(-1px);
         }
@@ -113,6 +150,23 @@
             position: relative;
         }
         .hero-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; position: relative; }
+        .hero-socials {
+            display: flex; gap: 0.8rem; justify-content: center;
+            flex-wrap: wrap; margin-top: 1.5rem; position: relative;
+        }
+        .btn-social {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 10px 20px; border-radius: 50px;
+            font-weight: 600; font-size: 0.88rem;
+            text-decoration: none; cursor: pointer;
+            transition: all 0.2s;
+            background: white; border: 2px solid var(--border);
+            color: var(--text-secondary);
+        }
+        .btn-social:hover { transform: translateY(-2px); }
+        .btn-social.insta:hover { border-color: #e4405f; color: #e4405f; box-shadow: 0 4px 12px rgba(228,64,95,0.2); }
+        .btn-social.fb:hover { border-color: #1877f2; color: #1877f2; box-shadow: 0 4px 12px rgba(24,119,242,0.2); }
+        .btn-social.wiki:hover { border-color: #333; color: #333; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
         .btn {
             display: inline-flex; align-items: center; gap: 8px;
             padding: 14px 32px; border-radius: 50px;
@@ -462,12 +516,18 @@
         /* FOOTER */
         footer {
             background: var(--text-primary); color: rgba(255,255,255,0.7);
-            padding: 3rem 2rem 2rem;
+            padding: 3rem 0 2rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            width: 100%;
         }
         .footer-grid {
             max-width: 1200px; margin: 0 auto;
             display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
             gap: 2rem;
+            padding: 0 2rem;
         }
         .footer-brand h4 {
             color: white; font-size: 1.3rem; font-weight: 700; margin-bottom: 0.5rem;
@@ -482,7 +542,7 @@
         }
         .footer-col a:hover { color: var(--accent-light); }
         .footer-bottom {
-            max-width: 1200px; margin: 2.5rem auto 0; padding-top: 1.5rem;
+            max-width: 1200px; margin: 2.5rem auto 0; padding: 1.5rem 2rem 0;
             border-top: 1px solid rgba(255,255,255,0.12);
             text-align: center; font-size: 0.82rem;
         }
@@ -688,6 +748,57 @@
             color: #6b9bc0;
             font-weight: bold;
         }
+        .game-stats-bar {
+            display: flex;
+            gap: 16px;
+            border-top: 1px solid rgba(0,150,255,0.15);
+            padding-top: 10px;
+            margin-top: 8px;
+        }
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+        }
+        .stat-val {
+            font-size: 1.1rem;
+            font-weight: 700;
+            font-family: 'Courier New', monospace;
+            color: #00bfff;
+            text-shadow: 0 0 6px rgba(0,191,255,0.4);
+            min-width: 24px;
+            text-align: center;
+        }
+        .stat-item:first-child .stat-val { color: #4caf50; }
+        .stat-item:nth-child(2) .stat-val { color: #e74c3c; }
+        .stat-lbl {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: rgba(0,200,255,0.5);
+        }
+        .game-qc-stages {
+            display: flex;
+            gap: 6px;
+            margin-top: 6px;
+            flex-wrap: wrap;
+        }
+        .qc-stage {
+            font-size: 0.65rem;
+            padding: 2px 8px;
+            border-radius: 10px;
+            background: rgba(0,150,255,0.08);
+            color: rgba(0,180,255,0.45);
+            border: 1px solid rgba(0,150,255,0.12);
+            transition: all 0.3s;
+        }
+        .qc-stage.active {
+            background: rgba(0,150,255,0.2);
+            color: #00bfff;
+            border-color: rgba(0,180,255,0.4);
+            text-shadow: 0 0 6px rgba(0,191,255,0.3);
+        }
         .game-history-dots {
             display: flex;
             gap: 6px;
@@ -838,7 +949,7 @@
             background: #0d1117 !important;
         }
         .leaflet-tile-pane {
-            filter: grayscale(40%) brightness(0.5) contrast(1.3);
+            filter: grayscale(50%) brightness(0.75) contrast(1.1) saturate(0.8);
         }
         .heatmap-legend {
             display: flex;
@@ -891,26 +1002,65 @@
 <!-- NAVBAR -->
 <nav class="navbar">
     <div class="nav-inner">
-        <a href="#" class="nav-logo">
+        <a href="#" class="nav-logo" onclick="navigateTo('home')">
             <img src="logo-vita.png" alt="Vita" class="logo-icon">
             Vita
         </a>
         <ul class="nav-links">
-            <li><a href="#about" data-sq="Rreth Nesh" data-en="About">Rreth Nesh</a></li>
-            <li><a href="#products" data-sq="Produktet" data-en="Products">Produktet</a></li>
-            <li><a href="#game" data-sq="Testi i Qumështit" data-en="Milk Test">Testi i Qumështit</a></li>
-            <li><a href="#values" data-sq="Vlerat" data-en="Values">Vlerat</a></li>
-            <li><a href="#contact" class="nav-cta" data-sq="Kontakto" data-en="Contact">Kontakto</a></li>
+            <li><a onclick="navigateTo('about')" data-sq="Rreth Nesh" data-en="About">Rreth Nesh</a></li>
+            <li><a onclick="navigateTo('products')" data-sq="Produktet" data-en="Products">Produktet</a></li>
+            <li><a onclick="navigateTo('game')" data-sq="Testi i Qumështit" data-en="Milk Test">Testi i Qumështit</a></li>
+            <li><a onclick="navigateTo('values')" data-sq="Vlerat" data-en="Values">Vlerat</a></li>
+            <li><a onclick="navigateTo('contact')" class="nav-cta" data-sq="Kontakto" data-en="Contact">Kontakto</a></li>
         </ul>
         <div class="lang-switcher">
             <button class="active" onclick="switchLang('sq')">SQ</button>
             <button onclick="switchLang('en')">EN</button>
         </div>
+        <div class="nav-actions">
+            <span id="navCoins" class="nav-coins" style="display:none;">🪙 <span>0</span></span>
+            <button id="navLoginBtn" class="nav-login-btn" onclick="showAuthModal('login')" data-sq="Hyr" data-en="Sign In">Hyr</button>
+            <div id="navUserBtn" class="nav-user-btn" style="display:none;" onclick="showAuthModal('login')">
+                <span id="navUserName"></span>
+            </div>
+            <div class="nav-cart" onclick="showCartModal()">
+                <span id="cartIcon">🛒</span>
+                <span id="cartCount" class="cart-count" style="display:none;">0</span>
+            </div>
+        </div>
     </div>
 </nav>
 
+<!-- RUSH HOUR BANNER -->
+<div id="rushBanner" class="rush-banner" style="display:none;">
+    <span>⚡ <strong id="rushName">Vita Flash</strong> — <span id="rushDiscount">-30%</span></span>
+    <span id="rushTimer" class="rush-timer">59:59</span>
+</div>
+
+<!-- AUTH MODAL -->
+<div id="authModal" class="modal-overlay" style="display:none;">
+    <div class="modal-box">
+        <h3 id="authTitle" data-sq="Hyr" data-en="Sign In">Hyr</h3>
+        <div id="authNameGroup"><input id="authName" placeholder="Emri" style="width:100%;padding:10px;margin:8px 0;border:1px solid var(--border);border-radius:8px;"></div>
+        <input id="authEmail" type="email" placeholder="Email" style="width:100%;padding:10px;margin:8px 0;border:1px solid var(--border);border-radius:8px;">
+        <input id="authPassword" type="password" placeholder="Fjalëkalimi" style="width:100%;padding:10px;margin:8px 0;border:1px solid var(--border);border-radius:8px;">
+        <input type="hidden" id="authMode" value="login">
+        <button id="authSubmit" onclick="handleAuth()" style="width:100%;padding:10px;background:var(--accent);color:white;border:none;border-radius:8px;cursor:pointer;font-weight:600;margin-top:8px;" data-sq="Hyr" data-en="Sign In">Hyr</button>
+        <p style="text-align:center;margin-top:10px;font-size:0.85rem;">
+            <span data-sq="Nuk ke llogari?" data-en="No account?">Nuk ke llogari?</span>
+            <a onclick="showAuthModal('register')" style="color:var(--accent);cursor:pointer;" data-sq="Regjistrohu" data-en="Register">Regjistrohu</a>
+        </p>
+        <button onclick="hideAuthModal()" style="margin-top:8px;width:100%;padding:8px;background:none;border:1px solid var(--border);border-radius:8px;cursor:pointer;">Mbyll</button>
+    </div>
+</div>
+
+<!-- CART MODAL -->
+<div id="cartModal" class="modal-overlay" style="display:none;">
+    <div class="modal-box" id="cartModalContent"></div>
+</div>
+
 <!-- HERO -->
-<section class="hero" id="home">
+<section class="hero page-section home" id="home">
     <div class="hero-badge" data-sq="Qumështore Kosovare" data-en="Kosovar Dairy">Qumështore Kosovare</div>
     <h1 data-sq='Shija e Vërtetë e <span>Kosovës</span>' data-en='The True Taste of <span>Kosovo</span>'>
         Shija e Vërtetë e <span>Kosovës</span>
@@ -922,6 +1072,11 @@
     <div class="hero-buttons">
         <a href="#products" class="btn btn-primary" data-sq="Shiko Produktet" data-en="View Products">Shiko Produktet</a>
         <a href="#about" class="btn btn-outline" data-sq="Mëso Më Shumë" data-en="Learn More">Mëso Më Shumë</a>
+    </div>
+    <div class="hero-socials">
+        <a href="https://instagram.com/vita" target="_blank" class="btn-social insta">📸 Instagram</a>
+        <a href="https://facebook.com/vita" target="_blank" class="btn-social fb">📘 Facebook</a>
+        <a href="https://wikipedia.org" target="_blank" class="btn-social wiki">📚 Wikipedia</a>
     </div>
     <div class="hero-stats">
         <div class="hero-stat">
@@ -947,7 +1102,7 @@
 </div>
 
 <!-- ABOUT -->
-<section id="about">
+<section class="page-section home" id="about">
     <div class="container">
         <div class="section-header">
             <span class="tag" data-sq="Rreth Nesh" data-en="About Us">Rreth Nesh</span>
@@ -997,7 +1152,7 @@
 </section>
 
 <!-- PRODUCTS -->
-<section id="products">
+<section class="page-section" id="products">
     <div class="container">
         <div class="section-header">
             <span class="tag" data-sq="Produktet" data-en="Products">Produktet</span>
@@ -1008,7 +1163,7 @@
             </p>
         </div>
         <div class="products-grid">
-            <div class="product-card clickable" onclick="showProduct('milk')">
+            <div class="product-card clickable" data-slug="milk" onclick="showProduct('milk')">
                 <div class="product-icon">
                     <img src="qumeshti-vita.png" alt="Qumësht Vita" class="product-img">
                 </div>
@@ -1019,7 +1174,7 @@
                 </p>
                 <span class="fat-badge">3.2% Yndyrë</span>
             </div>
-            <div class="product-card featured clickable" onclick="showProduct('kos')">
+            <div class="product-card featured clickable" data-slug="kos" onclick="showProduct('kos')">
                 <span class="featured-badge" data-sq="⭐ Më e Shitura" data-en="⭐ Best Seller">⭐ Më e Shitura</span>
                 <div class="product-icon">
                     <img src="jogurt-vita.png" alt="Kos Vita" class="product-img">
@@ -1031,7 +1186,7 @@
                 </p>
                 <span class="fat-badge">3.5% Yndyrë</span>
             </div>
-            <div class="product-card clickable" onclick="showProduct('jogurt')">
+            <div class="product-card clickable" data-slug="jogurt" onclick="showProduct('jogurt')">
                 <div class="product-icon">
                     <img src="jogurt-vita.png" alt="Jogurt Vita" class="product-img">
                 </div>
@@ -1042,7 +1197,7 @@
                 </p>
                 <span class="fat-badge">2.0% Yndyrë</span>
             </div>
-            <div class="product-card clickable" onclick="showProduct('cheese')">
+            <div class="product-card clickable" data-slug="cheese" onclick="showProduct('cheese')">
                 <div class="product-icon">
                     <img src="djath-vita.png" alt="Djathë Vita" class="product-img">
                 </div>
@@ -1053,7 +1208,7 @@
                 </p>
                 <span class="fat-badge">18% Yndyrë</span>
             </div>
-            <div class="product-card clickable" onclick="showProduct('ayran')">
+            <div class="product-card clickable" data-slug="ayran" onclick="showProduct('ayran')">
                 <div class="product-icon">
                     <img src="ayran-vita.png" alt="Ayran" class="product-img">
                 </div>
@@ -1064,7 +1219,7 @@
                 </p>
                 <span class="fat-badge">1.5% Yndyrë</span>
             </div>
-            <div class="product-card clickable" onclick="toggleSubProducts('creams')">
+            <div class="product-card clickable" data-slug="cooking-cream" onclick="toggleSubProducts('creams')">
                 <div class="product-icon">
                     <img src="cooking-cream-vita.png" alt="Krem Gatimi" class="product-img">
                 </div>
@@ -1095,7 +1250,7 @@
                     </div>
                 </div>
             </div>
-            <div class="product-card clickable" onclick="toggleSubProducts('whipping')">
+            <div class="product-card clickable" data-slug="whipping-cream" onclick="toggleSubProducts('whipping')">
                 <div class="product-icon">
                     <img src="whipping-cream-vita.png" alt="Krem Pana" class="product-img">
                 </div>
@@ -1129,13 +1284,35 @@
         </div>
     </div>
 
+    <!-- HEAT MAP -->
+    <div class="heatmap-container" style="margin-top: 3rem; background: linear-gradient(180deg, #0d1117 0%, #111922 100%); padding: 3rem 0; border-radius: var(--radius);">
+        <div style="max-width:1200px;margin:0 auto;padding:0 2rem;">
+            <div class="section-header">
+                <span class="tag" style="background:rgba(255,255,255,0.1);color:#8ab8e8;" data-sq="Origjina e Qumështit" data-en="Milk Origins">Origjina e Qumështit</span>
+                <h2 style="color:white;" data-sq="Nga Vijmë" data-en="Where We Come From">Nga Vijmë</h2>
+                <p style="color:rgba(255,255,255,0.6);" data-sq="70% e qumështit tonë vjen nga ferma familjare në këto rajone të Kosovës."
+                   data-en="70% of our milk comes from family farms in these Kosovo regions.">
+                    70% e qumështit tonë vjen nga ferma familjare në këto rajone të Kosovës.
+                </p>
+            </div>
+            <div id="heatmapMap"></div>
+            <div class="heatmap-legend">
+                <span data-sq="Pak" data-en="Low">Pak</span>
+                <div class="gradient-bar"></div>
+                <span data-sq="Shumë" data-en="High">Shumë</span>
+                <span style="margin-left:16px;" data-sq="— Ngjyra = vëllimi i grumbullimit" data-en="— Color = collection volume">— Ngjyra = vëllimi i grumbullimit</span>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- PRODUCT DETAIL OVERLAY -->
 <div class="product-detail-overlay" id="productDetail">
     <div class="product-detail-inner" id="productDetailInner"></div>
 </div>
 
 <!-- GAME -->
-<section id="game">
+<section class="page-section" id="game">
     <div class="container">
         <div class="section-header">
             <span class="tag" data-sq="Laboratori" data-en="Laboratory">Laboratori</span>
@@ -1170,6 +1347,18 @@
                         <div class="game-monitor-content" id="monitorContent">
                             <div class="result-line" data-sq="Sistemi gati. Zgjidhni një test..." data-en="System ready. Select a test...">Sistemi gati. Zgjidhni një test...</div>
                         </div>
+                        <div class="game-stats-bar" id="gameStats">
+                            <div class="stat-item"><span class="stat-val" id="statOk">0</span><span class="stat-lbl" data-sq="OK" data-en="OK">OK</span></div>
+                            <div class="stat-item"><span class="stat-val" id="statBad">0</span><span class="stat-lbl" data-sq="Jo OK" data-en="Bad">Jo OK</span></div>
+                            <div class="stat-item"><span class="stat-val" id="statTotal">0</span><span class="stat-lbl" data-sq="Teste" data-en="Tests">Teste</span></div>
+                        </div>
+                        <div class="game-qc-stages" id="qcStages">
+                            <span class="qc-stage" data-stage="farm" data-sq="Grumbullim" data-en="Farm">Grumbullim</span>
+                            <span class="qc-stage" data-stage="process" data-sq="Përpunim" data-en="Processing">Përpunim</span>
+                            <span class="qc-stage" data-stage="physico" data-sq="Fiziko-Kimike" data-en="Physicochemical">Fiziko-Kimike</span>
+                            <span class="qc-stage" data-stage="purity" data-sq="Pastërti" data-en="Purity">Pastërti</span>
+                            <span class="qc-stage" data-stage="official" data-sq="Inspektim" data-en="Inspection">Inspektim</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1187,29 +1376,8 @@
     </div>
 </section>
 
-<!-- HEAT MAP — MILK COLLECTION -->
-<section id="heatmap">
-    <div class="container">
-        <div class="section-header">
-            <span class="tag" data-sq="Origjina e Qumështit" data-en="Milk Origins">Origjina e Qumështit</span>
-            <h2 data-sq="Nga Vijmë" data-en="Where We Come From">Nga Vijmë</h2>
-            <p data-sq="70% e qumështit tonë vjen nga ferma familjare në këto rajone të Kosovës."
-               data-en="70% of our milk comes from family farms in these Kosovo regions.">
-                70% e qumështit tonë vjen nga ferma familjare në këto rajone të Kosovës.
-            </p>
-        </div>
-        <div id="heatmapMap"></div>
-        <div class="heatmap-legend">
-            <span data-sq="Pak" data-en="Low">Pak</span>
-            <div class="gradient-bar"></div>
-            <span data-sq="Shumë" data-en="High">Shumë</span>
-            <span style="margin-left:16px;" data-sq="— Ngjyra = vëllimi i grumbullimit" data-en="— Color = collection volume">— Ngjyra = vëllimi i grumbullimit</span>
-        </div>
-    </div>
-</section>
-
 <!-- VALUES -->
-<section id="values">
+<section class="page-section" id="values">
     <div class="container">
         <div class="section-header">
             <span class="tag" data-sq="Vlerat" data-en="Values">Vlerat</span>
@@ -1245,7 +1413,7 @@
 </section>
 
 <!-- CTA -->
-<section id="contact">
+<section class="page-section" id="contact">
     <div class="container">
         <div class="cta-banner">
             <h3 data-sq="Gati të Shijoni Vita-n?" data-en="Ready to Taste Vita?">Gati të Shijoni Vita-n?</h3>
@@ -1295,6 +1463,53 @@
 
 <script>
 
+    // ===== PAGE ROUTER =====
+    function navigateTo(page) {
+        // Hide all page sections
+        document.querySelectorAll('.page-section').forEach(function(s) {
+            s.classList.remove('active');
+        });
+        // Show the target page
+        var el = document.getElementById(page);
+        if (el) {
+            el.classList.add('active');
+        }
+        // If home, also show all home sections
+        if (page === 'home') {
+            document.querySelectorAll('.page-section.home').forEach(function(s) {
+                s.classList.add('active');
+            });
+        }
+        // If about, just scroll there (it's on home)
+        if (page === 'about') {
+            document.querySelectorAll('.page-section.home').forEach(function(s) {
+                s.classList.add('active');
+            });
+            var aboutEl = document.getElementById('about');
+            if (aboutEl) aboutEl.scrollIntoView({ behavior: 'smooth' });
+        }
+        // Fix map when navigating to products
+        if (page === 'products') {
+            setTimeout(function() {
+                if (typeof map !== 'undefined' && map) { map.invalidateSize(); }
+                if (typeof initHeatMap === 'function' && (!map)) { initHeatMap(); }
+            }, 200);
+        }
+        // Update active nav link
+        document.querySelectorAll('.nav-links a').forEach(function(a) {
+            a.classList.remove('active');
+        });
+        var navLinks = document.querySelectorAll('.nav-links a');
+        for (var i = 0; i < navLinks.length; i++) {
+            var onclick = navLinks[i].getAttribute('onclick') || '';
+            if (onclick.indexOf("'" + page + "'") >= 0) {
+                navLinks[i].classList.add('active');
+            }
+        }
+        // Scroll to top
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
     // ===== MILK TESTING GAME — RANDOMIZED EACH REFRESH =====
     var gameState = {
         testsRun: [],
@@ -1303,11 +1518,21 @@
         activeTests: [],    // 6 randomly chosen tests for this round
         secrets: {},
         lang: 'sq',
-        decided: false
+        decided: false,
+        currentProduct: null,  // {img, sq, en, prefix}
+        stats: { ok: 0, bad: 0 }
     };
 
     // Milk images to randomly choose from
-    var milkImages = ['tamel-vita.png', 'qumeshti-vita.png', 'jogurt-vita.png', 'djath-vita.png'];
+    var milkImages = [
+        {img: 'qumeshti-vita.png', sq: 'Qumësht', en: 'Milk', prefix: 'V'},
+        {img: 'tamel-vita.png', sq: 'Tamel', en: 'Tamel', prefix: 'T'},
+        {img: 'jogurt-vita.png', sq: 'Jogurt', en: 'Yogurt', prefix: 'J'},
+        {img: 'djath-vita.png', sq: 'Djathë', en: 'Cheese', prefix: 'D'},
+        {img: 'ayran-vita.png', sq: 'Ayran', en: 'Ayran', prefix: 'A'},
+        {img: 'cooking-cream-vita.png', sq: 'Krem Gatimi', en: 'Cooking Cream', prefix: 'K'},
+        {img: 'whipping-cream-vita.png', sq: 'Krem Pana', en: 'Whipping Cream', prefix: 'P'}
+    ];
 
     // Master test pool — 16 possible tests
     var testPool = [
@@ -1328,7 +1553,30 @@
         {id:'freezing', sq:'Pika e Ngrirjes', en:'Freezing Point', ok:false,  gv:'-0.540°C', gs:'Normale. Pa ujë të shtuar.', ge:'Normal. No added water.', bv:'-0.480°C', bs:'Anormale! Hollim me ujë i dyshuar.', be:'Abnormal! Suspected water dilution.'},
         {id:'salt', sq:'Kripa', en:'Salts', ok:false,  gv:'0.18%', gs:'Niveli normal i kripërave.', ge:'Normal salt level.', bv:'0.45%', bs:'E lartë! Shtesë artificiale kripe.', be:'High! Artificial salt addition.'},
         {id:'color', sq:'Ngjyra', en:'Color', ok:false,  gv:'E bardhë natyrale', gs:'Ngjyra e pranueshme.', ge:'Acceptable color.', bv:'E verdhë', bs:'Ngjyrë anormale! Kontaminim ose oksidim.', be:'Abnormal color! Contamination or oxidation.'},
-        {id:'smell', sq:'Era', en:'Smell', ok:false,  gv:'Normale', gs:'Era tipike e qumështit të freskët.', ge:'Typical fresh milk smell.', bv:'E thartë', bs:'Erë e thartë! Fermentim i filluar.', be:'Sour smell! Fermentation started.'}
+        {id:'smell', sq:'Era', en:'Smell', ok:false,  gv:'Normale', gs:'Era tipike e qumështit të freskët.', ge:'Typical fresh milk smell.', bv:'E thartë', bs:'Erë e thartë! Fermentim i filluar.', be:'Sour smell! Fermentation started.'},
+        // Real Vita QC lab tests — farm-to-package monitoring
+        {id:'moisture', sq:'Lagështia', en:'Moisture', ok:false, gv:'42%', gs:'Brenda normës për djathë (38-45%). Teksturë perfekte.', ge:'Within cheese norm (38-45%). Perfect texture.', bv:'58%', bs:'Shumë e lartë! Djathë i ujshëm — cilësi e dobët.', be:'Too high! Watery cheese — poor quality.'},
+        {id:'vegfat', sq:'Yndyra Bimore', en:'Vegetable Fat', ok:false, gv:'0% — Yndyrë e pastër shtazore', gs:'Pa yndyra bimore. 100% qumësht i vërtetë.', ge:'No vegetable fats. 100% real milk.', bv:'POZITIV — Vaj palme i detektuar', bs:'Adulterim! Vaj palme i gjetur — jo qumësht i pastër!', be:'Adulteration! Palm oil detected — not pure dairy!'},
+        {id:'milkpowder', sq:'Qumësht Pluhur', en:'Milk Powder', ok:false, gv:'Negativ — I pastër', gs:'Pa gjurmë qumështi pluhur. Produkt autentik.', ge:'No milk powder traces. Authentic product.', bv:'POZITIV — Qumësht pluhur i detektuar', bs:'Adulterim! Prodhuar me qumësht pluhur, jo i freskët!', be:'Adulteration! Made with milk powder, not fresh!'},
+        {id:'auv', sq:'Inspektimi AUV', en:'AUV Inspection', ok:false, gv:'I KALUAR — Certifikuar', gs:'Inspektimi shtetëror i kaluar. AUV miraton.', ge:'State inspection passed. AUV approved.', bv:'REFUZUAR — Mangësi', bs:'AUV gjeti shkelje! Linja e prodhimit nën standard.', be:'AUV found violations! Production line below standard.'},
+        // Farm collection stage
+        {id:'trace', sq:'Gjurmueshmëria', en:'Traceability', ok:false, gv:'E PLOTË — Ferma #142', gs:'Origjina e gjurmuar deri te ferma. Zinxhiri i plotë.', ge:'Origin traced to farm. Full chain intact.', bv:'E PRISHUR — Origjinë e panjohur', bs:'Nuk dihet se nga cila fermë vjen! Shkelje e sigurisë ushqimore.', be:'Unknown farm origin! Food safety violation.'},
+        {id:'farmclean', sq:'Pastërtia e Fermës', en:'Farm Cleanliness', ok:false, gv:'KLASA A — Sterile', gs:'Ferma plotëson standardet më të larta të higjienës.', ge:'Farm meets highest hygiene standards.', bv:'KLASA C — Nën standard', bs:'Ferma ka mungesa higjienike! Pajisje të palara.', be:'Farm has hygiene deficiencies! Unclean equipment.'},
+        // Processing stage
+        {id:'detergent', sq:'Mbetje Detergjenti', en:'Detergent Residue', ok:false, gv:'Negativ — I pastër', gs:'Pa mbetje kimike nga pastrimi i pajisjeve.', ge:'No chemical residues from equipment cleaning.', bv:'POZITIV — Mbetje kimike', bs:'Mbetje detergjenti në produkt! Pajisjet nuk u shpëlanë mirë.', be:'Detergent residue in product! Equipment not rinsed properly.'},
+        {id:'crosscontam', sq:'Kontaminim Kryq', en:'Cross-Contamination', ok:false, gv:'Negativ — I izoluar', gs:'Pa kontaminim të kryqëzuar. Linja e pastër.', ge:'No cross-contamination. Clean line.', bv:'POZITIV — Alergjenë të huaj', bs:'Gjurmë të produkteve të tjera! Kontaminim në linjën e prodhimit.', be:'Traces of other products! Production line contamination.'},
+        {id:'texture', sq:'Struktura', en:'Texture', ok:false, gv:'Uniforme — 9.2/10', gs:'Strukturë homogjene dhe kremoze. Konsistencë perfekte.', ge:'Homogeneous and creamy. Perfect consistency.', bv:'Granulare — 4.1/10', bs:'Strukturë e parregullt! Defekt në procesin e mpiksjes.', be:'Irregular texture! Curdling process defect.'},
+        // Packaging & final stage
+        {id:'package', sq:'Integriteti i Paketimit', en:'Package Integrity', ok:false, gv:'I PAPREKUR — Hermetik', gs:'Paketim i plotë dhe hermetik. I gatshëm për raft.', ge:'Fully sealed and airtight. Shelf-ready.', bv:'I DËMTUAR — Rrjedhje', bs:'Paketim i dëmtuar! Rrezik kontaminimi pas prodhimit.', be:'Damaged packaging! Post-production contamination risk.'},
+        {id:'shelf', sq:'Afati i Ruajtjes', en:'Shelf Life', ok:false, gv:'21 ditë — Optimal', gs:'Afat i plotë i ruajtjes. Produkt i freskët.', ge:'Full shelf life. Fresh product.', bv:'3 ditë — Skadon shpejt', bs:'Afat shumë i shkurtër! Probleme në pasteurizim.', be:'Very short shelf life! Pasteurization issues.'},
+        {id:'ash', sq:'Përmbajtja e Hirit', en:'Ash Content', ok:false, gv:'1.2% — Normale', gs:'Përmbajtje minerale normale. Cilësi e mirë.', ge:'Normal mineral content. Good quality.', bv:'2.8% — E lartë', bs:'Shumë minerale! Aditivë të paautorizuar të dyshuar.', be:'Too many minerals! Unauthorized additives suspected.'},
+        // Ayran-specific — fermented milk product testing (Chemical & Physical Analysis)
+        {id:'titratable', sq:'Aciditeti i Titrueshëm', en:'Titratable Acidity', ok:false, gv:'0.85% — Normale', gs:'Aciditet i ekuilibruar. Fermentim i kontrolluar.', ge:'Balanced acidity. Controlled fermentation.', bv:'1.45% — I lartë', bs:'Mbi-acidifikim! Fermentim i pakontrolluar.', be:'Over-acidified! Uncontrolled fermentation.'},
+        {id:'specgrav', sq:'Pesha Specifike', en:'Specific Gravity', ok:false, gv:'1.038 g/ml — Normale', gs:'Dendësi korrekte për ayran të fermentuar.', ge:'Correct density for fermented ayran.', bv:'1.012 g/ml — E ulët', bs:'Nën normën! Hollim me ujë i dyshuar.', be:'Below norm! Suspected water dilution.'},
+        // Hygienic automated processing — Tetra Pak aseptic systems
+        {id:'aseptic', sq:'Paketimi Aseptik', en:'Aseptic Packaging', ok:false, gv:'HERMETIK — Tetra Pak', gs:'Sistem i mbyllur. Pa kontakt njerëzor. Sterilitet i plotë.', ge:'Closed system. No human contact. Full sterility.', bv:'JO-HERMETIK — Rrjedhje', bs:'Vulosje e dëmtuar! Sistemi i hapur — rrezik kontaminimi.', be:'Seal broken! Open system — contamination risk.'},
+        // External lab verification — randomized sample testing
+        {id:'extlab', sq:'Verifikimi i Jashtëm', en:'External Lab', ok:false, gv:'I KONFIRMUAR — Përputhje', gs:'Laboratori i jashtëm konfirmon rezultatet. Mostra e pastër.', ge:'External lab confirms results. Clean sample.', bv:'KONTESTUAR — Mospërputhje', bs:'Laboratori i jashtëm gjeti probleme që Vita nuk i detektoi!', be:'External lab found issues Vita missed!'}
     ];
 
     function initGame() {
@@ -1384,9 +1632,10 @@
     }
 
     function initLocalGame() {
-        // Pick random milk image
-        var randomImg = milkImages[Math.floor(Math.random() * milkImages.length)];
-        document.getElementById('gameMilk').src = randomImg;
+        // Pick random product image
+        var randomProduct = milkImages[Math.floor(Math.random() * milkImages.length)];
+        document.getElementById('gameMilk').src = randomProduct.img;
+        gameState.currentProduct = randomProduct;
 
         var randomPool = testPool.filter(function(t) { return t.ok !== true; });
         for (var i = randomPool.length - 1; i > 0; i--) {
@@ -1412,9 +1661,12 @@
     }
 
     function finishGameInit() {
-        // Pick random milk image
-        var randomImg = milkImages[Math.floor(Math.random() * milkImages.length)];
-        document.getElementById('gameMilk').src = randomImg;
+        // Pick random product image if not set yet
+        if (!gameState.currentProduct) {
+            var randomProduct = milkImages[Math.floor(Math.random() * milkImages.length)];
+            gameState.currentProduct = randomProduct;
+        }
+        document.getElementById('gameMilk').src = gameState.currentProduct.img;
 
         gameState.testsRun = [];
         gameState.testResults = [];
@@ -1422,6 +1674,13 @@
         gameState.decided = false;
         gameState.lastDecision = null;
         gameState.lastIsCorrect = null;
+        gameState.stats = { ok: 0, bad: 0 };
+        updateStatsDisplay();
+
+        // Reset QC stage highlights
+        document.querySelectorAll('#qcStages .qc-stage').forEach(function(el) {
+            el.classList.remove('active');
+        });
 
         var chosen = gameState.activeTests;
         var btnContainer = document.getElementById('gameControls');
@@ -1445,11 +1704,12 @@
         if (overlay) overlay.remove();
 
         var sampleNum = Math.floor(Math.random() * 9000) + 1000;
+        var prefix = gameState.currentProduct ? gameState.currentProduct.prefix : 'V';
         var label = document.getElementById('gameMilkLabel');
         if (label) {
-            label.setAttribute('data-sq', 'Mostra #V-' + sampleNum);
-            label.setAttribute('data-en', 'Sample #V-' + sampleNum);
-            label.textContent = (gameState.lang === 'sq' ? 'Mostra #V-' : 'Sample #V-') + sampleNum;
+            label.setAttribute('data-sq', 'Mostra #' + prefix + '-' + sampleNum);
+            label.setAttribute('data-en', 'Sample #' + prefix + '-' + sampleNum);
+            label.textContent = (gameState.lang === 'sq' ? 'Mostra #' : 'Sample #') + prefix + '-' + sampleNum;
         }
 
         var hasKey = !!localStorage.getItem('vita_deepseek_key');
@@ -1475,6 +1735,31 @@
         var test = findTest(testType);
         if (!test) return;
 
+        // Rotate sample number on each test
+        var sampleNum = Math.floor(Math.random() * 9000) + 1000;
+        var prefix = gameState.currentProduct ? gameState.currentProduct.prefix : 'V';
+        var label = document.getElementById('gameMilkLabel');
+        if (label) {
+            label.setAttribute('data-sq', 'Mostra #' + prefix + '-' + sampleNum);
+            label.setAttribute('data-en', 'Sample #' + prefix + '-' + sampleNum);
+            label.textContent = (sq ? 'Mostra #' : 'Sample #') + prefix + '-' + sampleNum;
+        }
+
+        // Rotate product image on each test
+        var newProduct = milkImages[Math.floor(Math.random() * milkImages.length)];
+        gameState.currentProduct = newProduct;
+        milkImg.src = newProduct.img;
+        milkImg.className = 'game-milk-img'; // reset animation class first
+
+        // Update stats
+        if (hasIssue) {
+            gameState.stats.bad++;
+        } else {
+            gameState.stats.ok++;
+        }
+        updateStatsDisplay();
+        highlightQCStage(testType);
+
         var resultHtml = '';
         if (test.ok) {
             // Always OK
@@ -1497,13 +1782,45 @@
         gameState.currentTestIndex = gameState.testResults.length - 1;
         showResultWithHistory(monitorContent);
 
-        // Disable button for this test
+        // Substitute the used test button with a fresh random test
+        substituteTestButton(testType, sq);
+    }
+
+    function substituteTestButton(oldId, sq) {
+        // Pick a random new test NOT already in activeTests
+        var usedIds = {};
+        for (var i = 0; i < gameState.activeTests.length; i++) {
+            usedIds[gameState.activeTests[i].id] = true;
+        }
+        var available = testPool.filter(function(t) { return !usedIds[t.id]; });
+        if (available.length === 0) {
+            // All 29 tests exhausted — cycle back, pick any random
+            available = testPool;
+        }
+        var newTest = available[Math.floor(Math.random() * available.length)];
+
+        // Look up old test info BEFORE replacing
+        var oldTest = findTest(oldId);
+        var oldLabel = oldTest ? (sq ? oldTest.sq : oldTest.en) : '';
+
+        // Replace old with new in activeTests
+        for (var j = 0; j < gameState.activeTests.length; j++) {
+            if (gameState.activeTests[j].id === oldId) {
+                gameState.activeTests[j] = newTest;
+                break;
+            }
+        }
         var buttons = document.querySelectorAll('#gameControls .game-btn');
-        var labelMatch = sq ? test.sq : test.en;
         for (var k = 0; k < buttons.length; k++) {
-            if (buttons[k].textContent.trim() === labelMatch ||
-                buttons[k].getAttribute('data-sq') === test.sq) {
-                buttons[k].disabled = true;
+            if (buttons[k].textContent.trim() === oldLabel ||
+                buttons[k].getAttribute('data-sq') === (oldTest ? oldTest.sq : '')) {
+                buttons[k].setAttribute('onclick', "runTest('" + newTest.id + "')");
+                buttons[k].setAttribute('data-sq', newTest.sq);
+                buttons[k].setAttribute('data-en', newTest.en);
+                buttons[k].textContent = sq ? newTest.sq : newTest.en;
+                buttons[k].disabled = false;
+                buttons[k].className = 'game-btn';
+                break;
             }
         }
     }
@@ -1529,6 +1846,39 @@
         showResultWithHistory(monitorContent);
     }
 
+    function updateStatsDisplay() {
+        document.getElementById('statOk').textContent = gameState.stats.ok;
+        document.getElementById('statBad').textContent = gameState.stats.bad;
+        document.getElementById('statTotal').textContent = gameState.testsRun.length;
+    }
+
+    // Map test IDs to QC stages based on real Vita process
+    var qcStageMap = {
+        // Grumbullim (Farm Collection)
+        trace: 'farm', farmclean: 'farm',
+        // Përpunim (Processing)
+        detergent: 'process', crosscontam: 'process', texture: 'process',
+        // Fiziko-Kimike (Physicochemical & Composition Analysis)
+        temp: 'physico', ph: 'physico', density: 'physico', protein: 'physico',
+        fat: 'physico', lactose: 'physico', calcium: 'physico', freezing: 'physico',
+        salt: 'physico', color: 'physico', smell: 'physico', moisture: 'physico',
+        vitamin: 'physico', somatic: 'physico', ash: 'physico',
+        // Pastërti (Purity & Adulteration Checks)
+        antibiotic: 'purity', bacteria: 'purity', pesticide: 'purity',
+        hormone: 'purity', vegfat: 'purity', milkpowder: 'purity',
+        // Inspektim (Official AUV + Final Checks)
+        auv: 'official', package: 'official', shelf: 'official', extlab: 'official',
+        // Ayran-specific fermented product tests
+        titratable: 'physico', specgrav: 'physico', aseptic: 'process'
+    };
+
+    function highlightQCStage(testId) {
+        var stage = qcStageMap[testId] || 'physico';
+        document.querySelectorAll('#qcStages .qc-stage').forEach(function(el) {
+            el.classList.toggle('active', el.getAttribute('data-stage') === stage);
+        });
+    }
+
     function makeDecision(decision) {
         if (gameState.decided) return;
         gameState.decided = true;
@@ -1551,6 +1901,11 @@
         }
 
         gameState.lastIsCorrect = isCorrect;
+
+        // Submit to backend for coins
+        var productName = gameState.currentProduct ? gameState.currentProduct.sq : 'Qumësht';
+        submitGameReward(productName, gameState.testsRun.length, gameState.stats.ok, gameState.stats.bad, decision, isCorrect);
+
         var lab = document.getElementById('gameLab');
         var monitorDot = document.getElementById('monitorDot');
         monitorDot.style.background = isCorrect ? '#4caf50' : '#e74c3c';
@@ -1588,9 +1943,20 @@
         if (label && label.getAttribute('data-sq')) {
             label.textContent = lang === 'sq' ? label.getAttribute('data-sq') : (label.getAttribute('data-en') || label.getAttribute('data-sq'));
         }
+
+        // Update stats labels
+        document.querySelectorAll('#gameStats .stat-lbl').forEach(function(el) {
+            el.textContent = lang === 'sq' ? el.getAttribute('data-sq') : (el.getAttribute('data-en') || el.getAttribute('data-sq'));
+        });
+
+        // Update QC stage labels
+        document.querySelectorAll('#qcStages .qc-stage').forEach(function(el) {
+            el.textContent = lang === 'sq' ? el.getAttribute('data-sq') : (el.getAttribute('data-en') || el.getAttribute('data-sq'));
+        });
     }
 
     // Init
+    navigateTo('home');
     initGame();
     updateApiUI();
 
@@ -1775,9 +2141,7 @@
             '<button class="game-restart" onclick=\"initGame()\">' + (sq ? 'Provo Përsëri' : 'Try Again') + '</button>' +
             '</div>';
     }
-}
 
-<script>
 var productData = {
 milk: {
     img: 'qumeshti-vita.png',
@@ -1843,6 +2207,7 @@ document.body.style.overflow = '';
 </script>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="vita-api.js"></script>
 
 </body>
 </html>
