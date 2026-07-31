@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vita — Qumësht i Freskët nga Kosova</title>
+    <link rel="icon" type="image/png" href="favicon.png">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
@@ -250,7 +251,7 @@
             font-weight: 500;
         }
         .about-features li::before {
-            content: '\\2713'; color: var(--accent); font-weight: 800;
+            content: '✓'; color: var(--accent); font-weight: 800;
             font-size: 1.1rem;
         }
         .about-socials {
@@ -258,6 +259,7 @@
             gap: 12px;
             margin-top: 2rem;
             flex-wrap: wrap;
+            justify-content: center;
         }
         .about-social-btn {
             display: inline-flex;
@@ -427,12 +429,13 @@
             max-width: 800px; margin: 0 auto; padding: 1.5rem 2rem 4rem;
         }
         .product-detail-back {
+            position: fixed; top: 20px; left: 20px; z-index: 5010;
             display: inline-flex; align-items: center; gap: 6px;
-            background: none; border: 2px solid var(--border);
+            background: rgba(255,255,255,0.95); border: 2px solid var(--border);
             color: var(--text-secondary); padding: 10px 22px;
             border-radius: 50px; font-size: 0.9rem; font-weight: 600;
-            cursor: pointer; margin-bottom: 2rem;
-            transition: all 0.2s; font-family: 'Inter', sans-serif;
+            cursor: pointer; transition: all 0.2s; font-family: 'Inter', sans-serif;
+            box-shadow: var(--shadow);
         }
         .product-detail-back:hover {
             border-color: var(--accent); color: var(--accent);
@@ -1011,7 +1014,6 @@
             <li><a onclick="navigateTo('about')" data-sq="Rreth Nesh" data-en="About">Rreth Nesh</a></li>
             <li><a onclick="navigateTo('products')" data-sq="Produktet" data-en="Products">Produktet</a></li>
             <li><a onclick="navigateTo('game')" data-sq="Testi i Qumështit" data-en="Milk Test">Testi i Qumështit</a></li>
-            <li><a onclick="navigateTo('values')" data-sq="Vlerat" data-en="Values">Vlerat</a></li>
             <li><a onclick="navigateTo('contact')" class="nav-cta" data-sq="Kontakto" data-en="Contact">Kontakto</a></li>
         </ul>
         <div class="lang-switcher">
@@ -1021,7 +1023,7 @@
         <div class="nav-actions">
             <span id="navCoins" class="nav-coins" style="display:none;">🪙 <span>0</span></span>
             <button id="navLoginBtn" class="nav-login-btn" onclick="showAuthModal('login')" data-sq="Hyr" data-en="Sign In">Hyr</button>
-            <div id="navUserBtn" class="nav-user-btn" style="display:none;" onclick="showAuthModal('login')">
+            <div id="navUserBtn" class="nav-user-btn" style="display:none;" onclick="logout()">
                 <span id="navUserName"></span>
             </div>
             <div class="nav-cart" onclick="showCartModal()">
@@ -1074,20 +1076,6 @@
         <a href="#products" class="btn btn-primary" data-sq="Shiko Produktet" data-en="View Products">Shiko Produktet</a>
         <a href="#about" class="btn btn-outline" data-sq="Mëso Më Shumë" data-en="Learn More">Mëso Më Shumë</a>
     </div>
-    <div class="hero-socials">
-        <a href="https://instagram.com/qumeshtorjavita" target="_blank" class="btn-social insta">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-            Instagram
-        </a>
-        <a href="https://facebook.com/QumeshtorjaVita" target="_blank" class="btn-social fb">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-            Facebook
-        </a>
-        <a href="https://en.wikipedia.org/wiki/Kosovo" target="_blank" class="btn-social wiki">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm1.5 3.5V5h-3V3.5h3zm-3 3h3v1.5h-3V6.5zm0 3h3V11h-3V9.5zm0 3h3v1.5h-3V12.5zm0 3h3V17h-3v-1.5zm0 3h3v1.5h-3V18.5z"/><text x="5" y="17" font-size="14" font-weight="700" font-family="serif">W</text></svg>
-            Wikipedia
-        </a>
-    </div>
     <div class="hero-stats">
         <div class="hero-stat">
             <div class="num">25+</div>
@@ -1117,21 +1105,13 @@
         <div class="section-header">
             <span class="tag" data-sq="Rreth Nesh" data-en="About Us">Rreth Nesh</span>
             <h2 data-sq="Historia Jonë" data-en="Our Story">Historia Jonë</h2>
-            <p data-sq="Nga ferma në tryezën tuaj — cilësi që ndihet në çdo pikë."
-               data-en="From farm to your table — quality you can taste in every drop.">
-                Nga ferma në tryezën tuaj — cilësi që ndihet në çdo pikë.
-            </p>
         </div>
         <div class="about-grid">
             <div class="about-text">
-                <h3 data-sq="Një Traditë e Pasur Shqiptare" data-en="A Rich Albanian Tradition">Një Traditë e Pasur Shqiptare</h3>
-                <p data-sq="Vita lindi në zemër të Kosovës, me një mision të thjeshtë: të sjellim qumështin më të freskët dhe më të pastër në tryezat e familjeve shqiptare. Për më shumë se 25 vjet, ne kemi punuar me fermerët lokalë për të siguruar standardet më të larta të cilësisë."
+                <p style="color:var(--text-secondary);font-size:1.02rem;line-height:1.7;margin-bottom:1rem;"
+                   data-sq="Vita lindi në zemër të Kosovës, me një mision të thjeshtë: të sjellim qumështin më të freskët dhe më të pastër në tryezat e familjeve shqiptare. Për më shumë se 25 vjet, ne kemi punuar me fermerët lokalë për të siguruar standardet më të larta të cilësisë."
                    data-en="Vita was born in the heart of Kosovo with a simple mission: to bring the freshest, purest milk to Albanian family tables. For over 25 years, we have worked with local farmers to ensure the highest quality standards.">
                    Vita lindi në zemër të Kosovës, me një mision të thjeshtë: të sjellim qumështin më të freskët dhe më të pastër në tryezat e familjeve shqiptare. Për më shumë se 25 vjet, ne kemi punuar me fermerët lokalë për të siguruar standardet më të larta të cilësisë.
-                </p>
-                <p data-sq="Çdo gotë qumësht Vita mbart pasionin dhe përkushtimin e komunitetit tonë bujqësor. Ne besojmë se ushqimi i mirë fillon me përbërës të pastër — dhe nuk ka asgjë më të pastër se qumështi i freskët nga livadhet e gjelbra të Kosovës."
-                   data-en="Every glass of Vita milk carries the passion and dedication of our farming community. We believe that good food starts with pure ingredients — and there is nothing purer than fresh milk from Kosovo's green pastures.">
-                   Çdo gotë qumësht Vita mbart pasionin dhe përkushtimin e komunitetit tonë bujqësor. Ne besojmë se ushqimi i mirë fillon me përbërës të pastër — dhe nuk ka asgjë më të pastër se qumështi i freskët nga livadhet e gjelbra të Kosovës.
                 </p>
                 <ul class="about-features">
                     <li data-sq="Qumësht 100% natyral pa konservues" data-en="100% natural milk, no preservatives">Qumësht 100% natyral pa konservues</li>
@@ -1139,24 +1119,29 @@
                     <li data-sq="Proces i kontrolluar nga ferma në paketim" data-en="Controlled process from farm to packaging">Proces i kontrolluar nga ferma në paketim</li>
                     <li data-sq="Përkushtim ndaj komunitetit lokal" data-en="Commitment to the local community">Përkushtim ndaj komunitetit lokal</li>
                 </ul>
-                <div class="about-socials">
-                    <a href="https://facebook.com/VitaKosova" target="_blank" class="about-social-btn fb">
-                        <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-                        Facebook
-                    </a>
-                    <a href="https://instagram.com/vita_kosova" target="_blank" class="about-social-btn ig">
-                        <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-                        Instagram
-                    </a>
-                    <a href="https://en.wikipedia.org/wiki/Vita_(dairy)" target="_blank" class="about-social-btn wp">
-                        <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm1.16 4.5h-1.72v1.09h1.72V4.5zm-1.72 2.18h1.72v8.82h-1.72V6.68z"/><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><text x="8" y="17" font-size="10" font-weight="700" fill="currentColor">W</text></svg>
-                        Wikipedia
-                    </a>
-                </div>
             </div>
-            <div class="about-image">
-                <img src="qumeshti-vita.png" alt="Qumësht Vita" class="about-img">
+            <div class="about-image" id="aboutProductShowcase">
+                <img src="qumeshti-vita.png" alt="Vita" class="about-img" id="aboutProductImg">
             </div>
+        </div>
+        <p style="color:var(--text-muted);font-size:0.9rem;text-align:center;margin:2.5rem 0 0.8rem;"
+           data-sq="Për të mësuar më shumë, kliko në një nga linkat:"
+           data-en="To learn more, click one of the links:">
+            Për të mësuar më shumë, kliko në një nga linkat:
+        </p>
+        <div class="about-socials" style="justify-content:center;">
+            <a href="https://facebook.com/QumeshtorjaVita" target="_blank" class="about-social-btn fb">
+                <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                Facebook
+            </a>
+            <a href="https://instagram.com/qumeshtorjavita" target="_blank" class="about-social-btn ig">
+                <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                Instagram
+            </a>
+            <a href="https://en.wikipedia.org/wiki/Kosovo" target="_blank" class="about-social-btn wp">
+                <img src="wiki-vita.png" class="social-icon" style="width:20px;height:20px;object-fit:contain;">
+                Wikipedia
+            </a>
         </div>
     </div>
 </section>
@@ -1184,10 +1169,9 @@
                 </p>
                 <span class="fat-badge">3.2% Yndyrë</span>
             </div>
-            <div class="product-card featured clickable" data-slug="kos" onclick="showProduct('kos')">
-                <span class="featured-badge" data-sq="⭐ Më e Shitura" data-en="⭐ Best Seller">⭐ Më e Shitura</span>
+            <div class="product-card clickable" data-slug="kos" onclick="showProduct('kos')">
                 <div class="product-icon">
-                    <img src="jogurt-vita.png" alt="Kos Vita" class="product-img">
+                    <img src="kos-vita.png" alt="Kos Vita" class="product-img">
                 </div>
                 <h4 data-sq="Kos" data-en="Kos (Yogurt)">Kos</h4>
                 <p data-sq="Kos tradicional shqiptar, i trashë dhe kremoz me kultura të gjalla."
@@ -1294,24 +1278,19 @@
         </div>
     </div>
 
-    <!-- HEAT MAP -->
+    <!-- MAP -->
     <div class="heatmap-container" style="margin-top: 3rem; background: linear-gradient(180deg, #0d1117 0%, #111922 100%); padding: 3rem 0; border-radius: var(--radius);">
         <div style="max-width:1200px;margin:0 auto;padding:0 2rem;">
             <div class="section-header">
                 <span class="tag" style="background:rgba(255,255,255,0.1);color:#8ab8e8;" data-sq="Origjina e Qumështit" data-en="Milk Origins">Origjina e Qumështit</span>
                 <h2 style="color:white;" data-sq="Nga Vijmë" data-en="Where We Come From">Nga Vijmë</h2>
-                <p style="color:rgba(255,255,255,0.6);" data-sq="70% e qumështit tonë vjen nga ferma familjare në këto rajone të Kosovës."
-                   data-en="70% of our milk comes from family farms in these Kosovo regions.">
-                    70% e qumështit tonë vjen nga ferma familjare në këto rajone të Kosovës.
+                <p style="color:rgba(255,255,255,0.5);font-size:0.85rem;margin-top:0.3rem;margin-bottom:1.2rem;"
+                   data-sq="Kjo është harta se nga vjen 70% e qumështit tonë"
+                   data-en="This is where 70% of our milk comes from">
+                    Kjo është harta se nga vjen 70% e qumështit tonë
                 </p>
             </div>
-            <div id="heatmapMap"></div>
-            <div class="heatmap-legend">
-                <span data-sq="Pak" data-en="Low">Pak</span>
-                <div class="gradient-bar"></div>
-                <span data-sq="Shumë" data-en="High">Shumë</span>
-                <span style="margin-left:16px;" data-sq="— Ngjyra = vëllimi i grumbullimit" data-en="— Color = collection volume">— Ngjyra = vëllimi i grumbullimit</span>
-            </div>
+            <div id="kosovoMap" style="width:100%;height:520px;border-radius:16px;border:2px solid rgba(91,155,213,0.2);background:#0d1117;"></div>
         </div>
     </div>
 </section>
@@ -1362,13 +1341,6 @@
                             <div class="stat-item"><span class="stat-val" id="statBad">0</span><span class="stat-lbl" data-sq="Jo OK" data-en="Bad">Jo OK</span></div>
                             <div class="stat-item"><span class="stat-val" id="statTotal">0</span><span class="stat-lbl" data-sq="Teste" data-en="Tests">Teste</span></div>
                         </div>
-                        <div class="game-qc-stages" id="qcStages">
-                            <span class="qc-stage" data-stage="farm" data-sq="Grumbullim" data-en="Farm">Grumbullim</span>
-                            <span class="qc-stage" data-stage="process" data-sq="Përpunim" data-en="Processing">Përpunim</span>
-                            <span class="qc-stage" data-stage="physico" data-sq="Fiziko-Kimike" data-en="Physicochemical">Fiziko-Kimike</span>
-                            <span class="qc-stage" data-stage="purity" data-sq="Pastërti" data-en="Purity">Pastërti</span>
-                            <span class="qc-stage" data-stage="official" data-sq="Inspektim" data-en="Inspection">Inspektim</span>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -1381,42 +1353,6 @@
                 <button class="game-btn" onclick="runTest('protein')" data-sq="Proteinat" data-en="Protein">Proteinat</button>
                 <button class="game-btn decision approve" onclick="makeDecision('approve')" data-sq="Aprovo për Shitje" data-en="Approve for Sale">Aprovo për Shitje</button>
                 <button class="game-btn decision reject" onclick="makeDecision('reject')" data-sq="Refuzo Mostrën" data-en="Reject Sample">Refuzo Mostrën</button>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- VALUES -->
-<section class="page-section" id="values">
-    <div class="container">
-        <div class="section-header">
-            <span class="tag" data-sq="Vlerat" data-en="Values">Vlerat</span>
-            <h2 data-sq="Çfarë Na Bën të Veçantë" data-en="What Makes Us Special">Çfarë Na Bën të Veçantë</h2>
-        </div>
-        <div class="values-grid">
-            <div class="value-card">
-                <div class="value-icon"><div class="value-icon-circle">N</div></div>
-                <h4 data-sq="Natyral dhe i Pastër" data-en="Natural & Pure">Natyral dhe i Pastër</h4>
-                <p data-sq="Pa aditivë, pa konservues — ashtu siç e do natyra."
-                   data-en="No additives, no preservatives — just as nature intended.">
-                    Pa aditivë, pa konservues — ashtu siç e do natyra.
-                </p>
-            </div>
-            <div class="value-card">
-                <div class="value-icon"><div class="value-icon-circle">L</div></div>
-                <h4 data-sq="Lokal dhe Komunitar" data-en="Local & Community">Lokal dhe Komunitar</h4>
-                <p data-sq="Mbështesim fermerët vendorë dhe ekonominë e Kosovës."
-                   data-en="We support local farmers and Kosovo's economy.">
-                    Mbështesim fermerët vendorë dhe ekonominë e Kosovës.
-                </p>
-            </div>
-            <div class="value-card">
-                <div class="value-icon"><div class="value-icon-circle">C</div></div>
-                <h4 data-sq="Cilësi Premium" data-en="Premium Quality">Cilësi Premium</h4>
-                <p data-sq="Kontrolle rigoroze nga ferma deri te paketimi final."
-                   data-en="Rigorous controls from farm to final packaging.">
-                    Kontrolle rigoroze nga ferma deri te paketimi final.
-                </p>
             </div>
         </div>
     </div>
@@ -1451,12 +1387,11 @@
             <a href="#products" data-sq="Qumësht" data-en="Milk">Qumësht</a>
             <a href="#products" data-sq="Kos" data-en="Yogurt">Kos</a>
             <a href="#products" data-sq="Djathë" data-en="Cheese">Djathë</a>
-            <a href="#products" data-sq="Gjalpë" data-en="Butter">Gjalpë</a>
+            <a href="#products" data-sq="etj." data-en="etc.">etj.</a>
         </div>
         <div class="footer-col">
             <h5 data-sq="Kompania" data-en="Company">Kompania</h5>
             <a href="#about" data-sq="Rreth Nesh" data-en="About">Rreth Nesh</a>
-            <a href="#values" data-sq="Vlerat" data-en="Values">Vlerat</a>
             <a href="#" data-sq="Karriera" data-en="Careers">Karriera</a>
         </div>
         <div class="footer-col">
@@ -1502,7 +1437,7 @@
         if (page === 'products') {
             setTimeout(function() {
                 if (typeof map !== 'undefined' && map) { map.invalidateSize(); }
-                if (typeof initHeatMap === 'function' && (!map)) { initHeatMap(); }
+                if (typeof initKosovoMap === 'function') { initKosovoMap(); }
             }, 200);
         }
         // Update active nav link
@@ -1656,7 +1591,7 @@
         gameState.activeTests = chosen;
 
         var roll = Math.floor(Math.random() * 10);
-        var numIssues = (roll < 3) ? 0 : (2 + Math.floor(Math.random() * 2));
+        var numIssues = (roll < 8) ? 0 : (2 + Math.floor(Math.random() * 2));
         var issuePool = chosen.filter(function(t) { return t.ok !== true; });
         for (var k = issuePool.length - 1; k > 0; k--) {
             var jj = Math.floor(Math.random() * (k + 1));
@@ -1687,11 +1622,6 @@
         gameState.stats = { ok: 0, bad: 0 };
         updateStatsDisplay();
 
-        // Reset QC stage highlights
-        document.querySelectorAll('#qcStages .qc-stage').forEach(function(el) {
-            el.classList.remove('active');
-        });
-
         var chosen = gameState.activeTests;
         var btnContainer = document.getElementById('gameControls');
         var btnHtml = '';
@@ -1703,6 +1633,8 @@
             (gameState.lang === 'sq' ? 'Aprovo për Shitje' : 'Approve for Sale') + '</button>';
         btnHtml += '<button class="game-btn decision reject" onclick="makeDecision(\'reject\')" data-sq="Refuzo Mostrën" data-en="Reject Sample">' +
             (gameState.lang === 'sq' ? 'Refuzo Mostrën' : 'Reject Sample') + '</button>';
+        btnHtml += '<button class="game-btn" onclick="askAI()" style="border-color:#f4b400;color:#f4b400;" data-sq="Pyet AI" data-en="Ask AI">' +
+            (gameState.lang === 'sq' ? 'Pyet AI' : 'Ask AI') + '</button>';
         btnContainer.innerHTML = btnHtml;
 
         document.getElementById('gameMilk').className = 'game-milk-img';
@@ -1745,22 +1677,6 @@
         var test = findTest(testType);
         if (!test) return;
 
-        // Rotate sample number on each test
-        var sampleNum = Math.floor(Math.random() * 9000) + 1000;
-        var prefix = gameState.currentProduct ? gameState.currentProduct.prefix : 'V';
-        var label = document.getElementById('gameMilkLabel');
-        if (label) {
-            label.setAttribute('data-sq', 'Mostra #' + prefix + '-' + sampleNum);
-            label.setAttribute('data-en', 'Sample #' + prefix + '-' + sampleNum);
-            label.textContent = (sq ? 'Mostra #' : 'Sample #') + prefix + '-' + sampleNum;
-        }
-
-        // Rotate product image on each test
-        var newProduct = milkImages[Math.floor(Math.random() * milkImages.length)];
-        gameState.currentProduct = newProduct;
-        milkImg.src = newProduct.img;
-        milkImg.className = 'game-milk-img'; // reset animation class first
-
         // Update stats
         if (hasIssue) {
             gameState.stats.bad++;
@@ -1768,7 +1684,6 @@
             gameState.stats.ok++;
         }
         updateStatsDisplay();
-        highlightQCStage(testType);
 
         var resultHtml = '';
         if (test.ok) {
@@ -1791,9 +1706,6 @@
         gameState.testResults.push(resultHtml);
         gameState.currentTestIndex = gameState.testResults.length - 1;
         showResultWithHistory(monitorContent);
-
-        // Substitute the used test button with a fresh random test
-        substituteTestButton(testType, sq);
     }
 
     function substituteTestButton(oldId, sq) {
@@ -1862,33 +1774,6 @@
         document.getElementById('statTotal').textContent = gameState.testsRun.length;
     }
 
-    // Map test IDs to QC stages based on real Vita process
-    var qcStageMap = {
-        // Grumbullim (Farm Collection)
-        trace: 'farm', farmclean: 'farm',
-        // Përpunim (Processing)
-        detergent: 'process', crosscontam: 'process', texture: 'process',
-        // Fiziko-Kimike (Physicochemical & Composition Analysis)
-        temp: 'physico', ph: 'physico', density: 'physico', protein: 'physico',
-        fat: 'physico', lactose: 'physico', calcium: 'physico', freezing: 'physico',
-        salt: 'physico', color: 'physico', smell: 'physico', moisture: 'physico',
-        vitamin: 'physico', somatic: 'physico', ash: 'physico',
-        // Pastërti (Purity & Adulteration Checks)
-        antibiotic: 'purity', bacteria: 'purity', pesticide: 'purity',
-        hormone: 'purity', vegfat: 'purity', milkpowder: 'purity',
-        // Inspektim (Official AUV + Final Checks)
-        auv: 'official', package: 'official', shelf: 'official', extlab: 'official',
-        // Ayran-specific fermented product tests
-        titratable: 'physico', specgrav: 'physico', aseptic: 'process'
-    };
-
-    function highlightQCStage(testId) {
-        var stage = qcStageMap[testId] || 'physico';
-        document.querySelectorAll('#qcStages .qc-stage').forEach(function(el) {
-            el.classList.toggle('active', el.getAttribute('data-stage') === stage);
-        });
-    }
-
     function makeDecision(decision) {
         if (gameState.decided) return;
         gameState.decided = true;
@@ -1942,6 +1827,8 @@
             (lang === 'sq' ? 'Aprovo për Shitje' : 'Approve for Sale') + '</button>';
         btnHtml += '<button class="game-btn decision reject" onclick="makeDecision(\'reject\')" data-sq="Refuzo Mostrën" data-en="Reject Sample"' + decDisabled + '>' +
             (lang === 'sq' ? 'Refuzo Mostrën' : 'Reject Sample') + '</button>';
+        btnHtml += '<button class="game-btn" onclick="askAI()" style="border-color:#f4b400;color:#f4b400;" data-sq="Pyet AI" data-en="Ask AI"' + decDisabled + '>' +
+            (lang === 'sq' ? '🤖 Pyet AI' : '🤖 Ask AI') + '</button>';
         btnContainer.innerHTML = btnHtml;
 
         if (!gameState.decided && gameState.testsRun.length === 0) {
@@ -1956,11 +1843,6 @@
 
         // Update stats labels
         document.querySelectorAll('#gameStats .stat-lbl').forEach(function(el) {
-            el.textContent = lang === 'sq' ? el.getAttribute('data-sq') : (el.getAttribute('data-en') || el.getAttribute('data-sq'));
-        });
-
-        // Update QC stage labels
-        document.querySelectorAll('#qcStages .qc-stage').forEach(function(el) {
             el.textContent = lang === 'sq' ? el.getAttribute('data-sq') : (el.getAttribute('data-en') || el.getAttribute('data-sq'));
         });
     }
@@ -1999,6 +1881,115 @@
         }
     }
 
+    function askAI() {
+        if (gameState.decided) return;
+        if (gameState.testsRun.length === 0) {
+            var mc = document.getElementById('monitorContent');
+            mc.innerHTML = '<div class="result-line" style="color:#f4b400;">🤖 ' +
+                (gameState.lang === 'sq' ? 'Bëj disa teste fillimisht që të të ndihmoj!' : 'Run some tests first so I can help!') + '</div>';
+            return;
+        }
+        var mc = document.getElementById('monitorContent');
+        mc.innerHTML = '<div class="result-line" style="color:#f4b400;">🤖 ' +
+            (gameState.lang === 'sq' ? 'Duke analizuar mostrën...' : 'Analyzing sample...') + '</div>';
+
+        var sq = gameState.lang === 'sq';
+        var summary = '';
+        for (var i = 0; i < gameState.testResults.length; i++) {
+            var div = document.createElement('div');
+            div.innerHTML = gameState.testResults[i];
+            summary += div.textContent.replace(/\s+/g, ' ').trim() + '\n';
+        }
+        var product = gameState.currentProduct ? gameState.currentProduct[sq ? 'sq' : 'en'] : 'milk';
+
+        var prompt = (sq ?
+            'Je asistent i laboratorit të qumështores Vita në Kosovë. Vita është kompani kosovare me 25+ vjet traditë, 200+ ferma bashkëpunuese, 50,000+ familje të kënaqura. Produktet: Qumësht i Freskët, Kos, Jogurt, Djathë i Bardhë, Ayran, Krem Gatimi, Krem Pana.\n\n' +
+            'Po testojmë mostrën: ' + product + '. Rezultatet e testeve:\n' + summary + '\n' +
+            'Bazuar në këto rezultate dhe standardet e larta të Vita-s, a duhet të aprovohet apo refuzohet kjo mostër për shitje? Përgjigju shkurt: "APROVO" ose "REFUZO" dhe jep 1-2 fjali arsyen.' :
+            'You are a lab assistant at Vita dairy in Kosovo. Vita is a Kosovar company with 25+ years of tradition, 200+ partner farms, 50,000+ happy families. Products: Fresh Milk, Kos (Yogurt), Yogurt, White Cheese, Ayran, Cooking Cream, Whipping Cream.\n\n' +
+            'We are testing sample: ' + product + '. Test results:\n' + summary + '\n' +
+            'Based on these results and Vita\'s high standards, should this sample be approved or rejected for sale? Reply briefly: "APPROVE" or "REJECT" with 1-2 sentences why.');
+
+        fetch('https://api.groq.com/openai/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer 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'
+            },
+            body: JSON.stringify({
+                model: 'llama-3.3-70b-versatile',
+                messages: [{role: 'user', content: prompt}],
+                temperature: 0.7,
+                max_tokens: 200
+            })
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            var reply = data.choices[0].message.content;
+            var isApprove = reply.toUpperCase().indexOf('APROVO') >= 0 || reply.toUpperCase().indexOf('APPROVE') >= 0;
+            var color = isApprove ? '#4caf50' : '#e74c3c';
+            gameState.aiHistory = (gameState.aiHistory || '') + '\nAI: ' + reply;
+            mc.innerHTML = '<div class="result-line" style="color:#f4b400;margin-bottom:6px;">🤖 <strong>' +
+                (sq ? 'Asistenti AI thotë:' : 'AI Assistant says:') + '</strong></div>' +
+                '<div class="result-line" style="color:' + color + ';line-height:1.5;margin-bottom:10px;">' + reply.replace(/\n/g, '<br>') + '</div>' +
+                '<div style="display:flex;gap:6px;margin-top:8px;">' +
+                '<input id="aiQuestion" placeholder="' + (sq ? 'Pyet diçka tjetër...' : 'Ask something else...') + '" style="flex:1;padding:6px 10px;border:1px solid rgba(255,255,255,0.2);border-radius:6px;background:rgba(0,0,0,0.4);color:white;font-size:0.75rem;font-family:Inter,sans-serif;">' +
+                '<button onclick="askAIFollowup()" style="padding:6px 12px;background:#f4b400;color:#0d1117;border:none;border-radius:6px;cursor:pointer;font-weight:700;font-size:0.75rem;font-family:Inter,sans-serif;">' + (sq ? 'Dërgo' : 'Send') + '</button>' +
+                '</div>';
+        })
+        .catch(function(err) {
+            mc.innerHTML = '<div class="result-line" style="color:#e74c3c;">🤖 ' +
+                (sq ? 'Gabim: Nuk mund të lidhem me AI. Provo përsëri.' : 'Error: Could not reach AI. Try again.') + '</div>';
+        });
+    }
+
+    function askAIFollowup() {
+        var q = document.getElementById('aiQuestion');
+        if (!q || !q.value.trim()) return;
+        var question = q.value.trim();
+        q.value = '';
+        var mc = document.getElementById('monitorContent');
+        var sq = gameState.lang === 'sq';
+
+        mc.innerHTML = '<div class="result-line" style="color:#f4b400;">🤖 ' +
+            (sq ? 'Duke menduar...' : 'Thinking...') + '</div>';
+
+        var product = gameState.currentProduct ? gameState.currentProduct[sq ? 'sq' : 'en'] : 'milk';
+        var prompt = (sq ?
+            'Je asistent i laboratorit të qumështores Vita në Kosovë (25+ vjet traditë, 200+ ferma). Produkti: ' + product + '.\nHistoriku i bisedës:\n' + (gameState.aiHistory || '') + '\n\nPyetja e përdoruesit: ' + question + '\n\nPërgjigju shkurt dhe profesionalisht.' :
+            'You are a lab assistant at Vita dairy in Kosovo (25+ years tradition, 200+ farms). Product: ' + product + '.\nConversation history:\n' + (gameState.aiHistory || '') + '\n\nUser question: ' + question + '\n\nReply briefly and professionally.');
+
+        fetch('https://api.groq.com/openai/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer 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'
+            },
+            body: JSON.stringify({
+                model: 'llama-3.3-70b-versatile',
+                messages: [{role: 'user', content: prompt}],
+                temperature: 0.7,
+                max_tokens: 300
+            })
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            var reply = data.choices[0].message.content;
+            gameState.aiHistory = (gameState.aiHistory || '') + '\nUser: ' + question + '\nAI: ' + reply;
+            mc.innerHTML = '<div class="result-line" style="color:#f4b400;margin-bottom:6px;">🤖 <strong>' +
+                (sq ? 'Asistenti AI:' : 'AI Assistant:') + '</strong></div>' +
+                '<div class="result-line" style="color:rgba(255,255,255,0.85);line-height:1.5;margin-bottom:10px;">' + reply.replace(/\n/g, '<br>') + '</div>' +
+                '<div style="display:flex;gap:6px;margin-top:8px;">' +
+                '<input id="aiQuestion" placeholder="' + (sq ? 'Pyet diçka tjetër...' : 'Ask something else...') + '" style="flex:1;padding:6px 10px;border:1px solid rgba(255,255,255,0.2);border-radius:6px;background:rgba(0,0,0,0.4);color:white;font-size:0.75rem;font-family:Inter,sans-serif;">' +
+                '<button onclick="askAIFollowup()" style="padding:6px 12px;background:#f4b400;color:#0d1117;border:none;border-radius:6px;cursor:pointer;font-weight:700;font-size:0.75rem;font-family:Inter,sans-serif;">' + (sq ? 'Dërgo' : 'Send') + '</button>' +
+                '</div>';
+        })
+        .catch(function(err) {
+            mc.innerHTML = '<div class="result-line" style="color:#e74c3c;">🤖 ' +
+                (sq ? 'Gabim. Provo përsëri.' : 'Error. Try again.') + '</div>';
+        });
+    }
+
     // Force scroll to top
     if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
     window.scrollTo(0, 0);
@@ -2020,79 +2011,267 @@
         }
     }
 
-    function initHeatMap() {
-        var map = L.map('heatmapMap', {
-            center: [42.6, 20.9],
+    function initKosovoMap() {
+        var map = L.map('kosovoMap', {
+            center: [42.55, 20.85],
             zoom: 9,
             zoomControl: true,
-            attributionControl: false
+            attributionControl: false,
+            scrollWheelZoom: true
         });
 
         L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-            maxZoom: 19
+            maxZoom: 16,
+            minZoom: 7,
+            noWrap: true
         }).addTo(map);
 
-        // Kosovo border highlight
-        L.circle([42.6, 20.9], {
-            radius: 90000,
-            color: '#5b9bd5',
-            weight: 2,
-            fillColor: 'rgba(91,155,213,0.06)',
-            fillOpacity: 0.5,
-            dashArray: '6 8'
+        // Restrict bounds centered on Kosovo
+        var balkansBounds = L.latLngBounds(
+            [39.0, 17.3],
+            [46.1, 24.4]
+        );
+        map.setMaxBounds(balkansBounds);
+        map.setMinZoom(7);
+
+        // Kosovo border — from OSM Nominatim (82-point simplified)
+        var kosovoBorder = {
+            "type": "Feature",
+            "properties": {"name": "Kosova"},
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [[
+                    [20.0142844, 42.7407546],
+                    [20.0443133, 42.6958622],
+                    [20.0814513, 42.6259669],
+                    [20.0810466, 42.5631911],
+                    [20.161453, 42.506991],
+                    [20.2257656, 42.4141015],
+                    [20.2568189, 42.3194992],
+                    [20.3961101, 42.2970608],
+                    [20.464751, 42.2652944],
+                    [20.5323897, 42.1844677],
+                    [20.5572428, 42.1430895],
+                    [20.5718055, 42.0586237],
+                    [20.5901401, 41.9266074],
+                    [20.7363547, 41.8863223],
+                    [20.7681396, 41.9138147],
+                    [20.7584494, 41.942287],
+                    [20.7577751, 41.9753513],
+                    [20.7496019, 42.0231862],
+                    [20.7731314, 42.0615262],
+                    [20.8231059, 42.0840982],
+                    [20.874241, 42.0969808],
+                    [20.9193794, 42.1261004],
+                    [20.9663922, 42.1363848],
+                    [21.0097604, 42.1503522],
+                    [21.0576884, 42.1762671],
+                    [21.0962396, 42.200676],
+                    [21.1472831, 42.1995131],
+                    [21.1694023, 42.1849082],
+                    [21.1856297, 42.1646522],
+                    [21.1954279, 42.1522437],
+                    [21.2080618, 42.1384245],
+                    [21.2169209, 42.124035],
+                    [21.2179137, 42.1033814],
+                    [21.2293855, 42.0961156],
+                    [21.2836227, 42.1014253],
+                    [21.3196895, 42.1075682],
+                    [21.3026143, 42.140766],
+                    [21.3199415, 42.1710313],
+                    [21.3287119, 42.1792117],
+                    [21.3317643, 42.1966259],
+                    [21.3405572, 42.2047898],
+                    [21.3603706, 42.2220628],
+                    [21.3758467, 42.2361777],
+                    [21.3910975, 42.2465095],
+                    [21.419723, 42.2435919],
+                    [21.4433646, 42.2365367],
+                    [21.4686947, 42.2800314],
+                    [21.5199434, 42.260551],
+                    [21.5359557, 42.2463368],
+                    [21.5763007, 42.2559283],
+                    [21.5835049, 42.2760858],
+                    [21.5652646, 42.3063837],
+                    [21.5508314, 42.3136169],
+                    [21.5304975, 42.3226144],
+                    [21.5272881, 42.3449889],
+                    [21.5357288, 42.3673263],
+                    [21.5610294, 42.3666563],
+                    [21.5758409, 42.3733536],
+                    [21.5939599, 42.3830251],
+                    [21.6152029, 42.3759465],
+                    [21.6333634, 42.3963441],
+                    [21.6460241, 42.4147147],
+                    [21.634876, 42.4325205],
+                    [21.6288957, 42.457387],
+                    [21.6509532, 42.4729825],
+                    [21.6653591, 42.4843289],
+                    [21.6688758, 42.4904307],
+                    [21.6797425, 42.4988943],
+                    [21.6917418, 42.5135229],
+                    [21.7075077, 42.5220797],
+                    [21.6944576, 42.5399158],
+                    [21.715613, 42.5498989],
+                    [21.7457106, 42.5667959],
+                    [21.734096, 42.6015111],
+                    [21.7519472, 42.6137253],
+                    [21.7608719, 42.6377216],
+                    [21.767105, 42.6799989],
+                    [21.71878, 42.6912994],
+                    [21.6700808, 42.6747701],
+                    [21.6441327, 42.6844682],
+                    [21.6122638, 42.696816],
+                    [21.5695372, 42.7296611],
+                    [21.5071521, 42.7327338],
+                    [21.4710061, 42.7411237],
+                    [21.4506776, 42.7474973],
+                    [21.4215709, 42.7462773],
+                    [21.389119, 42.753944],
+                    [21.4112501, 42.7762841],
+                    [21.4064814, 42.7966429],
+                    [21.4246717, 42.8106716],
+                    [21.4195617, 42.8295586],
+                    [21.4265737, 42.8474302],
+                    [21.4342682, 42.8673092],
+                    [21.3912781, 42.8671767],
+                    [21.3566464, 42.8787541],
+                    [21.3498628, 42.8884373],
+                    [21.3275359, 42.9025538],
+                    [21.2714325, 42.8975269],
+                    [21.2551708, 42.9252403],
+                    [21.2392948, 42.9470476],
+                    [21.2399318, 42.9737516],
+                    [21.2377789, 42.9995865],
+                    [21.2129685, 43.0213965],
+                    [21.1930075, 43.0119567],
+                    [21.1693142, 43.0070281],
+                    [21.1655968, 43.0284527],
+                    [21.1527497, 43.0529987],
+                    [21.140753, 43.08032],
+                    [21.1379361, 43.1125566],
+                    [21.1017107, 43.1194729],
+                    [21.0800375, 43.1301321],
+                    [21.0642794, 43.1121449],
+                    [21.0306677, 43.1235105],
+                    [20.9972251, 43.1379628],
+                    [20.9673757, 43.1247321],
+                    [20.9330498, 43.1355626],
+                    [20.885715, 43.1586959],
+                    [20.8518121, 43.1743543],
+                    [20.8425253, 43.2010666],
+                    [20.8746297, 43.2049717],
+                    [20.8737925, 43.2291925],
+                    [20.8290637, 43.2652816],
+                    [20.7368142, 43.2474167],
+                    [20.6993576, 43.2249696],
+                    [20.6560459, 43.2090552],
+                    [20.6135029, 43.205419],
+                    [20.601741, 43.1982288],
+                    [20.6117698, 43.1782398],
+                    [20.6546586, 43.1544945],
+                    [20.6710638, 43.1321586],
+                    [20.6856972, 43.1217253],
+                    [20.6927801, 43.1088128],
+                    [20.6831455, 43.0816437],
+                    [20.6692708, 43.0597536],
+                    [20.654481, 43.0345709],
+                    [20.6478277, 43.0233922],
+                    [20.6411253, 43.0103425],
+                    [20.6266376, 43.0057877],
+                    [20.5854193, 43.0134164],
+                    [20.5586332, 42.9810441],
+                    [20.5486794, 42.9635657],
+                    [20.5291891, 42.9745412],
+                    [20.5063759, 42.9627209],
+                    [20.4903953, 42.938372],
+                    [20.4863195, 42.9320665],
+                    [20.5231799, 42.8926125],
+                    [20.4084333, 42.8471311],
+                    [20.2799023, 42.829693],
+                    [20.2272399, 42.7530163],
+                    [20.1398422, 42.7566074],
+                    [20.0368956, 42.7701987],
+                    [20.0142844, 42.7407546]
+                ]]
+            }
+        };
+
+        L.geoJSON(kosovoBorder, {
+            style: {
+                color: '#5b9bd5',
+                weight: 2.5,
+                fillColor: 'rgba(91,155,213,0.08)',
+                fillOpacity: 0.4
+            }
         }).addTo(map);
 
+        // Milk sourcing heat map by region
         var regions = [
-            {name: 'Prishtina / Prishtinë', lat: 42.66, lng: 21.16, pct: 18, farms: 36, color: '#e84a1d', r: 22},
-            {name: 'Peja / Pejë', lat: 42.66, lng: 20.29, pct: 15, farms: 30, color: '#e8742a', r: 19},
-            {name: 'Prizren / Prizren', lat: 42.21, lng: 20.74, pct: 14, farms: 28, color: '#e8a838', r: 18},
-            {name: 'Ferizaj / Ferizaj', lat: 42.37, lng: 21.15, pct: 12, farms: 24, color: '#e8a838', r: 16},
-            {name: 'Gjakova / Gjakovë', lat: 42.38, lng: 20.43, pct: 11, farms: 22, color: '#e8b838', r: 15},
-            {name: 'Gjilan / Gjilan', lat: 42.46, lng: 21.47, pct: 10, farms: 20, color: '#e8c838', r: 14},
-            {name: 'Mitrovica / Mitrovicë', lat: 42.88, lng: 20.87, pct: 9, farms: 18, color: '#5b9bd5', r: 12},
-            {name: 'Podujeva / Podujevë', lat: 42.91, lng: 21.19, pct: 6, farms: 12, color: '#3d7eb0', r: 10},
-            {name: 'Vushtrria / Vushtrri', lat: 42.82, lng: 20.97, pct: 5, farms: 10, color: '#2d6aa0', r: 9}
+            {name: 'Peja', pct: 26.2, lat: 42.66, lng: 20.29, color: '#e84a1d', subs: 'Pejë, Istog, Klinë'},
+            {name: 'Gjakova', pct: 20.3, lat: 42.38, lng: 20.43, color: '#e8742a', subs: 'Gjakovë, Deçan, Rahovec'},
+            {name: 'Prishtina', pct: 17.8, lat: 42.66, lng: 21.16, color: '#e8a838', subs: 'Prishtinë, Podujevë, Lipjan, Fushë Kosovë'},
+            {name: 'Mitrovica', pct: 13.5, lat: 42.88, lng: 20.87, color: '#5b9bd5', subs: 'Mitrovicë, Vushtrri, Skënderaj'},
+            {name: 'Gjilan', pct: 11.2, lat: 42.46, lng: 21.47, color: '#4a8bc0', subs: 'Gjilan, Viti, Kamenicë'},
+            {name: 'Ferizaj', pct: 6.4, lat: 42.37, lng: 21.15, color: '#3d7eb0', subs: 'Ferizaj, Kaçanik, Shtime'},
+            {name: 'Prizren', pct: 4.6, lat: 42.21, lng: 20.74, color: '#2d6aa0', subs: 'Prizren, Suharekë, Dragash'}
         ];
 
         regions.forEach(function(r) {
-            var circle = L.circleMarker([r.lat, r.lng], {
-                radius: r.r,
-                color: r.color,
-                weight: 2,
-                fillColor: r.color,
-                fillOpacity: 0.6
-            }).addTo(map);
-
-            circle.bindTooltip('<strong>' + r.name.split(' / ')[0] + '</strong><br>' + r.pct + '% — ~' + r.farms + ' ferma', {
-                direction: 'top',
-                offset: [0, -r.r - 5],
-                className: 'heatmap-leaflet-tooltip'
-            });
-
+            var radius = r.pct * 1.15;
             L.circleMarker([r.lat, r.lng], {
-                radius: r.r * 0.6,
+                radius: radius,
                 color: r.color,
+                weight: 2.5,
+                fillColor: r.color,
+                fillOpacity: 0.55
+            }).addTo(map).bindTooltip(
+                '<strong>' + r.name + '</strong><br>' + r.pct + '% — ' + r.subs,
+                {direction: 'top', offset: [0, -radius - 4], className: 'heatmap-leaflet-tooltip'}
+            );
+
+            // Inner glow
+            L.circleMarker([r.lat, r.lng], {
+                radius: radius * 0.5,
+                color: 'transparent',
                 weight: 0,
                 fillColor: 'white',
-                fillOpacity: 0.2
+                fillOpacity: 0.15
             }).addTo(map);
         });
 
-        // Invalidate size when section becomes visible
+        // Legend
+        var legend = L.control({position: 'bottomright'});
+        legend.onAdd = function() {
+            var div = L.DomUtil.create('div', 'info-legend');
+            div.style.cssText = 'background:rgba(13,17,23,0.9);padding:10px 14px;border-radius:10px;border:1px solid rgba(91,155,213,0.25);color:rgba(255,255,255,0.8);font-size:0.75rem;line-height:1.6;font-family:Inter,sans-serif;';
+            div.innerHTML = '<strong style="color:#8ab8e8;">% e Qumështit</strong><br>';
+            var colors = ['#e84a1d','#e8742a','#e8a838','#5b9bd5','#4a8bc0','#3d7eb0','#2d6aa0'];
+            var labels = ['26%', '20%', '18%', '14%', '11%', '6%', '5%'];
+            for (var i = 0; i < colors.length; i++) {
+                div.innerHTML += '<div style="display:flex;align-items:center;gap:6px;margin-top:3px;">' +
+                    '<span style="width:12px;height:12px;border-radius:50%;background:' + colors[i] + ';display:inline-block;"></span>' +
+                    labels[i] + '</div>';
+            }
+            return div;
+        };
+        legend.addTo(map);
+
+        // Resize fix
         var observer = new IntersectionObserver(function(entries) {
             entries.forEach(function(entry) {
                 if (entry.isIntersecting) { map.invalidateSize(); }
             });
         });
-        observer.observe(document.getElementById('heatmapMap'));
+        observer.observe(document.getElementById('kosovoMap'));
     }
 
     // Init map after Leaflet loads
     if (typeof L !== 'undefined') {
-        initHeatMap();
+        initKosovoMap();
     } else {
         window.addEventListener('load', function() {
-            if (typeof L !== 'undefined') initHeatMap();
+            if (typeof L !== 'undefined') initKosovoMap();
         });
     }
 
@@ -2159,7 +2338,7 @@ milk: {
     en: { name: 'Fresh Milk', desc: 'Full-fat pasteurized milk, rich in calcium and essential vitamins for bone health. Produced from cows on our local farms in Kosovo.', fat: '3.2% Fat', nut: 'Calcium, Vitamin D, Protein, Vitamin B12', use: 'Drink cold, with cereals, in coffee or tea, and in various recipes.' }
 },
 kos: {
-    img: 'jogurt-vita.png',
+    img: 'kos-vita.png',
     sq: { name: 'Kos (Jogurt Tradicional)', desc: 'Kos tradicional shqiptar me kultura të gjalla probiotike. I trashë, kremoz dhe me shije autentike — ashtu siç e bënin gjyshet tona.', fat: '3.5% Yndyrë', nut: 'Probiotikë, Kalcium, Proteina, Vitaminë B2', use: 'Si meze, me byrek, në sallata, ose thjesht vetëm me pak kripë.' },
     en: { name: 'Kos (Traditional Yogurt)', desc: 'Traditional Albanian kos with live probiotic cultures. Thick, creamy and authentic — just like our grandmothers made it.', fat: '3.5% Fat', nut: 'Probiotics, Calcium, Protein, Vitamin B2', use: 'As a side dish, with pie, in salads, or simply on its own with a pinch of salt.' }
 },
@@ -2214,6 +2393,33 @@ function hideProduct() {
 document.getElementById('productDetail').classList.remove('open');
 document.body.style.overflow = '';
 }
+
+// ===== ABOUT PRODUCT SHOWCASE ROTATION =====
+var aboutProducts = [
+    {img:'qumeshti-vita.png', sq:'Qumësht i Freskët', en:'Fresh Milk'},
+    {img:'jogurt-vita.png', sq:'Kos', en:'Kos (Yogurt)'},
+    {img:'jogurt-vita.png', sq:'Jogurt', en:'Yogurt'},
+    {img:'djath-vita.png', sq:'Djathë i Bardhë', en:'White Cheese'},
+    {img:'ayran-vita.png', sq:'Ayran', en:'Ayran'},
+    {img:'cooking-cream-vita.png', sq:'Krem Gatimi', en:'Cooking Cream'},
+    {img:'whipping-cream-vita.png', sq:'Krem Pana', en:'Whipping Cream'}
+];
+var aboutProductIdx = 0;
+function rotateAboutProduct() {
+    aboutProductIdx = (aboutProductIdx + 1) % aboutProducts.length;
+    var p = aboutProducts[aboutProductIdx];
+    var img = document.getElementById('aboutProductImg');
+    if (!img) return;
+    img.style.opacity = '0';
+    img.style.transform = 'translateY(10px)';
+    setTimeout(function() {
+        img.src = p.img;
+        img.style.opacity = '1';
+        img.style.transform = 'translateY(0)';
+    }, 250);
+}
+document.getElementById('aboutProductImg').style.transition = 'opacity 0.25s ease, transform 0.25s ease';
+setInterval(rotateAboutProduct, 4000);
 </script>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>

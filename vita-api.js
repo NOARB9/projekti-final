@@ -26,6 +26,18 @@ function showAuthModal(mode) {
     document.getElementById('authSubmit').textContent = mode === 'login' ? 'Hyr' : 'Krijo Llogari';
     document.getElementById('authNameGroup').style.display = mode === 'login' ? 'none' : 'block';
     document.getElementById('authMode').value = mode;
+    // Free item promo on register
+    var promoEl = document.getElementById('authPromo');
+    if (!promoEl) {
+        promoEl = document.createElement('p');
+        promoEl.id = 'authPromo';
+        promoEl.style.cssText = 'text-align:center;margin-top:4px;font-size:0.82rem;color:#4caf50;';
+        document.getElementById('authSubmit').parentNode.insertBefore(promoEl, document.getElementById('authSubmit').nextSibling);
+    }
+    promoEl.style.display = mode === 'register' ? 'block' : 'none';
+    promoEl.setAttribute('data-sq', '🎁 Regjistrohu dhe merr 1+1 falas!');
+    promoEl.setAttribute('data-en', '🎁 Register and get 1+1 free!');
+    promoEl.textContent = '🎁 Regjistrohu dhe merr 1+1 falas!';
 }
 
 function hideAuthModal() {
@@ -78,8 +90,10 @@ function updateAuthUI() {
     if (currentUser) {
         loginBtn.style.display = 'none';
         userBtn.style.display = 'flex';
+        userBtn.style.gap = '6px';
         userName.textContent = currentUser.name;
-        coinsDisplay.textContent = currentUser.coins || 0;
+        userName.title = 'Dil / Sign Out';
+        coinsDisplay.textContent = '🪙 ' + (currentUser.coins || 0);
         coinsDisplay.style.display = 'inline';
     } else {
         loginBtn.style.display = 'inline-block';
@@ -174,6 +188,7 @@ function placeOrder() {
 // ==================== RUSH HOUR BANNER ====================
 
 function loadRushHourBanner() {
+    if (!userToken) return;
     api('/rush-hours').then(function(data) {
         var banner = document.getElementById('rushBanner');
         if (!data.active) {
@@ -181,26 +196,10 @@ function loadRushHourBanner() {
             return;
         }
 
-        // Update countdown
-        var seconds = data.seconds_left;
-        var updateCountdown = function() {
-            if (seconds <= 0) {
-                banner.style.display = 'none';
-                return;
-            }
-            var m = Math.floor(seconds / 60);
-            var s = seconds % 60;
-            document.getElementById('rushTimer').textContent = m + ':' + (s < 10 ? '0' : '') + s;
-            seconds--;
-        };
-        updateCountdown();
-        setInterval(updateCountdown, 1000);
-
-        document.getElementById('rushName').textContent = data.active.name_sq;
-        document.getElementById('rushDiscount').textContent = '-' + data.active.discount + '%';
+        banner.innerHTML = '<span>⚡ <strong id="rushName">' + data.active.name_sq + '</strong> — <span id="rushDiscount">-' + data.active.discount + '%</span> ' +
+            'mbi të gjitha produktet! &nbsp;📅 <strong>30 Korrik – 1 Gusht</strong></span>';
         banner.style.display = 'block';
 
-        // Mark discounted products
         var discountedIds = data.products.map(function(p) { return p.id; });
         document.querySelectorAll('.product-card').forEach(function(card) {
             var pid = parseInt(card.getAttribute('data-pid'));
@@ -223,13 +222,20 @@ function loadProductPrices() {
     api('/products').then(function(data) {
         var rush = data.rush_hour;
         var products = data.products;
+        var isLoggedIn = !!userToken;
 
-        // Show rush banner if active
-        if (rush) {
+        // Rush banner — only for logged-in users
+        if (rush && isLoggedIn) {
             document.getElementById('rushBanner').style.display = 'block';
             document.getElementById('rushName').textContent = rush.name_sq + ' Vrapo! ⚡';
             document.getElementById('rushDiscount').textContent = '-' + rush.discount + '%';
             loadRushHourBanner();
+        } else if (rush && !isLoggedIn) {
+            // Show login prompt
+            var banner = document.getElementById('rushBanner');
+            banner.style.display = 'block';
+            banner.style.background = 'linear-gradient(135deg, #1a1a2e, #16213e, #0f3460)';
+            banner.innerHTML = '<span>🎓 <strong>Fundi i Summer School!</strong> — <a onclick="showAuthModal(\'login\')" style="color:#5b9bd5;cursor:pointer;text-decoration:underline;font-weight:700;">Hyr</a> për 40% zbritje + 1 produkt falas 🎁</span>';
         }
 
         // Update product cards with prices
@@ -245,7 +251,7 @@ function loadProductPrices() {
                 card.appendChild(priceEl);
             }
 
-            if (p.discount_percent > 0) {
+            if (p.discount_percent > 0 && isLoggedIn) {
                 priceEl.innerHTML = '<span class="old-price">€' + p.price.toFixed(2) + '</span> ' +
                     '<span class="sale-price">€' + p.sale_price.toFixed(2) + '</span> ' +
                     '<span class="discount-tag">-' + p.discount_percent + '%</span>';
