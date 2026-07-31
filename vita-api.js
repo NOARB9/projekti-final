@@ -18,26 +18,18 @@ function api(path, options) {
 
 function showAuthModal(mode) {
     document.getElementById('authModal').style.display = 'flex';
-    document.getElementById('authTitle').setAttribute('data-sq', mode === 'login' ? 'Hyr' : 'Regjistrohu');
-    document.getElementById('authTitle').setAttribute('data-en', mode === 'login' ? 'Sign In' : 'Register');
-    document.getElementById('authTitle').textContent = mode === 'login' ? 'Hyr' : 'Regjistrohu';
-    document.getElementById('authSubmit').setAttribute('data-sq', mode === 'login' ? 'Hyr' : 'Krijo Llogari');
-    document.getElementById('authSubmit').setAttribute('data-en', mode === 'login' ? 'Sign In' : 'Create Account');
-    document.getElementById('authSubmit').textContent = mode === 'login' ? 'Hyr' : 'Krijo Llogari';
-    document.getElementById('authNameGroup').style.display = mode === 'login' ? 'none' : 'block';
+    var isLogin = mode === 'login';
+    document.getElementById('authTitle').textContent = isLogin ? 'Hyr' : 'Regjistrohu';
+    document.getElementById('authTitle').setAttribute('data-sq', isLogin ? 'Hyr' : 'Regjistrohu');
+    document.getElementById('authTitle').setAttribute('data-en', isLogin ? 'Log In' : 'Sign Up');
+    document.getElementById('authSubmit').textContent = isLogin ? 'Hyr' : 'Regjistrohu';
+    document.getElementById('authSubmit').setAttribute('data-sq', isLogin ? 'Hyr' : 'Regjistrohu');
+    document.getElementById('authSubmit').setAttribute('data-en', isLogin ? 'Log In' : 'Sign Up');
+    document.getElementById('authNameGroup').style.display = isLogin ? 'none' : 'block';
     document.getElementById('authMode').value = mode;
-    // Free item promo on register
-    var promoEl = document.getElementById('authPromo');
-    if (!promoEl) {
-        promoEl = document.createElement('p');
-        promoEl.id = 'authPromo';
-        promoEl.style.cssText = 'text-align:center;margin-top:4px;font-size:0.82rem;color:#4caf50;';
-        document.getElementById('authSubmit').parentNode.insertBefore(promoEl, document.getElementById('authSubmit').nextSibling);
-    }
-    promoEl.style.display = mode === 'register' ? 'block' : 'none';
-    promoEl.setAttribute('data-sq', '🎁 Regjistrohu dhe merr 1+1 falas!');
-    promoEl.setAttribute('data-en', '🎁 Register and get 1+1 free!');
-    promoEl.textContent = '🎁 Regjistrohu dhe merr 1+1 falas!';
+    // Toggle the reason text: only show for login
+    var reasonEl = document.getElementById('authReason');
+    if (reasonEl) reasonEl.style.display = isLogin ? 'block' : 'none';
 }
 
 function hideAuthModal() {
@@ -72,13 +64,16 @@ function handleAuth() {
 }
 
 function logout() {
-    currentUser = null;
-    userToken = '';
-    localStorage.removeItem('vita_user');
-    localStorage.removeItem('vita_token');
-    updateAuthUI();
-    document.getElementById('cartCount').textContent = '0';
-    document.getElementById('cartCount').style.display = 'none';
+    if (confirm('Doni të dilni? / Sign out?')) {
+        currentUser = null;
+        userToken = '';
+        localStorage.removeItem('vita_user');
+        localStorage.removeItem('vita_token');
+        updateAuthUI();
+        document.getElementById('cartCount').textContent = '0';
+        document.getElementById('cartCount').style.display = 'none';
+        document.getElementById('rushBanner').style.display = 'none';
+    }
 }
 
 function updateAuthUI() {
@@ -89,6 +84,7 @@ function updateAuthUI() {
 
     if (currentUser) {
         loginBtn.style.display = 'none';
+        document.getElementById('navRegisterBtn').style.display = 'none';
         userBtn.style.display = 'flex';
         userBtn.style.gap = '6px';
         userName.textContent = currentUser.name;
@@ -97,6 +93,7 @@ function updateAuthUI() {
         coinsDisplay.style.display = 'inline';
     } else {
         loginBtn.style.display = 'inline-block';
+        document.getElementById('navRegisterBtn').style.display = 'inline-block';
         userBtn.style.display = 'none';
         coinsDisplay.style.display = 'none';
     }

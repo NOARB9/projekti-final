@@ -1011,7 +1011,7 @@
             Vita
         </a>
         <ul class="nav-links">
-            <li><a onclick="navigateTo('about')" data-sq="Rreth Nesh" data-en="About">Rreth Nesh</a></li>
+            <li><a onclick="navigateTo('about')" data-sq="Rreth Nesh" data-en="About Us">Rreth Nesh</a></li>
             <li><a onclick="navigateTo('products')" data-sq="Produktet" data-en="Products">Produktet</a></li>
             <li><a onclick="navigateTo('game')" data-sq="Testi i Qumështit" data-en="Milk Test">Testi i Qumështit</a></li>
             <li><a onclick="navigateTo('contact')" class="nav-cta" data-sq="Kontakto" data-en="Contact">Kontakto</a></li>
@@ -1022,7 +1022,8 @@
         </div>
         <div class="nav-actions">
             <span id="navCoins" class="nav-coins" style="display:none;">🪙 <span>0</span></span>
-            <button id="navLoginBtn" class="nav-login-btn" onclick="showAuthModal('login')" data-sq="Hyr" data-en="Sign In">Hyr</button>
+            <button id="navLoginBtn" class="nav-login-btn" onclick="showAuthModal('login')" data-sq="Hyr" data-en="Log In">Hyr</button>
+            <button id="navRegisterBtn" class="nav-login-btn" onclick="showAuthModal('register')" style="background:transparent;border:1px solid var(--accent);color:var(--accent);margin-left:6px;" data-sq="Regjistrohu" data-en="Sign Up">Regjistrohu</button>
             <div id="navUserBtn" class="nav-user-btn" style="display:none;" onclick="logout()">
                 <span id="navUserName"></span>
             </div>
@@ -1047,12 +1048,13 @@
         <div id="authNameGroup"><input id="authName" placeholder="Emri" style="width:100%;padding:10px;margin:8px 0;border:1px solid var(--border);border-radius:8px;"></div>
         <input id="authEmail" type="email" placeholder="Email" style="width:100%;padding:10px;margin:8px 0;border:1px solid var(--border);border-radius:8px;">
         <input id="authPassword" type="password" placeholder="Fjalëkalimi" style="width:100%;padding:10px;margin:8px 0;border:1px solid var(--border);border-radius:8px;">
-        <input type="hidden" id="authMode" value="login">
-        <button id="authSubmit" onclick="handleAuth()" style="width:100%;padding:10px;background:var(--accent);color:white;border:none;border-radius:8px;cursor:pointer;font-weight:600;margin-top:8px;" data-sq="Hyr" data-en="Sign In">Hyr</button>
-        <p style="text-align:center;margin-top:10px;font-size:0.85rem;">
-            <span data-sq="Nuk ke llogari?" data-en="No account?">Nuk ke llogari?</span>
-            <a onclick="showAuthModal('register')" style="color:var(--accent);cursor:pointer;" data-sq="Regjistrohu" data-en="Register">Regjistrohu</a>
+        <p id="authReason" style="text-align:center;font-size:0.78rem;color:var(--text-muted);margin:4px 0 10px;"
+           data-sq="Hyr për t'u njoftuar për oferta, zbritje dhe lajme nga Vita."
+           data-en="Log in to get notified about offers, discounts, and Vita news.">
+            Hyr për t'u njoftuar për oferta, zbritje dhe lajme nga Vita.
         </p>
+        <input type="hidden" id="authMode" value="login">
+        <button id="authSubmit" onclick="handleAuth()" style="width:100%;padding:10px;background:var(--accent);color:white;border:none;border-radius:8px;cursor:pointer;font-weight:600;margin-top:8px;" data-sq="Hyr" data-en="Log In">Hyr</button>
         <button onclick="hideAuthModal()" style="margin-top:8px;width:100%;padding:8px;background:none;border:1px solid var(--border);border-radius:8px;cursor:pointer;">Mbyll</button>
     </div>
 </div>
@@ -1138,7 +1140,7 @@
                 <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
                 Instagram
             </a>
-            <a href="https://en.wikipedia.org/wiki/Kosovo" target="_blank" class="about-social-btn wp">
+            <a href="https://en.wikipedia.org/wiki/Vita_Milk" target="_blank" class="about-social-btn wp">
                 <img src="wiki-vita.png" class="social-icon" style="width:20px;height:20px;object-fit:contain;">
                 Wikipedia
             </a>
@@ -1384,10 +1386,10 @@
         </div>
         <div class="footer-col">
             <h5 data-sq="Produkte" data-en="Products">Produkte</h5>
-            <a href="#products" data-sq="Qumësht" data-en="Milk">Qumësht</a>
-            <a href="#products" data-sq="Kos" data-en="Yogurt">Kos</a>
-            <a href="#products" data-sq="Djathë" data-en="Cheese">Djathë</a>
-            <a href="#products" data-sq="etj." data-en="etc.">etj.</a>
+            <a href="#products" onclick="navigateTo('products');setTimeout(function(){document.querySelector('[data-slug=milk]').scrollIntoView({behavior:'smooth'});},400);return false;" data-sq="Qumësht" data-en="Milk">Qumësht</a>
+            <a href="#products" onclick="navigateTo('products');setTimeout(function(){document.querySelector('[data-slug=kos]').scrollIntoView({behavior:'smooth'});},400);return false;" data-sq="Kos" data-en="Yogurt">Kos</a>
+            <a href="#products" onclick="navigateTo('products');setTimeout(function(){document.querySelector('[data-slug=cheese]').scrollIntoView({behavior:'smooth'});},400);return false;" data-sq="Djathë" data-en="Cheese">Djathë</a>
+            <a href="#products" onclick="navigateTo('products');return false;" data-sq="etj." data-en="etc.">etj.</a>
         </div>
         <div class="footer-col">
             <h5 data-sq="Kompania" data-en="Company">Kompania</h5>
@@ -1769,9 +1771,17 @@
     }
 
     function updateStatsDisplay() {
-        document.getElementById('statOk').textContent = gameState.stats.ok;
-        document.getElementById('statBad').textContent = gameState.stats.bad;
-        document.getElementById('statTotal').textContent = gameState.testsRun.length;
+        var total = gameState.testsRun.length;
+        document.getElementById('statTotal').textContent = total;
+        if (total >= 5) {
+            document.getElementById('statOk').parentElement.style.display = 'none';
+            document.getElementById('statBad').parentElement.style.display = 'none';
+        } else {
+            document.getElementById('statOk').textContent = gameState.stats.ok;
+            document.getElementById('statBad').textContent = gameState.stats.bad;
+            document.getElementById('statOk').parentElement.style.display = '';
+            document.getElementById('statBad').parentElement.style.display = '';
+        }
     }
 
     function makeDecision(decision) {
